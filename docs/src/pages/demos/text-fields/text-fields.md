@@ -15,7 +15,7 @@ The `TextField` wrapper component is a complete form control including a label, 
 
 ## Components
 
-`TextField` is composed of smaller components (`FormControl`, `InputLabel`, `Input`, and `FormHelperText`) that you can leverage directly to significantly customize your form inputs.
+`TextField` is composed of smaller components ([`FormControl`](/api/form-control), [`InputLabel`](/api/input-label), [`Input`](/api/input), and [`FormHelperText`](/api/form-helper-text)) that you can leverage directly to significantly customize your form inputs.
 
 You might also have noticed that some native HTML input properties are missing from the `TextField` component.
 This is on purpose.
@@ -45,7 +45,8 @@ These can be used to add a prefix, a suffix or an action to an input.
 ## Formatted inputs
 
 We demonstrate how you could be using third-party libraries to [format your input](https://material.io/guidelines/components/text-fields.html#text-fields-input-types).
-Here, we are using [react-text-mask](https://github.com/text-mask/text-mask) and [react-number-format](https://github.com/s-yadav/react-number-format) libraries.
+In the following demo, we are using [react-text-mask](https://github.com/text-mask/text-mask) and [react-number-format](https://github.com/s-yadav/react-number-format) libraries.
+You have to provide a custom implementation of the `<input>` element with the `inputComponent` property.
 
 {{"demo": "pages/demos/text-fields/FormattedInputs.js"}}
 
@@ -57,3 +58,9 @@ Here is an example of how you can change the main color of an input from "primar
 There is no limit.
 
 {{"demo": "pages/demos/text-fields/CustomizedInputs.js"}}
+
+## With icon
+
+Icons can be specified as prepended or appended.
+
+{{"demo": "pages/demos/text-fields/InputWithIcon.js"}}

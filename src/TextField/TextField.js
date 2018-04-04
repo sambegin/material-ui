@@ -48,17 +48,17 @@ function TextField(props) {
     FormHelperTextProps,
     fullWidth,
     helperText,
-    helperTextClassName,
     id,
     InputLabelProps,
     inputProps,
     InputProps,
     inputRef,
     label,
-    labelClassName,
     multiline,
     name,
+    onBlur,
     onChange,
+    onFocus,
     placeholder,
     required,
     rows,
@@ -76,7 +76,7 @@ function TextField(props) {
   );
 
   const helperTextId = helperText && id ? `${id}-helper-text` : undefined;
-  const InputComponent = (
+  const InputElement = (
     <Input
       autoComplete={autoComplete}
       autoFocus={autoFocus}
@@ -91,7 +91,9 @@ function TextField(props) {
       value={value}
       id={id}
       inputRef={inputRef}
+      onBlur={onBlur}
       onChange={onChange}
+      onFocus={onFocus}
       placeholder={placeholder}
       inputProps={inputProps}
       {...InputProps}
@@ -108,19 +110,19 @@ function TextField(props) {
       {...other}
     >
       {label && (
-        <InputLabel htmlFor={id} className={labelClassName} {...InputLabelProps}>
+        <InputLabel htmlFor={id} {...InputLabelProps}>
           {label}
         </InputLabel>
       )}
       {select ? (
-        <Select value={value} input={InputComponent} {...SelectProps}>
+        <Select value={value} input={InputElement} {...SelectProps}>
           {children}
         </Select>
       ) : (
-        InputComponent
+        InputElement
       )}
       {helperText && (
-        <FormHelperText className={helperTextClassName} id={helperTextId} {...FormHelperTextProps}>
+        <FormHelperText id={helperTextId} {...FormHelperTextProps}>
           {helperText}
         </FormHelperText>
       )}
@@ -151,7 +153,7 @@ TextField.propTypes = {
   /**
    * The default value of the `Input` element.
    */
-  defaultValue: PropTypes.string,
+  defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   /**
    * If `true`, the input will be disabled.
    */
@@ -172,10 +174,6 @@ TextField.propTypes = {
    * The helper text content.
    */
   helperText: PropTypes.node,
-  /**
-   * The CSS class name of the helper text element.
-   */
-  helperTextClassName: PropTypes.string,
   /**
    * The id of the `input` element.
    * Use that property to make `label` and `helperText` accessible for screen readers.
@@ -202,10 +200,6 @@ TextField.propTypes = {
    */
   label: PropTypes.node,
   /**
-   * The CSS class name of the label element.
-   */
-  labelClassName: PropTypes.string,
-  /**
    * If `dense` or `normal`, will adjust vertical spacing of this and contained components.
    */
   margin: PropTypes.oneOf(['none', 'dense', 'normal']),
@@ -218,11 +212,20 @@ TextField.propTypes = {
    */
   name: PropTypes.string,
   /**
+   * @ignore
+   */
+  onBlur: PropTypes.func,
+  /**
    * Callback fired when the value is changed.
    *
-   * @param {object} event The event source of the callback
+   * @param {object} event The event source of the callback.
+   * You can pull out the new value by accessing `event.target.value`.
    */
   onChange: PropTypes.func,
+  /**
+   * @ignore
+   */
+  onFocus: PropTypes.func,
   /**
    * The short hint displayed in the input before the user enters a value.
    */

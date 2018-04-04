@@ -50,23 +50,21 @@ function renderInput(inputProps) {
 
   return (
     <TextField
-      {...other}
-      inputRef={ref}
       InputProps={{
+        inputRef: ref,
         classes: {
-          input: classes.input,
+          root: classes.inputRoot,
         },
         ...InputProps,
       }}
+      {...other}
     />
   );
 }
 
-function renderSuggestion(params) {
-  const { suggestion, index, itemProps, highlightedIndex, selectedItem } = params;
+function renderSuggestion({ suggestion, index, itemProps, highlightedIndex, selectedItem }) {
   const isHighlighted = highlightedIndex === index;
-  const isSelected =
-    selectedItem === suggestion.label || selectedItem.indexOf(suggestion.label) > -1;
+  const isSelected = (selectedItem || '').indexOf(suggestion.label) > -1;
 
   return (
     <MenuItem
@@ -82,13 +80,20 @@ function renderSuggestion(params) {
     </MenuItem>
   );
 }
+renderSuggestion.propTypes = {
+  highlightedIndex: PropTypes.number,
+  index: PropTypes.number,
+  itemProps: PropTypes.object,
+  selectedItem: PropTypes.string,
+  suggestion: PropTypes.shape({ label: PropTypes.string }).isRequired,
+};
 
 function getSuggestions(inputValue) {
   let count = 0;
 
   return suggestions.filter(suggestion => {
     const keep =
-      (!inputValue || suggestion.label.toLowerCase().includes(inputValue.toLowerCase())) &&
+      (!inputValue || suggestion.label.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1) &&
       count < 5;
 
     if (keep) {
@@ -213,7 +218,10 @@ const styles = theme => ({
     right: 0,
   },
   chip: {
-    margin: `${theme.spacing.unit}px ${theme.spacing.unit / 4}px`,
+    margin: `${theme.spacing.unit / 2}px ${theme.spacing.unit / 4}px`,
+  },
+  inputRoot: {
+    flexWrap: 'wrap',
   },
 });
 

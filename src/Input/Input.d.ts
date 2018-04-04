@@ -16,10 +16,8 @@ export interface InputProps
   error?: boolean;
   fullWidth?: boolean;
   id?: string;
-  inputComponent?: React.ReactType<InputProps>;
-  inputProps?:
-    | React.TextareaHTMLAttributes<HTMLTextAreaElement>
-    | React.InputHTMLAttributes<HTMLInputElement>;
+  inputComponent?: React.ReactType<InputComponentProps>;
+  inputProps?: { [arbitrary: string]: any };
   inputRef?: React.Ref<any>;
   margin?: 'dense';
   multiline?: boolean;
@@ -30,8 +28,6 @@ export interface InputProps
   startAdornment?: React.ReactNode;
   type?: string;
   value?: Array<string | number> | string | number;
-  onClean?: () => void;
-  onDirty?: () => void;
   /**
    * `onChange`, `onKeyUp` + `onKeyDown` are applied to the inner `InputComponent`,
    * which by default is an input or textarea. Since these handlers differ from the
@@ -45,22 +41,26 @@ export interface InputProps
   onKeyDown?: React.KeyboardEventHandler<HTMLTextAreaElement | HTMLInputElement>;
 }
 
+export interface InputComponentProps extends InputProps {
+  // Accommodate arbitrary additional props coming from the `inputProps` prop
+  [arbitrary: string]: any;
+}
+
 export type InputClassKey =
   | 'root'
   | 'formControl'
-  | 'inkbar'
-  | 'error'
-  | 'input'
-  | 'inputDense'
-  | 'disabled'
   | 'focused'
+  | 'disabled'
   | 'underline'
+  | 'error'
   | 'multiline'
+  | 'fullWidth'
+  | 'input'
+  | 'inputMarginDense'
   | 'inputDisabled'
-  | 'inputSingleline'
-  | 'inputSearch'
   | 'inputMultiline'
-  | 'fullWidth';
+  | 'inputType'
+  | 'inputTypeSearch';
 
 declare const Input: React.ComponentType<InputProps>;
 

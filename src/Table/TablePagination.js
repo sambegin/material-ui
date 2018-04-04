@@ -13,6 +13,7 @@ import TablePaginationActions from './TablePaginationActions';
 
 export const styles = theme => ({
   root: {
+    fontSize: theme.typography.pxToRem(12),
     // Increase the specificity to override TableCell.
     '&:last-child': {
       padding: 0,
@@ -56,10 +57,12 @@ export const styles = theme => ({
  * A `TableCell` based component for placing inside `TableFooter` for pagination.
  */
 class TablePagination extends React.Component {
-  componentWillReceiveProps(nextProps) {
-    const { count, onChangePage, rowsPerPage } = nextProps;
+  // This logic would be better handled on userside.
+  // However, we have it just in case.
+  componentDidUpdate() {
+    const { count, onChangePage, page, rowsPerPage } = this.props;
     const newLastPage = Math.max(0, Math.ceil(count / rowsPerPage) - 1);
-    if (this.props.page > newLastPage) {
+    if (page > newLastPage) {
       onChangePage(null, newLastPage);
     }
   }
@@ -80,6 +83,7 @@ class TablePagination extends React.Component {
       page,
       rowsPerPage,
       rowsPerPageOptions,
+      SelectProps,
       ...other
     } = this.props;
 
@@ -108,6 +112,7 @@ class TablePagination extends React.Component {
               input={<Input className={classes.input} disableUnderline />}
               value={rowsPerPage}
               onChange={onChangeRowsPerPage}
+              {...SelectProps}
             >
               {rowsPerPageOptions.map(rowsPerPageOption => (
                 <MenuItem key={rowsPerPageOption} value={rowsPerPageOption}>
@@ -175,7 +180,7 @@ TablePagination.propTypes = {
    */
   labelRowsPerPage: PropTypes.node,
   /**
-   * Properties applied to the next arrow `IconButton` component.
+   * Properties applied to the next arrow `IconButton` element.
    */
   nextIconButtonProps: PropTypes.object,
   /**
@@ -204,6 +209,10 @@ TablePagination.propTypes = {
    * available, no select field will be displayed.
    */
   rowsPerPageOptions: PropTypes.array,
+  /**
+   * Properties applied to the rows per page `Select` element.
+   */
+  SelectProps: PropTypes.object,
 };
 
 TablePagination.defaultProps = {

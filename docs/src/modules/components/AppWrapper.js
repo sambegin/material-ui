@@ -4,12 +4,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { MuiThemeProvider } from 'material-ui/styles';
-import Reboot from 'material-ui/Reboot';
+import CssBaseline from 'material-ui/CssBaseline';
 import JssProvider from 'react-jss/lib/JssProvider';
 import polyfill from 'react-lifecycles-compat';
-import getPageContext, { getTheme } from 'docs/src/modules/styles/getPageContext';
+import { lightTheme, darkTheme, setPrismTheme } from '@material-ui/docs/MarkdownElement/prism';
+import getPageContext, { updatePageContext } from 'docs/src/modules/styles/getPageContext';
 import AppFrame from 'docs/src/modules/components/AppFrame';
-import { lightTheme, darkTheme, setPrismTheme } from 'docs/src/modules/utils/prism';
 import GoogleTag from 'docs/src/modules/components/GoogleTag';
 
 // Inject the insertion-point-jss after docssearch
@@ -45,10 +45,7 @@ class AppWrapper extends React.Component {
     ) {
       return {
         prevProps: nextProps,
-        pageContext: {
-          ...prevState.pageContext,
-          theme: getTheme(nextProps.uiTheme),
-        },
+        pageContext: updatePageContext(nextProps.uiTheme),
       };
     }
 
@@ -66,7 +63,11 @@ class AppWrapper extends React.Component {
       jssStyles.parentNode.removeChild(jssStyles);
     }
 
-    if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
+    if (
+      'serviceWorker' in navigator &&
+      process.env.NODE_ENV === 'production' &&
+      window.location.host === 'material-ui-next.com'
+    ) {
       navigator.serviceWorker.register('/sw.js');
     }
   }
@@ -86,7 +87,7 @@ class AppWrapper extends React.Component {
         generateClassName={pageContext.generateClassName}
       >
         <MuiThemeProvider theme={pageContext.theme} sheetsManager={pageContext.sheetsManager}>
-          <Reboot />
+          <CssBaseline />
           <AppFrame>{children}</AppFrame>
           <GoogleTag />
         </MuiThemeProvider>
@@ -101,6 +102,14 @@ AppWrapper.propTypes = {
   uiTheme: PropTypes.object.isRequired,
 };
 
+const AppWrapper2 = polyfill(AppWrapper);
+
+// Solve an isolation issue with hoist-non-react-statics.
+// TODO: remove once hoist-non-react-statics has been updated.
+function AppWrapper3(props) {
+  return <AppWrapper2 {...props} />;
+}
+
 export default connect(state => ({
   uiTheme: state.theme,
-}))(polyfill(AppWrapper));
+}))(AppWrapper3);

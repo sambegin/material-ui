@@ -29,13 +29,13 @@ Material-UI is available as an [npm package](https://www.npmjs.org/package/mater
 
 **[Stable channel (v0.x)](http://material-ui.com/)**
 ```sh
-npm install --save material-ui
+npm install material-ui
 ```
 
 **[Pre-release channel (v1-beta)](https://material-ui-next.com/)**
 ([Recommended](#should-i-start-with-v1-beta) for new projects.)
 ```sh
-npm install --save material-ui@next
+npm install material-ui@next
 ```
 
 Please note that `@next` will only point to pre-releases; to get the latest stable release use `@latest` instead.
@@ -65,8 +65,23 @@ Gold Sponsors are those who have pledged $500/month and more to Material-UI.
   <tbody>
     <tr>
       <td align="center" valign="middle">
-        <a href="https://www.creative-tim.com" rel="noopener" target="_blank">
-          <img width="126px" src="https://avatars1.githubusercontent.com/u/20172349">
+        <a href="https://www.creative-tim.com?utm_source=material-ui&utm_medium=docs&utm_campaign=homepage" rel="noopener" target="_blank">
+          <img
+            width="126"
+            src="https://avatars1.githubusercontent.com/u/20172349?s=378"
+            alt="0"
+            title="Premium Themes"
+          >
+        </a>
+      </td>
+      <td align="center" valign="middle">
+        <a href="https://bitsrc.io" rel="noopener" target="_blank">
+          <img
+            width="80"
+            src="https://avatars1.githubusercontent.com/u/24789812?s=180"
+            alt="1"
+            title="The fastest way to share code"
+          >
         </a>
       </td>
     </tr>

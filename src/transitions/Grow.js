@@ -22,7 +22,7 @@ const styles = {
 };
 
 /**
- * The Grow transition is used by the [Popover](/demos/popovers) component.
+ * The Grow transition is used by the [Popover](/utils/popovers) component.
  * It uses [react-transition-group](https://github.com/reactjs/react-transition-group) internally.
  */
 class Grow extends React.Component {
@@ -149,14 +149,6 @@ Grow.propTypes = {
    * @ignore
    */
   onEnter: PropTypes.func,
-  /**
-   * @ignore
-   */
-  onEntered: PropTypes.func,
-  /**
-   * @ignore
-   */
-  onEntering: PropTypes.func,
   /**
    * @ignore
    */

@@ -1,5 +1,4 @@
 import React from 'react';
-import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import { FormControl, FormLabel, FormControlLabel } from 'material-ui/Form';
@@ -22,11 +21,10 @@ const styles = theme => ({
 class AnchorPlayground extends React.Component {
   state = {
     open: false,
-    anchorEl: null,
-    anchorOriginVertical: 'bottom',
-    anchorOriginHorizontal: 'center',
+    anchorOriginVertical: 'top',
+    anchorOriginHorizontal: 'left',
     transformOriginVertical: 'top',
-    transformOriginHorizontal: 'center',
+    transformOriginHorizontal: 'left',
     positionTop: 200, // Just so the popover can be spotted more easily
     positionLeft: 400, // Same as above
     anchorReference: 'anchorEl',
@@ -47,7 +45,6 @@ class AnchorPlayground extends React.Component {
   handleClickButton = () => {
     this.setState({
       open: true,
-      anchorEl: findDOMNode(this.button),
     });
   };
 
@@ -57,13 +54,12 @@ class AnchorPlayground extends React.Component {
     });
   };
 
-  button = null;
+  anchorEl = null;
 
   render() {
     const { classes } = this.props;
     const {
       open,
-      anchorEl,
       anchorOriginVertical,
       anchorOriginHorizontal,
       transformOriginVertical,
@@ -75,19 +71,23 @@ class AnchorPlayground extends React.Component {
 
     return (
       <div>
-        <Button
-          ref={node => {
-            this.button = node;
-          }}
-          variant="raised"
-          className={classes.button}
-          onClick={this.handleClickButton}
-        >
-          Open Popover
-        </Button>
+        <Grid container justify="center" spacing={0}>
+          <Grid item>
+            <Button
+              buttonRef={node => {
+                this.anchorEl = node;
+              }}
+              variant="raised"
+              className={classes.button}
+              onClick={this.handleClickButton}
+            >
+              Open Popover
+            </Button>
+          </Grid>
+        </Grid>
         <Popover
           open={open}
-          anchorEl={anchorEl}
+          anchorEl={this.anchorEl}
           anchorReference={anchorReference}
           anchorPosition={{ top: positionTop, left: positionLeft }}
           onClose={this.handleClose}
@@ -102,7 +102,7 @@ class AnchorPlayground extends React.Component {
         >
           <Typography className={classes.typography}>The content of the Popover.</Typography>
         </Popover>
-        <Grid container>
+        <Grid container spacing={16}>
           <Grid item xs={12} sm={6}>
             <FormControl component="fieldset">
               <FormLabel component="legend">anchorReference</FormLabel>

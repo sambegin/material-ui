@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { findDOMNode } from 'react-dom';
+import ReactDOM from 'react-dom';
 import keycode from 'keycode';
 import { withStyles } from 'material-ui/styles';
 import Zoom from 'material-ui/transitions/Zoom';
@@ -33,8 +33,8 @@ class SpeedDial extends React.Component {
   };
 
   handleKeyDown = event => {
-    const actions = findDOMNode(this.actions);
-    const fab = findDOMNode(this.fab);
+    const actions = ReactDOM.findDOMNode(this.actions);
+    const fab = ReactDOM.findDOMNode(this.fab);
     const key = keycode(event);
     const currentFocus = document.activeElement;
     const { open, onClose, onKeyDown } = this.props;
@@ -64,7 +64,7 @@ class SpeedDial extends React.Component {
       if (currentFocus.parentElement.previousElementSibling) {
         currentFocus.parentElement.previousElementSibling.firstChild.focus();
       } else {
-        findDOMNode(this.fab).focus();
+        ReactDOM.findDOMNode(this.fab).focus();
       }
       // Select the next action
     } else if (key === nextKey) {
@@ -146,8 +146,8 @@ class SpeedDial extends React.Component {
               aria-haspopup="true"
               aria-expanded={open ? 'true' : 'false'}
               aria-controls={`${id}-actions`}
-              ref={fab => {
-                this.fab = fab;
+              ref={node => {
+                this.fab = node;
               }}
               data-mui-test="SpeedDial"
               {...ButtonProps}

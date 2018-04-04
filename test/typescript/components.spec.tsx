@@ -38,6 +38,7 @@ import {
   List,
   ListItem,
   ListItemAvatar,
+  ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
   Menu,
@@ -47,6 +48,7 @@ import {
   Select,
   Snackbar,
   SnackbarContent,
+  SwipeableDrawer,
   Switch,
   Tab,
   Table,
@@ -267,6 +269,12 @@ const DialogTest = () => {
             </ListItemAvatar>
             <ListItemText primary="add account" />
           </ListItem>
+          <ListItem button>
+            <ListItemIcon>
+              <FakeIcon />
+            </ListItemIcon>
+            <ListItemText primary="Inbox" />
+          </ListItem>
         </List>
       </div>
     </Dialog>
@@ -327,6 +335,58 @@ const DrawerTest = () => {
       >
         List
       </Drawer>
+    </div>
+  );
+};
+
+const SwipeableDrawerTest = () => {
+  const open = {
+    top: false,
+    left: false,
+    bottom: false,
+    right: false,
+  };
+  return (
+    <div>
+      <SwipeableDrawer
+        open={open.left}
+        onClose={event => log(event)}
+        onClick={event => log(event)}
+        onOpen={event => log(event)}
+      >
+        List
+      </SwipeableDrawer>
+      <SwipeableDrawer
+        anchor="top"
+        open={open.top}
+        onClose={event => log(event)}
+        onClick={event => log(event)}
+        onOpen={event => log(event)}
+        ModalProps={{
+          hideBackdrop: true,
+        }}
+      >
+        List
+      </SwipeableDrawer>
+      <SwipeableDrawer
+        anchor="bottom"
+        open={open.bottom}
+        onClose={event => log(event)}
+        onClick={event => log(event)}
+        onOpen={event => log(event)}
+      >
+        List
+      </SwipeableDrawer>
+      <SwipeableDrawer
+        variant="temporary"
+        anchor="right"
+        open={open.right}
+        onClose={event => log(event)}
+        onClick={event => log(event)}
+        onOpen={event => log(event)}
+      >
+        List
+      </SwipeableDrawer>
     </div>
   );
 };

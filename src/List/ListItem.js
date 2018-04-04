@@ -45,7 +45,7 @@ export const styles = theme => ({
     '&:hover': {
       textDecoration: 'none',
       backgroundColor: theme.palette.action.hover,
-      // Reset on mouse devices
+      // Reset on touch devices, it doesn't add specificity
       '@media (hover: none)': {
         backgroundColor: 'transparent',
       },
@@ -105,7 +105,9 @@ class ListItem extends React.Component {
 
     if (button) {
       componentProps.component = componentProp || 'div';
-      componentProps.keyboardFocusedClassName = classes.keyboardFocused;
+      componentProps.classes = {
+        keyboardFocused: classes.keyboardFocused,
+      };
       Component = ButtonBase;
     }
 

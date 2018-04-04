@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import List from 'material-ui/List';
 import Drawer from 'material-ui/Drawer';
+import SwipeableDrawer from 'material-ui/SwipeableDrawer';
 import Typography from 'material-ui/Typography';
 import Divider from 'material-ui/Divider';
 import Hidden from 'material-ui/Hidden';
@@ -83,9 +84,15 @@ function reduceChildRoutes({ props, activePage, items, page, depth }) {
 }
 
 const GITHUB_RELEASE_BASE_URL = 'https://github.com/mui-org/material-ui/releases/tag/';
+// iOS is hosted on high-end devices. We can enable the backdrop transition without
+// dropping frames. The performance will be good enough.
+// iOS has a "swipe to go back" feature that mess with the discovery feature.
+// We have to disable it.
+// So: <SwipeableDrawer disableBackdropTransition={false} disableDiscovery={true} />
+const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
 function AppDrawer(props, context) {
-  const { classes, className, disablePermanent, mobileOpen, onClose } = props;
+  const { classes, className, disablePermanent, mobileOpen, onClose, onOpen } = props;
 
   const drawer = (
     <div className={classes.nav}>
@@ -96,12 +103,12 @@ function AppDrawer(props, context) {
               Material-UI
             </Typography>
           </Link>
-          {process.env.MATERIAL_UI_VERSION ? (
+          {process.env.LIB_VERSION ? (
             <Link
               className={classes.anchor}
-              href={`${GITHUB_RELEASE_BASE_URL}v${process.env.MATERIAL_UI_VERSION}`}
+              href={`${GITHUB_RELEASE_BASE_URL}v${process.env.LIB_VERSION}`}
             >
-              <Typography variant="caption">{`v${process.env.MATERIAL_UI_VERSION}`}</Typography>
+              <Typography variant="caption">{`v${process.env.LIB_VERSION}`}</Typography>
             </Link>
           ) : null}
         </div>
@@ -114,19 +121,22 @@ function AppDrawer(props, context) {
   return (
     <div className={className}>
       <Hidden lgUp={!disablePermanent}>
-        <Drawer
+        <SwipeableDrawer
           classes={{
             paper: classNames(classes.paper, 'algolia-drawer'),
           }}
+          disableBackdropTransition={!iOS}
+          disableDiscovery={iOS}
           variant="temporary"
           open={mobileOpen}
+          onOpen={onOpen}
           onClose={onClose}
           ModalProps={{
             keepMounted: true,
           }}
         >
           {drawer}
-        </Drawer>
+        </SwipeableDrawer>
       </Hidden>
       {disablePermanent ? null : (
         <Hidden mdDown implementation="css">
@@ -151,6 +161,7 @@ AppDrawer.propTypes = {
   disablePermanent: PropTypes.bool.isRequired,
   mobileOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
+  onOpen: PropTypes.func.isRequired,
 };
 
 AppDrawer.contextTypes = {

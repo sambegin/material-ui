@@ -10,6 +10,7 @@ export interface StepLabelProps
   children: React.ReactNode;
   completed?: boolean;
   disabled?: boolean;
+  error?: boolean;
   icon?: StepButtonIcon;
   last?: boolean;
   optional?: React.ReactNode;
@@ -22,12 +23,14 @@ export type StepLabelClasskey =
   | 'vertical'
   | 'alternativeLabel'
   | 'disabled'
+  | 'error'
   | 'label'
   | 'labelActive'
   | 'labelCompleted'
   | 'labelAlternativeLabel'
   | 'iconContainer'
-  | 'iconContainerNoAlternative'
+  | 'labelError'
+  | 'iconContainerAlternativeLabel'
   | 'labelContainer';
 
 declare const StepLabel: React.ComponentType<StepLabelProps>;

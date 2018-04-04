@@ -53,7 +53,7 @@ function CustomizedInputs(props) {
     <div className={classes.container}>
       <FormControl className={classes.formControl}>
         <InputLabel
-          FormControlClasses={{
+          FormLabelClasses={{
             focused: classes.inputLabelFocused,
           }}
           htmlFor="custom-color-input"
@@ -70,6 +70,7 @@ function CustomizedInputs(props) {
       <TextField
         defaultValue="react-bootstrap"
         label="Bootstrap"
+        id="bootstrap-input"
         InputProps={{
           disableUnderline: true,
           classes: {

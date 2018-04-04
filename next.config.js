@@ -3,14 +3,14 @@ const pkg = require('./package.json');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const { findPages } = require('./docs/src/modules/utils/find');
 
-process.env.MATERIAL_UI_VERSION = pkg.version;
+process.env.LIB_VERSION = pkg.version;
 
 module.exports = {
   webpack: config => {
     const plugins = config.plugins.concat([
       new webpack.DefinePlugin({
         'process.env': {
-          MATERIAL_UI_VERSION: JSON.stringify(process.env.MATERIAL_UI_VERSION),
+          LIB_VERSION: JSON.stringify(process.env.LIB_VERSION),
         },
       }),
     ]);
@@ -47,33 +47,25 @@ module.exports = {
     });
   },
   webpackDevMiddleware: config => config,
+  // next.js also provide a `defaultPathMap` so we could simplify the logic.
+  // However, we keep it in order to prevent any future regression on the `findPages()` side.
   exportPathMap: () => {
-    const pages = findPages();
-    const map = {
-      '/': { page: '/' },
-    };
+    const map = {};
 
-    // Do not use a recursive logic as we don't want to support a depth > 2.
-    pages.forEach(lvl0Page => {
-      if (!lvl0Page.children) {
-        return;
-      }
-
-      lvl0Page.children.forEach(lvl1Page => {
-        if (!lvl1Page.children) {
-          map[lvl1Page.pathname] = {
-            page: lvl1Page.pathname,
+    function generateMap(pages) {
+      pages.forEach(page => {
+        if (!page.children) {
+          map[page.pathname] = {
+            page: page.pathname,
           };
           return;
         }
 
-        lvl1Page.children.forEach(lvl2Page => {
-          map[lvl2Page.pathname] = {
-            page: lvl2Page.pathname,
-          };
-        });
+        generateMap(page.children);
       });
-    });
+    }
+
+    generateMap(findPages());
 
     return map;
   },

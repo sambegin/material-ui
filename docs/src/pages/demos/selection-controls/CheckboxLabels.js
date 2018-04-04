@@ -4,10 +4,21 @@ import { withStyles } from 'material-ui/styles';
 import green from 'material-ui/colors/green';
 import { FormGroup, FormControlLabel } from 'material-ui/Form';
 import Checkbox from 'material-ui/Checkbox';
+import CheckBoxOutlineBlankIcon from 'material-ui-icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from 'material-ui-icons/CheckBox';
+import Favorite from 'material-ui-icons/Favorite';
+import FavoriteBorder from 'material-ui-icons/FavoriteBorder';
 
 const styles = {
   checked: {
     color: green[500],
+  },
+  size: {
+    width: 40,
+    height: 40,
+  },
+  sizeIcon: {
+    fontSize: 20,
   },
 };
 
@@ -79,6 +90,23 @@ class CheckboxLabels extends React.Component {
             />
           }
           label="Custom color"
+        />
+        <FormControlLabel
+          control={
+            <Checkbox icon={<FavoriteBorder />} checkedIcon={<Favorite />} value="checkedH" />
+          }
+          label="Custom icon"
+        />
+        <FormControlLabel
+          control={
+            <Checkbox
+              className={classes.size}
+              icon={<CheckBoxOutlineBlankIcon className={classes.sizeIcon} />}
+              checkedIcon={<CheckBoxIcon className={classes.sizeIcon} />}
+              value="checkedI"
+            />
+          }
+          label="Custom size"
         />
       </FormGroup>
     );

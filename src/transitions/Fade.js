@@ -17,7 +17,7 @@ const styles = {
 };
 
 /**
- * The Fade transition is used by the [Modal](/demos/modals) component.
+ * The Fade transition is used by the [Modal](/utils/modals) component.
  * It uses [react-transition-group](https://github.com/reactjs/react-transition-group) internally.
  */
 class Fade extends React.Component {
@@ -25,17 +25,11 @@ class Fade extends React.Component {
     const { theme } = this.props;
     reflow(node); // So the animation always start from the start.
 
-    const { duration: transitionDuration, delay } = getTransitionProps(this.props, {
+    const transitionProps = getTransitionProps(this.props, {
       mode: 'enter',
     });
-    node.style.transition = theme.transitions.create('opacity', {
-      duration: transitionDuration,
-      delay,
-    });
-    node.style.webkitTransition = theme.transitions.create('opacity', {
-      duration: transitionDuration,
-      delay,
-    });
+    node.style.webkitTransition = theme.transitions.create('opacity', transitionProps);
+    node.style.transition = theme.transitions.create('opacity', transitionProps);
 
     if (this.props.onEnter) {
       this.props.onEnter(node);
@@ -44,17 +38,11 @@ class Fade extends React.Component {
 
   handleExit = node => {
     const { theme } = this.props;
-    const { duration: transitionDuration, delay } = getTransitionProps(this.props, {
+    const transitionProps = getTransitionProps(this.props, {
       mode: 'exit',
     });
-    node.style.transition = theme.transitions.create('opacity', {
-      duration: transitionDuration,
-      delay,
-    });
-    node.style.webkitTransition = theme.transitions.create('opacity', {
-      duration: transitionDuration,
-      delay,
-    });
+    node.style.webkitTransition = theme.transitions.create('opacity', transitionProps);
+    node.style.transition = theme.transitions.create('opacity', transitionProps);
 
     if (this.props.onExit) {
       this.props.onExit(node);
@@ -75,6 +63,7 @@ class Fade extends React.Component {
           return React.cloneElement(children, {
             style: {
               opacity: 0,
+              willChange: 'opacity',
               ...styles[state],
               ...style,
             },
@@ -99,10 +88,6 @@ Fade.propTypes = {
    * @ignore
    */
   onEnter: PropTypes.func,
-  /**
-   * @ignore
-   */
-  onEntering: PropTypes.func,
   /**
    * @ignore
    */

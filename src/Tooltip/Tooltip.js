@@ -2,20 +2,22 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { findDOMNode } from 'react-dom';
+import ReactDOM from 'react-dom';
 import EventListener from 'react-event-listener';
 import debounce from 'lodash/debounce';
 import warning from 'warning';
 import classNames from 'classnames';
-import { Manager, Target, Popper } from 'react-popper';
+import { Manager, Popper, Target } from 'react-popper';
 import { capitalize } from '../utils/helpers';
-import RefHolder from '../internal/RefHolder';
+import RootRef from '../internal/RootRef';
+import Portal from '../Portal';
 import common from '../colors/common';
 import withStyles from '../styles/withStyles';
 
 export const styles = theme => ({
+  // Will be gone once we drop React 15.x support.
   root: {
-    display: 'inline',
+    display: 'inline-block',
     flexDirection: 'inherit', // Makes the wrapper more transparent.
   },
   popper: {
@@ -112,11 +114,11 @@ class Tooltip extends React.Component {
         !this.children.disabled ||
         !this.children.tagName.toLowerCase() === 'button',
       [
-        'Material-UI: you are providing a disabled button children to the Tooltip component.',
-        'A disabled element do not fire events.',
-        'But the Tooltip needs to listen to the children element events to display the title.',
+        'Material-UI: you are providing a disabled `button` child to the Tooltip component.',
+        'A disabled element does not fire events.',
+        "Tooltip needs to listen to the child element's events to display the title.",
         '',
-        'Place a `div` over top of the element.',
+        'Place a `div` container on top of the element.',
       ].join('\n'),
     );
   }
@@ -139,10 +141,10 @@ class Tooltip extends React.Component {
     if (this.popper) {
       this.popper._popper.scheduleUpdate();
     }
-  }, 166);
+  }, 166); // Corresponds to 10 frames at 60 Hz.
 
-  handleRequestOpen = event => {
-    const { children } = this.props;
+  handleEnter = event => {
+    const { children, enterDelay } = this.props;
     const childrenProps = children.props;
 
     if (event.type === 'focus' && childrenProps.onFocus) {
@@ -157,17 +159,19 @@ class Tooltip extends React.Component {
       return;
     }
 
+    clearTimeout(this.enterTimer);
     clearTimeout(this.leaveTimer);
-    if (this.props.enterDelay > 0) {
-      this.leaveTimer = setTimeout(() => {
-        this.requestOpen(event);
-      }, this.props.enterDelay);
+    if (enterDelay) {
+      event.persist();
+      this.enterTimer = setTimeout(() => {
+        this.handleOpen(event);
+      }, enterDelay);
     } else {
-      this.requestOpen(event);
+      this.handleOpen(event);
     }
   };
 
-  requestOpen = event => {
+  handleOpen = event => {
     if (!this.isControlled) {
       this.setState({ open: true });
     }
@@ -177,8 +181,8 @@ class Tooltip extends React.Component {
     }
   };
 
-  handleClose = event => {
-    const { children } = this.props;
+  handleLeave = event => {
+    const { children, leaveDelay } = this.props;
     const childrenProps = children.props;
 
     if (event.type === 'blur' && childrenProps.onBlur) {
@@ -189,17 +193,19 @@ class Tooltip extends React.Component {
       childrenProps.onMouseLeave(event);
     }
 
+    clearTimeout(this.enterTimer);
     clearTimeout(this.leaveTimer);
-    if (this.props.leaveDelay) {
+    if (leaveDelay) {
+      event.persist();
       this.leaveTimer = setTimeout(() => {
-        this.requestClose(event);
-      }, this.props.leaveDelay);
+        this.handleClose(event);
+      }, leaveDelay);
     } else {
-      this.requestClose(event);
+      this.handleClose(event);
     }
   };
 
-  requestClose = event => {
+  handleClose = event => {
     this.ignoreNonTouchEvents = false;
 
     if (!this.isControlled) {
@@ -213,7 +219,7 @@ class Tooltip extends React.Component {
 
   handleTouchStart = event => {
     this.ignoreNonTouchEvents = true;
-    const { children } = this.props;
+    const { children, enterTouchDelay } = this.props;
     const childrenProps = children.props;
 
     if (childrenProps.onTouchStart) {
@@ -223,12 +229,12 @@ class Tooltip extends React.Component {
     clearTimeout(this.touchTimer);
     event.persist();
     this.touchTimer = setTimeout(() => {
-      this.handleRequestOpen(event);
-    }, 1e3);
+      this.handleEnter(event);
+    }, enterTouchDelay);
   };
 
   handleTouchEnd = event => {
-    const { children } = this.props;
+    const { children, leaveTouchDelay } = this.props;
     const childrenProps = children.props;
 
     if (childrenProps.onTouchEnd) {
@@ -239,79 +245,88 @@ class Tooltip extends React.Component {
     clearTimeout(this.leaveTimer);
     event.persist();
     this.leaveTimer = setTimeout(() => {
-      this.requestClose(event);
-    }, 1500 + this.props.leaveDelay);
+      this.handleClose(event);
+    }, leaveTouchDelay);
   };
 
   render() {
     const {
-      children: childrenProp,
+      children,
       classes,
       className,
-      disableTriggerFocus,
-      disableTriggerHover,
-      disableTriggerTouch,
+      disableFocusListener,
+      disableHoverListener,
+      disableTouchListener,
       enterDelay,
+      enterTouchDelay,
       id,
       leaveDelay,
+      leaveTouchDelay,
       onClose,
       onOpen,
       open: openProp,
-      placement: rawPlacement,
-      PopperProps: { PopperClassName, ...PopperOther } = {},
+      placement: placementProp,
+      PopperProps: { className: PopperClassName, ...PopperProps } = {},
       theme,
       title,
       ...other
     } = this.props;
 
-    const placement = theme.direction === 'rtl' ? flipPlacement(rawPlacement) : rawPlacement;
+    const placement = theme.direction === 'rtl' ? flipPlacement(placementProp) : placementProp;
     let open = this.isControlled ? openProp : this.state.open;
-    const childrenProps = {};
+    const childrenProps = {
+      'aria-describedby': id,
+      title: typeof title === 'string' && !open ? title : '',
+    };
 
+    // There is no point at displaying an empty tooltip.
     if (title === '') {
       open = false;
     }
 
-    childrenProps['aria-describedby'] = id;
-
-    if (!disableTriggerTouch) {
+    if (!disableTouchListener) {
       childrenProps.onTouchStart = this.handleTouchStart;
       childrenProps.onTouchEnd = this.handleTouchEnd;
     }
 
-    if (!disableTriggerHover) {
-      childrenProps.onMouseOver = this.handleRequestOpen;
-      childrenProps.onMouseLeave = this.handleClose;
+    if (!disableHoverListener) {
+      childrenProps.onMouseOver = this.handleEnter;
+      childrenProps.onMouseLeave = this.handleLeave;
     }
 
-    if (!disableTriggerFocus) {
-      childrenProps.onFocus = this.handleRequestOpen;
-      childrenProps.onBlur = this.handleClose;
+    if (!disableFocusListener) {
+      childrenProps.onFocus = this.handleEnter;
+      childrenProps.onBlur = this.handleLeave;
     }
 
     warning(
-      !childrenProp.props.title,
+      !children.props.title,
       [
         'Material-UI: you have been providing a `title` property to the child of <Tooltip />.',
-        `Remove this title property \`${childrenProp.props.title}\` or the Tooltip component.`,
+        `Remove this title property \`${children.props.title}\` or the Tooltip component.`,
       ].join('\n'),
     );
 
     return (
-      <EventListener target="window" onResize={this.handleResize}>
-        <Manager className={classNames(classes.root, className)} {...other}>
-          <Target>
-            {({ targetProps }) => (
-              <RefHolder
-                ref={node => {
-                  this.children = findDOMNode(node);
-                  targetProps.ref(this.children);
-                }}
-              >
-                {React.cloneElement(childrenProp, childrenProps)}
-              </RefHolder>
-            )}
-          </Target>
+      <Manager
+        tag={ReactDOM.createPortal ? false : 'div'}
+        className={classNames(classes.root, className)}
+        {...other}
+      >
+        <EventListener target="window" onResize={this.handleResize} />
+        <Target>
+          {({ targetProps }) => (
+            <RootRef
+              rootRef={node => {
+                this.children = node;
+                targetProps.ref(this.children);
+              }}
+            >
+              {React.cloneElement(children, childrenProps)}
+            </RootRef>
+          )}
+        </Target>
+        <Portal>
           <Popper
             placement={placement}
             eventsEnabled={open}
@@ -320,13 +335,13 @@ class Tooltip extends React.Component {
               { [classes.popperClose]: !open },
               PopperClassName,
             )}
-            {...PopperOther}
             ref={node => {
               this.popper = node;
             }}
+            {...PopperProps}
           >
             {({ popperProps, restProps }) => {
-              const actualPlacement = popperProps['data-placement'] || placement;
+              const actualPlacement = (popperProps['data-placement'] || placement).split('-')[0];
               return (
                 <div
                   {...popperProps}
@@ -345,7 +360,7 @@ class Tooltip extends React.Component {
                     className={classNames(
                       classes.tooltip,
                       { [classes.tooltipOpen]: open },
-                      classes[`tooltipPlacement${capitalize(actualPlacement.split('-')[0])}`],
+                      classes[`tooltipPlacement${capitalize(actualPlacement)}`],
                     )}
                   >
                     {title}
@@ -354,8 +369,8 @@ class Tooltip extends React.Component {
               );
             }}
           </Popper>
-        </Manager>
-      </EventListener>
+        </Portal>
+      </Manager>
     );
   }
 }
@@ -376,28 +391,38 @@ Tooltip.propTypes = {
   /**
    * Do not respond to focus events.
    */
-  disableTriggerFocus: PropTypes.bool,
+  disableFocusListener: PropTypes.bool,
   /**
    * Do not respond to hover events.
    */
-  disableTriggerHover: PropTypes.bool,
+  disableHoverListener: PropTypes.bool,
   /**
    * Do not respond to long press touch events.
    */
-  disableTriggerTouch: PropTypes.bool,
+  disableTouchListener: PropTypes.bool,
   /**
    * The number of milliseconds to wait before showing the tooltip.
+   * This property won't impact the enter touch delay (`enterTouchDelay`).
    */
   enterDelay: PropTypes.number,
+  /**
+   * The number of milliseconds a user must touch the element before showing the tooltip.
+   */
+  enterTouchDelay: PropTypes.number,
   /**
    * The relationship between the tooltip and the wrapper component is not clear from the DOM.
    * By providing this property, we can use aria-describedby to solve the accessibility issue.
    */
   id: PropTypes.string,
   /**
-   * The number of milliseconds to wait before hidding the tooltip.
+   * The number of milliseconds to wait before hiding the tooltip.
+   * This property won't impact the leave touch delay (`leaveTouchDelay`).
    */
   leaveDelay: PropTypes.number,
+  /**
+   * The number of milliseconds after the user stops touching an element before hiding the tooltip.
+   */
+  leaveTouchDelay: PropTypes.number,
   /**
    * Callback fired when the tooltip requests to be closed.
    *
@@ -446,11 +471,13 @@ Tooltip.propTypes = {
 };
 
 Tooltip.defaultProps = {
-  disableTriggerFocus: false,
-  disableTriggerHover: false,
-  disableTriggerTouch: false,
+  disableFocusListener: false,
+  disableHoverListener: false,
+  disableTouchListener: false,
   enterDelay: 0,
+  enterTouchDelay: 1000,
   leaveDelay: 0,
+  leaveTouchDelay: 1500,
   placement: 'bottom',
 };
 

@@ -30,12 +30,12 @@ export interface SnackbarProps
 
 export type SnackbarClassKey =
   | 'root'
-  | 'anchorTopCenter'
-  | 'anchorBottomCenter'
-  | 'anchorTopRight'
-  | 'anchorBottomRight'
-  | 'anchorTopLeft'
-  | 'anchorBottomLeft';
+  | 'anchorOriginTopCenter'
+  | 'anchorOriginBottomCenter'
+  | 'anchorOriginTopRight'
+  | 'anchorOriginBottomRight'
+  | 'anchorOriginTopLeft'
+  | 'anchorOriginBottomLeft';
 
 declare const Snackbar: React.ComponentType<SnackbarProps>;
 

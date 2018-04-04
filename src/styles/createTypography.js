@@ -9,17 +9,21 @@ function round(value) {
 export default function createTypography(palette: Object, typography: Object | Function) {
   const {
     fontFamily = '"Roboto", "Helvetica", "Arial", sans-serif',
+    // The default font size of the Material Specification.
     fontSize = 14, // px
     fontWeightLight = 300,
     fontWeightRegular = 400,
     fontWeightMedium = 500,
-    htmlFontSize = 16, // 16px is the default font-size used by browsers on the html element.
+    // Tell Material-UI what's the font-size on the html element.
+    // 16px is the default font-size used by browsers.
+    htmlFontSize = 16,
     ...other
   } =
     typeof typography === 'function' ? typography(palette) : typography;
 
+  const coef = fontSize / 14;
   function pxToRem(value) {
-    return `${value / htmlFontSize}rem`;
+    return `${value / htmlFontSize * coef}rem`;
   }
 
   return deepmerge(
@@ -37,7 +41,7 @@ export default function createTypography(palette: Object, typography: Object | F
         fontFamily,
         letterSpacing: '-.04em',
         lineHeight: `${round(128 / 112)}em`,
-        marginLeft: '-.06em',
+        marginLeft: '-.04em',
         color: palette.text.secondary,
       },
       display3: {
@@ -46,7 +50,7 @@ export default function createTypography(palette: Object, typography: Object | F
         fontFamily,
         letterSpacing: '-.02em',
         lineHeight: `${round(73 / 56)}em`,
-        marginLeft: '-.04em',
+        marginLeft: '-.02em',
         color: palette.text.secondary,
       },
       display2: {
@@ -54,7 +58,7 @@ export default function createTypography(palette: Object, typography: Object | F
         fontWeight: fontWeightRegular,
         fontFamily,
         lineHeight: `${round(48 / 45)}em`,
-        marginLeft: '-.04em',
+        marginLeft: '-.02em',
         color: palette.text.secondary,
       },
       display1: {
@@ -62,7 +66,6 @@ export default function createTypography(palette: Object, typography: Object | F
         fontWeight: fontWeightRegular,
         fontFamily,
         lineHeight: `${round(41 / 34)}em`,
-        marginLeft: '-.04em',
         color: palette.text.secondary,
       },
       headline: {
@@ -108,7 +111,7 @@ export default function createTypography(palette: Object, typography: Object | F
         color: palette.text.secondary,
       },
       button: {
-        fontSize: pxToRem(fontSize),
+        fontSize: pxToRem(14),
         textTransform: 'uppercase',
         fontWeight: fontWeightMedium,
         fontFamily,

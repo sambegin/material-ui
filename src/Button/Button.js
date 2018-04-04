@@ -23,8 +23,8 @@ export const styles = theme => ({
     }),
     '&:hover': {
       textDecoration: 'none',
-      // Reset on mouse devices
       backgroundColor: fade(theme.palette.text.primary, 0.12),
+      // Reset on touch devices, it doesn't add specificity
       '@media (hover: none)': {
         backgroundColor: 'transparent',
       },
@@ -43,7 +43,7 @@ export const styles = theme => ({
     color: theme.palette.primary.main,
     '&:hover': {
       backgroundColor: fade(theme.palette.primary.main, 0.12),
-      // Reset on mouse devices
+      // Reset on touch devices, it doesn't add specificity
       '@media (hover: none)': {
         backgroundColor: 'transparent',
       },
@@ -53,7 +53,7 @@ export const styles = theme => ({
     color: theme.palette.secondary.main,
     '&:hover': {
       backgroundColor: fade(theme.palette.secondary.main, 0.12),
-      // Reset on mouse devices
+      // Reset on touch devices, it doesn't add specificity
       '@media (hover: none)': {
         backgroundColor: 'transparent',
       },
@@ -78,7 +78,7 @@ export const styles = theme => ({
     },
     '&:hover': {
       backgroundColor: theme.palette.grey.A100,
-      // Reset on mouse devices
+      // Reset on touch devices, it doesn't add specificity
       '@media (hover: none)': {
         backgroundColor: theme.palette.grey[300],
       },
@@ -93,7 +93,7 @@ export const styles = theme => ({
     backgroundColor: theme.palette.primary.main,
     '&:hover': {
       backgroundColor: theme.palette.primary.dark,
-      // Reset on mouse devices
+      // Reset on touch devices, it doesn't add specificity
       '@media (hover: none)': {
         backgroundColor: theme.palette.primary.main,
       },
@@ -104,7 +104,7 @@ export const styles = theme => ({
     backgroundColor: theme.palette.secondary.main,
     '&:hover': {
       backgroundColor: theme.palette.secondary.dark,
-      // Reset on mouse devices
+      // Reset on touch devices, it doesn't add specificity
       '@media (hover: none)': {
         backgroundColor: theme.palette.secondary.main,
       },
@@ -133,13 +133,13 @@ export const styles = theme => ({
     padding: `${theme.spacing.unit - 1}px ${theme.spacing.unit}px`,
     minWidth: theme.spacing.unit * 8,
     minHeight: 32,
-    fontSize: theme.typography.pxToRem(theme.typography.fontSize - 1),
+    fontSize: theme.typography.pxToRem(13),
   },
   sizeLarge: {
     padding: `${theme.spacing.unit}px ${theme.spacing.unit * 3}px`,
     minWidth: theme.spacing.unit * 14,
     minHeight: 40,
-    fontSize: theme.typography.pxToRem(theme.typography.fontSize + 1),
+    fontSize: theme.typography.pxToRem(15),
   },
   fullWidth: {
     width: '100%',
@@ -187,7 +187,9 @@ function Button(props) {
       className={className}
       disabled={disabled}
       focusRipple={!disableFocusRipple}
-      keyboardFocusedClassName={classes.keyboardFocused}
+      classes={{
+        keyboardFocused: classes.keyboardFocused,
+      }}
       {...other}
     >
       <span className={classes.label}>{children}</span>
@@ -254,7 +256,7 @@ Button.propTypes = {
    */
   type: PropTypes.string,
   /**
-   * The color of the component. It supports those theme colors that make sense for this component.
+   * The type of button.
    */
   variant: PropTypes.oneOf(['flat', 'raised', 'fab']),
 };
@@ -263,7 +265,6 @@ Button.defaultProps = {
   color: 'default',
   disabled: false,
   disableFocusRipple: false,
-  disableRipple: false,
   fullWidth: false,
   mini: false,
   size: 'medium',

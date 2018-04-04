@@ -6,7 +6,8 @@ filename: /src/Drawer/Drawer.js
 
 # Drawer
 
-
+The properties of the [Modal](/api/modal) component are available
+when `variant="temporary"` is set.
 
 ## Props
 
@@ -22,7 +23,7 @@ filename: /src/Drawer/Drawer.js
 | <span class="prop-name">PaperProps</span> | <span class="prop-type">object |  | Properties applied to the `Paper` element. |
 | <span class="prop-name">SlideProps</span> | <span class="prop-type">object |  | Properties applied to the `Slide` element. |
 | <span class="prop-name">transitionDuration</span> | <span class="prop-type">union:&nbsp;number&nbsp;&#124;<br>&nbsp;{enter?: number, exit?: number}<br> | <span class="prop-default">{ enter: duration.enteringScreen, exit: duration.leavingScreen }</span> | The duration for the transition, in milliseconds. You may specify a single timeout for all transitions, or individually with an object. |
-| <span class="prop-name">variant</span> | <span class="prop-type">enum:&nbsp;'permanent'&nbsp;&#124;<br>&nbsp;'persistent'&nbsp;&#124;<br>&nbsp;'temporary'<br> | <span class="prop-default">'temporary'</span> | The type of drawer. |
+| <span class="prop-name">variant</span> | <span class="prop-type">enum:&nbsp;'permanent'&nbsp;&#124;<br>&nbsp;'persistent'&nbsp;&#124;<br>&nbsp;'temporary'<br> | <span class="prop-default">'temporary'</span> | The variant of drawer. |
 
 Any other properties supplied will be [spread to the root element](/guides/api#spread).
 
@@ -49,10 +50,6 @@ for more detail.
 If using the `overrides` key of the theme as documented
 [here](/customization/themes#customizing-all-instances-of-a-component-type),
 you need to use the following style sheet name: `MuiDrawer`.
-
-## Inheritance
-
-The properties of the [Modal](/api/modal) component are also available.
 
 ## Demos
 

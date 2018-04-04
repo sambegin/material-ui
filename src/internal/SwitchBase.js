@@ -1,8 +1,8 @@
+// @inheritedComponent IconButton
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import CheckBoxOutlineBlankIcon from '../internal/svg-icons/CheckBoxOutlineBlank';
-import CheckBoxIcon from '../internal/svg-icons/CheckBox';
 import withStyles from '../styles/withStyles';
 import IconButton from '../IconButton';
 
@@ -11,6 +11,10 @@ export const styles = {
     display: 'inline-flex',
     alignItems: 'center',
     transition: 'none',
+    '&:hover': {
+      // Disable the hover effect for the IconButton.
+      backgroundColor: 'transparent',
+    },
   },
   input: {
     cursor: 'inherit',
@@ -136,7 +140,7 @@ SwitchBase.propTypes = {
   /**
    * The icon to display when the component is checked.
    */
-  checkedIcon: PropTypes.node,
+  checkedIcon: PropTypes.node.isRequired,
   /**
    * Useful to extend the style applied to components.
    */
@@ -160,7 +164,7 @@ SwitchBase.propTypes = {
   /**
    * The icon to display when the component is unchecked.
    */
-  icon: PropTypes.node,
+  icon: PropTypes.node.isRequired,
   /**
    * The id of the `input` element.
    */
@@ -188,7 +192,8 @@ SwitchBase.propTypes = {
   /**
    * Callback fired when the state is changed.
    *
-   * @param {object} event The event source of the callback
+   * @param {object} event The event source of the callback.
+   * You can pull out the new value by accessing `event.target.checked`.
    * @param {boolean} checked The `checked` value of the switch
    */
   onChange: PropTypes.func,
@@ -207,9 +212,6 @@ SwitchBase.propTypes = {
 };
 
 SwitchBase.defaultProps = {
-  checkedIcon: <CheckBoxIcon />,
-  disableRipple: false,
-  icon: <CheckBoxOutlineBlankIcon />,
   type: 'checkbox',
 };
 

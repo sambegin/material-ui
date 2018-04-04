@@ -51,7 +51,8 @@ const pages = [
     pathname: '/style',
     children: [
       {
-        pathname: '/style/reboot',
+        pathname: '/style/css-baseline',
+        title: 'CSS Baseline',
       },
       {
         pathname: '/style/color',
@@ -171,6 +172,10 @@ const pages = [
     ],
   },
   {
+    pathname: '/premium-themes',
+    title: 'Premium Themes',
+  },
+  {
     pathname: '/lab',
     children: [
       {
@@ -245,6 +250,7 @@ function withRoot(Component) {
   class WithRoot extends React.Component {
     constructor(props, context) {
       super(props, context);
+
       this.redux = initRedux(this.props.reduxServerState || {});
     }
 
@@ -262,11 +268,13 @@ function withRoot(Component) {
       const { pageContext, ...other } = this.props;
 
       return (
-        <Provider store={this.redux}>
-          <AppWrapper pageContext={pageContext}>
-            <Component initialProps={other} />
-          </AppWrapper>
-        </Provider>
+        <React.StrictMode>
+          <Provider store={this.redux}>
+            <AppWrapper pageContext={pageContext}>
+              <Component initialProps={other} />
+            </AppWrapper>
+          </Provider>
+        </React.StrictMode>
       );
     }
   }

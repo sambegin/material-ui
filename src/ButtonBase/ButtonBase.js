@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { findDOMNode } from 'react-dom';
+import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import keycode from 'keycode';
 import ownerWindow from 'dom-helpers/ownerWindow';
+import polyfill from 'react-lifecycles-compat';
 import withStyles from '../styles/withStyles';
 import { listenForFocusKeys, detectKeyboardFocus, focusKeyPressed } from '../utils/keyboardFocus';
 import TouchRipple from './TouchRipple';
@@ -39,6 +40,7 @@ export const styles = {
     pointerEvents: 'none', // Disable link interactions
     cursor: 'default',
   },
+  keyboardFocused: {},
 };
 
 /**
@@ -47,23 +49,33 @@ export const styles = {
  * It contains a load of style reset and some focus/ripple logic.
  */
 class ButtonBase extends React.Component {
-  state = {
-    keyboardFocused: false,
-  };
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (typeof prevState.keyboardFocused === 'undefined') {
+      return {
+        keyboardFocused: false,
+        lastDisabled: nextProps.disabled,
+      };
+    }
 
-  componentDidMount() {
-    this.button = findDOMNode(this);
-    listenForFocusKeys(ownerWindow(this.button));
-  }
-
-  componentWillReceiveProps(nextProps) {
     // The blur won't fire when the disabled state is set on a focused input.
     // We need to book keep the focused state manually.
-    if (!this.props.disabled && nextProps.disabled && this.state.keyboardFocused) {
-      this.setState({
+    if (!prevState.prevState && nextProps.disabled && prevState.keyboardFocused) {
+      return {
         keyboardFocused: false,
-      });
+        lastDisabled: nextProps.disabled,
+      };
     }
+
+    return {
+      lastDisabled: nextProps.disabled,
+    };
+  }
+
+  state = {};
+
+  componentDidMount() {
+    this.button = ReactDOM.findDOMNode(this);
+    listenForFocusKeys(ownerWindow(this.button));
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -214,7 +226,6 @@ class ButtonBase extends React.Component {
       disabled,
       disableRipple,
       focusRipple,
-      keyboardFocusedClassName,
       onBlur,
       onFocus,
       onKeyboardFocus,
@@ -236,7 +247,7 @@ class ButtonBase extends React.Component {
       classes.root,
       {
         [classes.disabled]: disabled,
-        [keyboardFocusedClassName || '']: this.state.keyboardFocused,
+        [classes.keyboardFocused]: this.state.keyboardFocused,
       },
       classNameProp,
     );
@@ -329,10 +340,6 @@ ButtonBase.propTypes = {
    */
   focusRipple: PropTypes.bool,
   /**
-   * The CSS class applied while the component is keyboard focused.
-   */
-  keyboardFocusedClassName: PropTypes.string,
-  /**
    * @ignore
    */
   onBlur: PropTypes.func,
@@ -407,4 +414,4 @@ ButtonBase.defaultProps = {
   type: 'button',
 };
 
-export default withStyles(styles, { name: 'MuiButtonBase' })(ButtonBase);
+export default withStyles(styles, { name: 'MuiButtonBase' })(polyfill(ButtonBase));

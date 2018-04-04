@@ -10,6 +10,7 @@ export { default as Card, CardActions, CardContent, CardHeader, CardMedia } from
 export { default as Checkbox } from './Checkbox';
 export { default as Chip } from './Chip';
 export { default as ClickAwayListener } from './utils/ClickAwayListener';
+export { default as CssBaseline } from './CssBaseline';
 export {
   default as Dialog,
   DialogActions,
@@ -50,7 +51,6 @@ export { default as Popover } from './Popover';
 export { default as Portal } from './Portal';
 export { CircularProgress, LinearProgress } from './Progress';
 export { default as Radio, RadioGroup } from './Radio';
-export { default as Reboot } from './Reboot';
 export { default as Select } from './Select';
 export { default as Snackbar, SnackbarContent } from './Snackbar';
 export { default as Stepper, Step, StepButton, StepIcon, StepContent, StepLabel } from './Stepper';
@@ -62,6 +62,7 @@ import * as colors from './colors';
 export { colors };
 
 export { default as SvgIcon } from './SvgIcon';
+export { default as SwipeableDrawer } from './SwipeableDrawer';
 export { default as Switch } from './Switch';
 export {
   default as Table,

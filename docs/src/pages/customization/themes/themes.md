@@ -98,7 +98,7 @@ palette: {
   },
   error: {
     light: palette.error[300],
-    main: palette.errorr[500],
+    main: palette.error[500],
     dark: palette.error[700],
     contrastText: getContrastText(palette.error[500]),
   },
@@ -212,16 +212,61 @@ If you want to learn more about typography, you can check out [the typography se
 
 {{"demo": "pages/customization/themes/TypographyTheme.js"}}
 
-### Font size
+### Typography - Font family
+
+```js
+const theme = createMuiTheme({
+  typography: {
+    // Use the system font over Roboto.
+    fontFamily:
+      '-apple-system,system-ui,BlinkMacSystemFont,' +
+      '"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif',
+    },
+  },
+});
+```
+
+### Typography - Font size
 
 Material-UI uses `rem` units for the font size.
-The browser html element default font size is `16px`, but browsers have an option to change this value,
-so `rem` units allow us to accommodate the users settings, resulting in a much better user experience.
-
+The browser `<html>` element default font size is `16px`, but browsers have an option to change this value,
+so `rem` units allow us to accommodate the user's settings, resulting in a much better user experience.
 Users change font size settings for all kinds of reasons, from poor eyesight to choosing optimum settings
 for devices that can be vastly different in size and viewing distance.
 
-For instance, you might want to change this value when using the [10px simplification](https://www.sitepoint.com/understanding-and-using-rem-units-in-css/).
+To change the font-size of Material-UI you can provide a `fontSize` property.
+The default value is `14px`.
+
+```js
+const theme = createMuiTheme({
+  typography: {
+    // In Japanese the characters are usually larger.
+    fontSize: 12,
+  },
+});
+```
+
+The computed font size by the browser follows this mathematical equation:
+
+![font-size](/static/images/font-size.gif)
+<!-- https://latex.codecogs.com/gif.latex?computed&space;=&space;specification&space;\frac{typography.fontSize}{14}&space;\frac{html&space;font&space;size}{typography.htmlFontSize} -->
+
+### Typography - HTML font size
+
+You might want to change the `<html>` element default font size. For instance, when using the [10px simplification](https://www.sitepoint.com/understanding-and-using-rem-units-in-css/).
+We provide a `htmlFontSize` theme property for this use case.
+It's telling Material-UI what's the font-size on the `<html>` element is.
+It's used to adjust the `rem` value so the calculated font-size always match the specification.
+
+```js
+const theme = createMuiTheme({
+  typography: {
+    // Tell Material-UI what's the font-size on the html element is.
+    htmlFontSize: 10,
+  },
+});
+```
+
 ```css
 html {
   font-size: 62.5%; /* 62.5% of 16px = 10px */
