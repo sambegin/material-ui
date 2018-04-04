@@ -266,6 +266,8 @@ SpeedDial.defaultProps = {
     exit: duration.leavingScreen,
   },
   tooltipTitle: '',
+  tooltipAlwaysOpen: false,
+  tooltipClasses: {},
 };
 
 export default withStyles(styles)(SpeedDial);

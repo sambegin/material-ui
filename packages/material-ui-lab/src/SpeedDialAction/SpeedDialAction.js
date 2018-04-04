@@ -165,6 +165,8 @@ SpeedDialAction.propTypes = {
 SpeedDialAction.defaultProps = {
   delay: 0,
   open: false,
+  tooltipAlwaysOpen: false,
+  tooltipClasses: {},
 };
 
 export default withStyles(styles)(SpeedDialAction);
