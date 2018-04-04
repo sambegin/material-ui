@@ -19,7 +19,7 @@ const styles = theme => ({
   actions: {
     display: 'flex',
     flexDirection: 'column-reverse', // Display the first action at the bottom.
-    marginBottom: theme.spacing.unit * 2,
+    marginBottom: theme.spacing.unit,
   },
   actionsClosed: {
     transition: 'top 0s linear 0.2s',
@@ -96,7 +96,9 @@ class SpeedDial extends React.Component {
       icon: iconProp,
       onClick,
       open,
+      tooltipClasses,
       tooltipTitle,
+      tooltipAlwaysOpen,
       transition: Transition,
       transitionDuration,
       ...other
@@ -120,6 +122,7 @@ class SpeedDial extends React.Component {
         open,
         onKeyDown: this.handleKeyDown,
         id: `${id}-item-${validChildCount}`,
+        tooltipAlwaysOpen,
       });
     });
 
@@ -136,7 +139,12 @@ class SpeedDial extends React.Component {
     return (
       <div className={classNames(classes.root, classNameProp)} {...other}>
         <Transition in={!hidden} timeout={transitionDuration} mountOnEnter unmountOnExit>
-          <Tooltip title={tooltipTitle} placement="left">
+          <Tooltip
+            title={tooltipTitle}
+            placement="left"
+            open={open && tooltipAlwaysOpen}
+            classes={tooltipClasses}
+          >
             <Button
               variant="fab"
               color="primary"
@@ -224,6 +232,14 @@ SpeedDial.propTypes = {
    * The icon to display in the SpeedDial Floating Action Button when the SpeedDial is open.
    */
   openIcon: PropTypes.node,
+  /**
+   * Makes tooltip always open when SpeedDialAction is displayed
+   */
+  tooltipAlwaysOpen: PropTypes.bool,
+  /**
+   * Use to override tooltip styles
+   */
+  tooltipClasses: PropTypes.object,
   /**
    * Label to display in the tooltip.
    */

@@ -55,17 +55,33 @@ class SpeedDialAction extends React.Component {
       id,
       onClick,
       open,
+      tooltipClasses,
       tooltipTitle,
       tooltipAlwaysOpen,
       ...other
     } = this.props;
 
     const tooltipOpen = open && (tooltipAlwaysOpen || this.state.tooltipOpen);
+    // Tried multiple solution to fix tooltip position with a scaled button but without success
+    // Tried delay enter tooltip, popperProps offset :
+    /*
+    * PopperProps={{
+          modifiers:{
+            offset:{
+              offset:'0, 20'
+            },
+          }
+        }}
+
+       Which works but tooltips update its position when button is closing... so we have a little
+       visual bug there also
+    * */
 
     return (
       <Tooltip
         id={id}
         className={classNames(classes.root, classNameProp)}
+        classes={tooltipClasses}
         title={tooltipTitle}
         placement="left"
         onClose={this.handleTooltipClose}
@@ -136,6 +152,10 @@ SpeedDialAction.propTypes = {
    * Makes tooltip always open when SpeedDialAction is displayed
    */
   tooltipAlwaysOpen: PropTypes.bool,
+  /**
+   * Use to override tooltip styles
+   */
+  tooltipClasses: PropTypes.object,
   /**
    * Label to display in the tooltip.
    */
