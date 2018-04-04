@@ -2,7 +2,7 @@
   "name": "@sambegin/material-ui-lab",
   "private": false,
   "author": "Material-UI Team",
-  "version": "1.0.0-alpha.0",
+  "version": "1.0.1",
   "description": "Material-UI Lab - Incubator for Material-UI React components.",
   "main": "./src/index.js",
   "keywords": [
