@@ -22,6 +22,12 @@ describe('<SpeedDialAction />', () => {
     assert.strictEqual(wrapper.type(), Tooltip);
   });
 
+  it('should make tooltip always open if tooltipAlwaysOpen prop is provided', () => {
+    const wrapper = shallow(<SpeedDialAction icon={icon} open tooltipAlwaysOpen />);
+    const tooltipOpenProp = wrapper.find(Tooltip).props().open;
+    assert.strictEqual(tooltipOpenProp, true);
+  });
+
   it('should render a Button', () => {
     const wrapper = shallow(<SpeedDialAction icon={icon} />);
     const buttonWrapper = wrapper.childAt(0);
@@ -73,14 +79,4 @@ describe('<SpeedDialAction />', () => {
       assert.strictEqual(handleClick.callCount, 1, 'it should forward the click event');
     });
   });
-
-  // it('should call handleTooltipOpen & handleTooltipClose on mouseOver & blur', () => {
-  //   const wrapper = shallow(<SpeedDialAction icon={icon} open />);
-  //   const buttonWrapper = wrapper.childAt(0);
-  //   assert.strictEqual(wrapper.state().tooltipOpen, false);
-  //   buttonWrapper.simulate('mouseOver', {});
-  //   assert.strictEqual(wrapper.state().tooltipOpen, true);
-  //   buttonWrapper.simulate('blur', {});
-  //   assert.strictEqual(wrapper.state().tooltipOpen, false);
-  // });
 });

@@ -86,6 +86,7 @@ class OpenIconSpeedDial extends React.Component {
         >
           {actions.map(action => (
             <SpeedDialAction
+              tooltipAlwaysOpen
               key={action.name}
               icon={action.icon}
               tooltipTitle={action.name}

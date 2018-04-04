@@ -21,6 +21,15 @@ const styles = theme => ({
     opacity: 0,
     transform: 'scale(0)',
   },
+  buttonNoScale: {
+    transition: `${theme.transitions.create('transform', {
+      duration: theme.transitions.duration.shorter,
+    })}, opacity 0.2s`,
+  },
+  buttonClosedNoScale: {
+    opacity: 0,
+    transform: 'scale(1)',
+  },
 });
 
 class SpeedDialAction extends React.Component {
@@ -47,8 +56,11 @@ class SpeedDialAction extends React.Component {
       onClick,
       open,
       tooltipTitle,
+      tooltipAlwaysOpen,
       ...other
     } = this.props;
+
+    const tooltipOpen = open && (tooltipAlwaysOpen || this.state.tooltipOpen);
 
     return (
       <Tooltip
@@ -58,13 +70,17 @@ class SpeedDialAction extends React.Component {
         placement="left"
         onClose={this.handleTooltipClose}
         onOpen={this.handleTooltipOpen}
-        open={open && this.state.tooltipOpen}
+        open={tooltipOpen}
         {...other}
       >
         <Button
           variant="fab"
           mini
-          className={classNames(classes.button, !open && classes.buttonClosed)}
+          className={classNames(
+            classes.button,
+            !open && (tooltipAlwaysOpen ? classes.buttonClosedNoScale : classes.buttonClosed),
+            tooltipAlwaysOpen && classes.buttonNoScale,
+          )}
           style={{ transitionDelay: `${delay}ms` }}
           onClick={onClick}
           tabIndex={-1}
@@ -116,6 +132,10 @@ SpeedDialAction.propTypes = {
    * @ignore
    */
   open: PropTypes.bool,
+  /**
+   * Makes tooltip always open when SpeedDialAction is displayed
+   */
+  tooltipAlwaysOpen: PropTypes.bool,
   /**
    * Label to display in the tooltip.
    */
