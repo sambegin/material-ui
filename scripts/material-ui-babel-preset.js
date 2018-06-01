@@ -10,7 +10,7 @@ if (ENV === 'es') {
   config = {
     presets: [
       [
-        'babel-preset-env',
+        '@babel/preset-env',
         {
           targets: {
             ie: 11,
@@ -20,11 +20,11 @@ if (ENV === 'es') {
             safari: 10,
             node: '6.11',
           },
-          modules: ENV === 'modules' ? false : 'commonjs',
+          modules: ['modules', 'production-umd'].includes(ENV) ? false : 'commonjs',
         },
       ],
     ],
   };
 }
 
-module.exports = config;
+module.exports = () => config;

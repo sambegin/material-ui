@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import Typography from 'material-ui/Typography';
-import Grid from 'material-ui/Grid';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
 import Link from 'docs/src/modules/components/Link';
 
 const styleSheet = theme => ({
@@ -47,7 +47,7 @@ function HomeFooter(props) {
                 <Link href="https://twitter.com/MaterialUI">Twitter</Link>
               </li>
               <li className={classes.listItem}>
-                <Link href="https://github.com/mui-org/material-ui/tree/v1-beta/examples">
+                <Link href="https://github.com/mui-org/material-ui/tree/master/examples">
                   Examples
                 </Link>
               </li>
@@ -70,7 +70,7 @@ function HomeFooter(props) {
       </Typography>
       <Typography className={classes.version}>
         {`Currently v${process.env.LIB_VERSION}. Released under the `}
-        <Link href="https://github.com/mui-org/material-ui/blob/v1-beta/LICENSE">MIT License</Link>
+        <Link href="https://github.com/mui-org/material-ui/blob/master/LICENSE">MIT License</Link>
         {'.'}
       </Typography>
     </footer>

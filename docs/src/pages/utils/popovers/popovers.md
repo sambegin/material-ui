@@ -6,6 +6,10 @@ components: Grow, Popover
 
 A `Popover` can be used to display some content on top of another.
 
+## Simple Popover
+
+{{"demo": "pages/utils/popovers/SimplePopover.js" }}
+
 ## Anchor playground
 
 Use the radio buttons to adjust the `anchorOrigin` and `transformOrigin` positions.
@@ -18,6 +22,6 @@ the position of the popover.
 
 ## Mouse over interaction
 
-We demonstrate how to use the `Popover` component as well as the [react-popper](https://github.com/souporserious/react-popper) package to implement a popover behavior based on the mouse over event.
+We demonstrate how to use the `Popover` component as well as the [react-popper](https://github.com/FezVrasta/react-popper) package to implement a popover behavior based on the mouse over event.
 
 {{"demo": "pages/utils/popovers/MouseOverPopover.js"}}

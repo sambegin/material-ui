@@ -1,5 +1,5 @@
 ---
-filename: /src/Drawer/Drawer.js
+filename: /packages/material-ui/src/Drawer/Drawer.js
 ---
 
 <!--- This documentation is automatically generated, do not try to edit it. -->
@@ -15,7 +15,7 @@ when `variant="temporary"` is set.
 |:-----|:-----|:--------|:------------|
 | <span class="prop-name">anchor</span> | <span class="prop-type">enum:&nbsp;'left'&nbsp;&#124;<br>&nbsp;'top'&nbsp;&#124;<br>&nbsp;'right'&nbsp;&#124;<br>&nbsp;'bottom'<br> | <span class="prop-default">'left'</span> | Side from which the drawer will appear. |
 | <span class="prop-name">children</span> | <span class="prop-type">node |  | The contents of the drawer. |
-| <span class="prop-name">classes</span> | <span class="prop-type">object |  | Useful to extend the style applied to components. |
+| <span class="prop-name">classes</span> | <span class="prop-type">object |  | Override or extend the styles applied to the component. See [CSS API](#css-api) below for more details. |
 | <span class="prop-name">elevation</span> | <span class="prop-type">number | <span class="prop-default">16</span> | The elevation of the drawer. |
 | <span class="prop-name">ModalProps</span> | <span class="prop-type">object |  | Properties applied to the `Modal` element. |
 | <span class="prop-name">onClose</span> | <span class="prop-type">func |  | Callback fired when the component requests to be closed.<br><br>**Signature:**<br>`function(event: object) => void`<br>*event:* The event source of the callback |
@@ -44,7 +44,7 @@ This property accepts the following keys:
 - `modal`
 
 Have a look at [overriding with classes](/customization/overrides#overriding-with-classes) section
-and the [implementation of the component](https://github.com/mui-org/material-ui/tree/v1-beta/src/Drawer/Drawer.js)
+and the [implementation of the component](https://github.com/mui-org/material-ui/tree/master/packages/material-ui/src/Drawer/Drawer.js)
 for more detail.
 
 If using the `overrides` key of the theme as documented

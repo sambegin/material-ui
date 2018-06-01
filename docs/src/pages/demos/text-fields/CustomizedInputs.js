@@ -1,34 +1,39 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import Input, { InputLabel } from 'material-ui/Input';
-import TextField from 'material-ui/TextField';
-import { FormControl } from 'material-ui/Form';
-import purple from 'material-ui/colors/purple';
+import { withStyles, MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import TextField from '@material-ui/core/TextField';
+import FormControl from '@material-ui/core/FormControl';
+import purple from '@material-ui/core/colors/purple';
+import green from '@material-ui/core/colors/green';
 
 const styles = theme => ({
   container: {
     display: 'flex',
     flexWrap: 'wrap',
   },
-  formControl: {
+  margin: {
     margin: theme.spacing.unit,
   },
-  inputLabelFocused: {
-    color: purple[500],
-  },
-  inputUnderline: {
-    '&:after': {
-      backgroundColor: purple[500],
+  cssLabel: {
+    '&$cssFocused': {
+      color: purple[500],
     },
   },
-  textFieldRoot: {
+  cssFocused: {},
+  cssUnderline: {
+    '&:after': {
+      borderBottomColor: purple[500],
+    },
+  },
+  bootstrapRoot: {
     padding: 0,
     'label + &': {
       marginTop: theme.spacing.unit * 3,
     },
   },
-  textFieldInput: {
+  bootstrapInput: {
     borderRadius: 4,
     backgroundColor: theme.palette.common.white,
     border: '1px solid #ced4da',
@@ -36,13 +41,31 @@ const styles = theme => ({
     padding: '10px 12px',
     width: 'calc(100% - 24px)',
     transition: theme.transitions.create(['border-color', 'box-shadow']),
+    fontFamily: [
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
     '&:focus': {
       borderColor: '#80bdff',
       boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
     },
   },
-  textFieldFormLabel: {
+  bootstrapFormLabel: {
     fontSize: 18,
+  },
+});
+
+const theme = createMuiTheme({
+  palette: {
+    primary: green,
   },
 });
 
@@ -51,22 +74,30 @@ function CustomizedInputs(props) {
 
   return (
     <div className={classes.container}>
-      <FormControl className={classes.formControl}>
+      <FormControl className={classes.margin}>
         <InputLabel
           FormLabelClasses={{
-            focused: classes.inputLabelFocused,
+            root: classes.cssLabel,
+            focused: classes.cssFocused,
           }}
-          htmlFor="custom-color-input"
+          htmlFor="custom-css-input"
         >
-          Name
+          Custom CSS
         </InputLabel>
         <Input
           classes={{
-            underline: classes.inputUnderline,
+            underline: classes.cssUnderline,
           }}
-          id="custom-color-input"
+          id="custom-css-input"
         />
       </FormControl>
+      <MuiThemeProvider theme={theme}>
+        <TextField
+          className={classes.margin}
+          label="MuiThemeProvider"
+          id="mui-theme-provider-input"
+        />
+      </MuiThemeProvider>
       <TextField
         defaultValue="react-bootstrap"
         label="Bootstrap"
@@ -74,13 +105,13 @@ function CustomizedInputs(props) {
         InputProps={{
           disableUnderline: true,
           classes: {
-            root: classes.textFieldRoot,
-            input: classes.textFieldInput,
+            root: classes.bootstrapRoot,
+            input: classes.bootstrapInput,
           },
         }}
         InputLabelProps={{
           shrink: true,
-          className: classes.textFieldFormLabel,
+          className: classes.bootstrapFormLabel,
         }}
       />
     </div>

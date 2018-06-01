@@ -1,5 +1,5 @@
 ---
-filename: /src/Modal/Backdrop.js
+filename: /packages/material-ui/src/Backdrop/Backdrop.js
 ---
 
 <!--- This documentation is automatically generated, do not try to edit it. -->
@@ -12,7 +12,7 @@ filename: /src/Modal/Backdrop.js
 
 | Name | Type | Default | Description |
 |:-----|:-----|:--------|:------------|
-| <span class="prop-name">classes</span> | <span class="prop-type">object |  | Useful to extend the style applied to components. |
+| <span class="prop-name">classes</span> | <span class="prop-type">object |  | Override or extend the styles applied to the component. See [CSS API](#css-api) below for more details. |
 | <span class="prop-name">invisible</span> | <span class="prop-type">bool | <span class="prop-default">false</span> | If `true`, the backdrop is invisible. It can be used when rendering a popover or a custom select component. |
 | <span class="prop-name required">open *</span> | <span class="prop-type">bool |  | If `true`, the backdrop is open. |
 | <span class="prop-name">transitionDuration</span> | <span class="prop-type">union:&nbsp;number&nbsp;&#124;<br>&nbsp;{enter?: number, exit?: number}<br> |  | The duration for the transition, in milliseconds. You may specify a single timeout for all transitions, or individually with an object. |
@@ -27,7 +27,7 @@ This property accepts the following keys:
 - `invisible`
 
 Have a look at [overriding with classes](/customization/overrides#overriding-with-classes) section
-and the [implementation of the component](https://github.com/mui-org/material-ui/tree/v1-beta/src/Modal/Backdrop.js)
+and the [implementation of the component](https://github.com/mui-org/material-ui/tree/master/packages/material-ui/src/Backdrop/Backdrop.js)
 for more detail.
 
 If using the `overrides` key of the theme as documented

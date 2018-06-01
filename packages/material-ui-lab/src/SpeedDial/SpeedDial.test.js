@@ -2,10 +2,10 @@ import React from 'react';
 // import keycode from 'keycode';
 import { assert } from 'chai';
 import { spy } from 'sinon';
-import { createMount, createShallow, getClasses } from 'material-ui/test-utils';
-import Icon from 'material-ui/Icon';
-import Button from 'material-ui/Button';
-import Tooltip from 'material-ui/Tooltip';
+import { createMount, createShallow, getClasses } from '@material-ui/core/test-utils';
+import Icon from '@material-ui/core/Icon';
+import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
 import SpeedDial from './SpeedDial';
 import SpeedDialAction from '../SpeedDialAction';
 

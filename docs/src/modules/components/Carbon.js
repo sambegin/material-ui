@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
-import { withStyles } from 'material-ui/styles';
-import Typography from 'material-ui/Typography';
-import Tooltip from 'material-ui/Tooltip';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const styles = theme => ({
   '@global': {
@@ -100,7 +100,7 @@ class Carbon extends React.Component {
 
     const script = document.createElement('script');
     script.setAttribute('async', '');
-    script.src = '//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=materialuicom';
+    script.src = '//cdn.carbonads.com/carbon.js?serve=CKYIL27L&placement=material-uicom';
     script.id = '_carbonads_js';
     const ad = document.querySelector('#ad');
     if (ad) {

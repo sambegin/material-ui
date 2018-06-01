@@ -1,5 +1,5 @@
 ---
-filename: /src/Tabs/Tab.js
+filename: /packages/material-ui/src/Tab/Tab.js
 ---
 
 <!--- This documentation is automatically generated, do not try to edit it. -->
@@ -12,7 +12,7 @@ filename: /src/Tabs/Tab.js
 
 | Name | Type | Default | Description |
 |:-----|:-----|:--------|:------------|
-| <span class="prop-name">classes</span> | <span class="prop-type">object |  | Useful to extend the style applied to components. |
+| <span class="prop-name">classes</span> | <span class="prop-type">object |  | Override or extend the styles applied to the component. See [CSS API](#css-api) below for more details. |
 | <span class="prop-name">disabled</span> | <span class="prop-type">bool | <span class="prop-default">false</span> | If `true`, the tab will be disabled. |
 | <span class="prop-name">icon</span> | <span class="prop-type">node |  | The icon element. |
 | <span class="prop-name">label</span> | <span class="prop-type">node |  | The label element. |
@@ -28,13 +28,9 @@ This property accepts the following keys:
 - `labelIcon`
 - `textColorInherit`
 - `textColorPrimary`
-- `textColorPrimarySelected`
-- `textColorPrimaryDisabled`
 - `textColorSecondary`
-- `textColorSecondarySelected`
-- `textColorSecondaryDisabled`
-- `textColorInheritSelected`
-- `textColorInheritDisabled`
+- `selected`
+- `disabled`
 - `fullWidth`
 - `wrapper`
 - `labelContainer`
@@ -42,7 +38,7 @@ This property accepts the following keys:
 - `labelWrapped`
 
 Have a look at [overriding with classes](/customization/overrides#overriding-with-classes) section
-and the [implementation of the component](https://github.com/mui-org/material-ui/tree/v1-beta/src/Tabs/Tab.js)
+and the [implementation of the component](https://github.com/mui-org/material-ui/tree/master/packages/material-ui/src/Tab/Tab.js)
 for more detail.
 
 If using the `overrides` key of the theme as documented

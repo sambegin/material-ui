@@ -4,37 +4,41 @@
 
 We take tests seriously. We have written and maintain **a wide range** of tests so we can
 iterate with confidence on the components, for instance, the visual regression tests provided by [Argos-CI](https://www.argos-ci.com/mui-org/material-ui) have proven to be really helpful.
-To learn more about our internal tests, you can have a look at the [README](https://github.com/mui-org/material-ui/blob/v1-beta/test/README.md).
+To learn more about our internal tests, you can have a look at the [README](https://github.com/mui-org/material-ui/blob/master/test/README.md).
 
-[![Coverage Status](https://img.shields.io/codecov/c/github/mui-org/material-ui/v1-beta.svg)](https://codecov.io/gh/mui-org/material-ui/branch/v1-beta)
+[![Coverage Status](https://img.shields.io/codecov/c/github/mui-org/material-ui/master.svg)](https://codecov.io/gh/mui-org/material-ui/branch/master)
 
 ## Userspace
 
-What about writing tests in userspace? The Material-UI styling infrastructure uses some helper functions on top of enzyme to make the process easier.
-You can take advantage of those helpers if you so choose.
+What about writing tests in userspace? The Material-UI styling infrastructure uses some helper functions built on top of [enzyme](https://github.com/airbnb/enzyme) to make the process easier, which we are exposing. You can take advantage of them if you so choose.
 
 ### Shallow rendering
 
 Shallow rendering is useful to constrain your testing to a component as a unit. This also ensures that your tests aren't indirectly asserting behavior of child components.
-We expose a `createShallow()` function for this situation. However, you will most likely not need it most of the time. Shallow rendering was created to test components in isolation. This means without leaking child implementation details such as the context.
+Shallow rendering was created to test components in isolation. This means without leaking child implementation details such as the context.
+
+The `createShallow()` function can be used for this situation. Aside from wrapping the enzyme API, it provides a `dive` and `untilSelector` option.
 
 ### Full DOM rendering
 
-Full DOM rendering is ideal for use cases where you have components that may interact with DOM APIs or may require the full lifecycle in order to fully test the component (i.e., `componentDidMount` etc.).
-We expose a `createMount()` function for this situation.
+Full DOM rendering is ideal for use cases where you have components that may interact with DOM APIs or may require the full lifecycle in order to fully test the component (e.g., `componentDidMount` etc.).
+
+The `createMount()` function is provided for this situation.
+Aside from wrapping the enzyme API, it provides a `cleanUp` function.
 
 ### Render to string
 
 Rendering to a string is useful to test the behavior of the components that are used on the server.
-You can take advantage of it to assert the generated HTML string.
-We expose a `createRender()` function for this situation.
+You can take advantage of this to assert the generated HTML string.
+
+The `createRender()` function is ideal for this. This is just an alias for the enzyme API, which is only exposed for consitency.
 
 ## API
 
 ### `createShallow([options]) => shallow`
 
 Generate an enhanced shallow function with the needed context.
-Please refer to the [API documentation of enzyme](http://airbnb.io/enzyme/docs/api/shallow.html) for further details of the `shallow` function.
+Please refer to the [enzyme API documentation](http://airbnb.io/enzyme/docs/api/shallow.html) for further details on the `shallow` function.
 
 
 #### Arguments
@@ -52,7 +56,7 @@ Please refer to the [API documentation of enzyme](http://airbnb.io/enzyme/docs/a
 #### Examples
 
 ```jsx
-import { createShallow } from 'material-ui/test-utils';
+import { createShallow } from '@material-ui/core/test-utils';
 
 describe('<MyComponent />', () => {
   let shallow;
@@ -70,7 +74,7 @@ describe('<MyComponent />', () => {
 ### `createMount([options]) => mount`
 
 Generate an enhanced mount function with the needed context.
-Please refer to the [enzyme API documentation](http://airbnb.io/enzyme/docs/api/mount.html) for further details of the `mount` function.
+Please refer to the [enzyme API documentation](http://airbnb.io/enzyme/docs/api/mount.html) for further details on the `mount` function.
 
 #### Arguments
 
@@ -85,7 +89,7 @@ Please refer to the [enzyme API documentation](http://airbnb.io/enzyme/docs/api/
 #### Examples
 
 ```jsx
-import { createMount } from 'material-ui/test-utils';
+import { createMount } from '@material-ui/core/test-utils';
 
 describe('<MyComponent />', () => {
   let mount;
@@ -107,7 +111,7 @@ describe('<MyComponent />', () => {
 ### `createRender([options]) => render`
 
 Generate a render to string function with the needed context.
-Please refer to the [enzyme API documentation](http://airbnb.io/enzyme/docs/api/render.html) for further details of the `render` function.
+Please refer to the [enzyme API documentation](http://airbnb.io/enzyme/docs/api/render.html) for further details on the `render` function.
 
 #### Arguments
 
@@ -122,7 +126,7 @@ Please refer to the [enzyme API documentation](http://airbnb.io/enzyme/docs/api/
 #### Examples
 
 ```jsx
-import { createRender } from 'material-ui/test-utils';
+import { createRender } from '@material-ui/core/test-utils';
 
 describe('<MyComponent />', () => {
   let render;

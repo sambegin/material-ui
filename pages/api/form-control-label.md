@@ -1,5 +1,5 @@
 ---
-filename: /src/Form/FormControlLabel.js
+filename: /packages/material-ui/src/FormControlLabel/FormControlLabel.js
 ---
 
 <!--- This documentation is automatically generated, do not try to edit it. -->
@@ -14,7 +14,7 @@ Use this component if you want to display an extra label.
 | Name | Type | Default | Description |
 |:-----|:-----|:--------|:------------|
 | <span class="prop-name">checked</span> | <span class="prop-type">union:&nbsp;bool&nbsp;&#124;<br>&nbsp;string<br> |  | If `true`, the component appears selected. |
-| <span class="prop-name">classes</span> | <span class="prop-type">object |  | Useful to extend the style applied to components. |
+| <span class="prop-name">classes</span> | <span class="prop-type">object |  | Override or extend the styles applied to the component. See [CSS API](#css-api) below for more details. |
 | <span class="prop-name">control</span> | <span class="prop-type">element |  | A control element. For instance, it can be be a `Radio`, a `Switch` or a `Checkbox`. |
 | <span class="prop-name">disabled</span> | <span class="prop-type">bool |  | If `true`, the control will be disabled. |
 | <span class="prop-name">inputRef</span> | <span class="prop-type">func |  | Use that property to pass a ref callback to the native input component. |
@@ -32,10 +32,9 @@ This property accepts the following keys:
 - `root`
 - `disabled`
 - `label`
-- `labelDisabled`
 
 Have a look at [overriding with classes](/customization/overrides#overriding-with-classes) section
-and the [implementation of the component](https://github.com/mui-org/material-ui/tree/v1-beta/src/Form/FormControlLabel.js)
+and the [implementation of the component](https://github.com/mui-org/material-ui/tree/master/packages/material-ui/src/FormControlLabel/FormControlLabel.js)
 for more detail.
 
 If using the `overrides` key of the theme as documented

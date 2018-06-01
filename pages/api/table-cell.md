@@ -1,5 +1,5 @@
 ---
-filename: /src/Table/TableCell.js
+filename: /packages/material-ui/src/TableCell/TableCell.js
 ---
 
 <!--- This documentation is automatically generated, do not try to edit it. -->
@@ -13,7 +13,7 @@ filename: /src/Table/TableCell.js
 | Name | Type | Default | Description |
 |:-----|:-----|:--------|:------------|
 | <span class="prop-name">children</span> | <span class="prop-type">node |  | The table cell contents. |
-| <span class="prop-name">classes</span> | <span class="prop-type">object |  | Useful to extend the style applied to components. |
+| <span class="prop-name">classes</span> | <span class="prop-type">object |  | Override or extend the styles applied to the component. See [CSS API](#css-api) below for more details. |
 | <span class="prop-name">component</span> | <span class="prop-type">union:&nbsp;string&nbsp;&#124;<br>&nbsp;func<br> |  | The component used for the root node. Either a string to use a DOM element or a component. |
 | <span class="prop-name">numeric</span> | <span class="prop-type">bool | <span class="prop-default">false</span> | If `true`, content will align to the right. |
 | <span class="prop-name">padding</span> | <span class="prop-type">enum:&nbsp;'default'&nbsp;&#124;<br>&nbsp;'checkbox'&nbsp;&#124;<br>&nbsp;'dense'&nbsp;&#124;<br>&nbsp;'none'<br> | <span class="prop-default">'default'</span> | Sets the padding applied to the cell. |
@@ -37,7 +37,7 @@ This property accepts the following keys:
 - `paddingNone`
 
 Have a look at [overriding with classes](/customization/overrides#overriding-with-classes) section
-and the [implementation of the component](https://github.com/mui-org/material-ui/tree/v1-beta/src/Table/TableCell.js)
+and the [implementation of the component](https://github.com/mui-org/material-ui/tree/master/packages/material-ui/src/TableCell/TableCell.js)
 for more detail.
 
 If using the `overrides` key of the theme as documented

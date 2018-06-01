@@ -4,18 +4,18 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import NProgress from 'nprogress';
 import Router from 'next/router';
-import { withStyles } from 'material-ui/styles';
-import Typography from 'material-ui/Typography';
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
-import IconButton from 'material-ui/IconButton';
-import Tooltip from 'material-ui/Tooltip';
-import MenuIcon from 'material-ui-icons/Menu';
-import LightbulbOutline from 'material-ui-icons/LightbulbOutline';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
+import MenuIcon from '@material-ui/icons/Menu';
+import LightbulbOutline from '@material-ui/icons/LightbulbOutline';
 import LightbublFull from '@material-ui/docs/svgIcons/LightbublFull';
 import NProgressBar from '@material-ui/docs/NProgressBar';
-import FormatTextdirectionLToR from 'material-ui-icons/FormatTextdirectionLToR';
-import FormatTextdirectionRToL from 'material-ui-icons/FormatTextdirectionRToL';
+import FormatTextdirectionLToR from '@material-ui/icons/FormatTextdirectionLToR';
+import FormatTextdirectionRToL from '@material-ui/icons/FormatTextdirectionRToL';
 import Github from '@material-ui/docs/svgIcons/GitHub';
 import AppDrawer from 'docs/src/modules/components/AppDrawer';
 import AppSearch from 'docs/src/modules/components/AppSearch';
@@ -175,7 +175,7 @@ class AppFrame extends React.Component {
                 )}
               </IconButton>
             </Tooltip>
-            <Tooltip id="appbar-github" title="Material-UI GitHub repo" enterDelay={300}>
+            <Tooltip id="appbar-github" title="GitHub repository" enterDelay={300}>
               <IconButton
                 component="a"
                 color="inherit"

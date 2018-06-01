@@ -1,12 +1,12 @@
 ---
-filename: /src/transitions/Collapse.js
+filename: /packages/material-ui/src/Collapse/Collapse.js
 ---
 
 <!--- This documentation is automatically generated, do not try to edit it. -->
 
 # Collapse
 
-The Collapes transition is used by the
+The Collapse transition is used by the
 [Vertical Stepper](/demos/steppers#vertical-stepper) StepContent component.
 It uses [react-transition-group](https://github.com/reactjs/react-transition-group) internally.
 
@@ -15,7 +15,7 @@ It uses [react-transition-group](https://github.com/reactjs/react-transition-gro
 | Name | Type | Default | Description |
 |:-----|:-----|:--------|:------------|
 | <span class="prop-name">children</span> | <span class="prop-type">node |  | The content node to be collapsed. |
-| <span class="prop-name">classes</span> | <span class="prop-type">object |  | Useful to extend the style applied to components. |
+| <span class="prop-name">classes</span> | <span class="prop-type">object |  | Override or extend the styles applied to the component. See [CSS API](#css-api) below for more details. |
 | <span class="prop-name">collapsedHeight</span> | <span class="prop-type">string | <span class="prop-default">'0px'</span> | The height of the container when collapsed. |
 | <span class="prop-name">component</span> | <span class="prop-type">union:&nbsp;string&nbsp;&#124;<br>&nbsp;func<br> | <span class="prop-default">'div'</span> | The component used for the root node. Either a string to use a DOM element or a component. |
 | <span class="prop-name">in</span> | <span class="prop-type">bool |  | If `true`, the component will transition in. |
@@ -33,7 +33,7 @@ This property accepts the following keys:
 - `wrapperInner`
 
 Have a look at [overriding with classes](/customization/overrides#overriding-with-classes) section
-and the [implementation of the component](https://github.com/mui-org/material-ui/tree/v1-beta/src/transitions/Collapse.js)
+and the [implementation of the component](https://github.com/mui-org/material-ui/tree/master/packages/material-ui/src/Collapse/Collapse.js)
 for more detail.
 
 If using the `overrides` key of the theme as documented

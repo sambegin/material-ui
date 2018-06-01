@@ -1,21 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Checkbox from 'material-ui/Checkbox';
-import { createMuiTheme, MuiThemeProvider, withStyles } from 'material-ui/styles';
-import orange from 'material-ui/colors/orange';
-import green from 'material-ui/colors/green';
-import pink from 'material-ui/colors/pink';
+import Checkbox from '@material-ui/core/Checkbox';
+import { createMuiTheme, MuiThemeProvider, withStyles } from '@material-ui/core/styles';
+import orange from '@material-ui/core/colors/orange';
+import green from '@material-ui/core/colors/green';
+import pink from '@material-ui/core/colors/pink';
 
 const styles = theme => ({
-  danger: {
+  root: {
     color: theme.status.color,
+    '&$checked': {
+      color: theme.status.color,
+    },
   },
+  checked: {},
 });
 
 let NestedCheckbox = props => (
-  <Checkbox defaultChecked className={props.classes.danger}>
-    {'Danger'}
-  </Checkbox>
+  <Checkbox
+    defaultChecked
+    classes={{
+      root: props.classes.root,
+      checked: props.classes.checked,
+    }}
+  />
 );
 
 NestedCheckbox.propTypes = {
@@ -30,8 +38,7 @@ const theme1 = createMuiTheme({
   },
 });
 
-const theme2 = outerTheme => ({
-  ...outerTheme,
+const theme2 = createMuiTheme({
   status: {
     color: green[500],
   },

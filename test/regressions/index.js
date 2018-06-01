@@ -33,8 +33,10 @@ const blacklistSuite = [
 
   // Useless
   'docs-', // Home
+  'docs-versions',
   'docs-guides',
   'docs-premium-themes',
+  'docs-discover-more-showcase',
 ];
 
 const blacklistFilename = [

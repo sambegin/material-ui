@@ -1,32 +1,32 @@
 import React from 'react';
-import Button from 'material-ui/Button';
-import Snackbar from 'material-ui/Snackbar';
-import Slide from 'material-ui/transitions/Slide';
+import Button from '@material-ui/core/Button';
+import Snackbar from '@material-ui/core/Snackbar';
+import Slide from '@material-ui/core/Slide';
 
 function TransitionLeft(props) {
-  return <Slide direction="left" {...props} />;
+  return <Slide {...props} direction="left" />;
 }
 
 function TransitionUp(props) {
-  return <Slide direction="up" {...props} />;
+  return <Slide {...props} direction="up" />;
 }
 
 function TransitionRight(props) {
-  return <Slide direction="right" {...props} />;
+  return <Slide {...props} direction="right" />;
 }
 
 function TransitionDown(props) {
-  return <Slide direction="down" {...props} />;
+  return <Slide {...props} direction="down" />;
 }
 
 class DirectionSnackbar extends React.Component {
   state = {
     open: false,
-    transition: null,
+    Transition: null,
   };
 
-  handleClick = transition => () => {
-    this.setState({ open: true, transition });
+  handleClick = Transition => () => {
+    this.setState({ open: true, Transition });
   };
 
   handleClose = () => {
@@ -43,8 +43,8 @@ class DirectionSnackbar extends React.Component {
         <Snackbar
           open={this.state.open}
           onClose={this.handleClose}
-          transition={this.state.transition}
-          SnackbarContentProps={{
+          TransitionComponent={this.state.Transition}
+          ContentProps={{
             'aria-describedby': 'message-id',
           }}
           message={<span id="message-id">I love snacks</span>}

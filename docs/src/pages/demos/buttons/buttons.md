@@ -4,7 +4,7 @@ components: Button, IconButton, ButtonBase, Zoom
 
 # Buttons
 
-[Buttons](https://material.io/guidelines/components/buttons.html) communicate the action that will occur when the user touches them.
+[Buttons](https://material.io/design/components/buttons.html) communicate the action that will occur when the user touches them.
 
 Material buttons trigger an ink reaction on press.
 They may display text, imagery, or both.
@@ -17,6 +17,13 @@ They may be used in dialogs, toolbars, or inline.
 They do not lift, but fill with color on press.
 
 {{"demo": "pages/demos/buttons/FlatButtons.js"}}
+
+## Outlined Buttons
+Outlined buttons are text-only buttons with medium emphasis.
+They behave like flat buttons but have an outline and are typically used for actions that are important, but
+aren’t the primary action in an app.
+
+{{"demo": "pages/demos/buttons/OutlinedButtons.js"}}
 
 ## Raised Buttons
 
@@ -67,6 +74,15 @@ Sometimes you might want to have icons for certain button to enhance the UX of t
 
 {{"demo": "pages/demos/buttons/IconLabelButtons.js"}}
 
+## Customized Buttons
+
+If you have been reading the [overrides documentation page](/customization/overrides)
+but you are not confident jumping in,
+here are examples of how you can change the main color of a Button using classes,
+and using a theme; and of a Bootstrap style Button.
+
+{{"demo": "pages/demos/buttons/CustomizedButtons.js"}}
+
 ## Complex Buttons
 
 The Flat Buttons, Raised Buttons, Floating Action Buttons and Icon Buttons are built on top of the same component: the `ButtonBase`.
@@ -83,7 +99,7 @@ able to take advantage of it everywhere:
 
 ```jsx
 import { Link } from 'react-router-dom'
-import Button from 'material-ui/Button';
+import Button from '@material-ui/core/Button';
 
 <Button component={Link} to="/open-collective">
   Link
@@ -94,7 +110,7 @@ or if you want to avoid properties collisions:
 
 ```jsx
 import { Link } from 'react-router-dom'
-import Button from 'material-ui/Button';
+import Button from '@material-ui/core/Button';
 
 const MyLink = props => <Link to="/open-collective" {...props} />
 

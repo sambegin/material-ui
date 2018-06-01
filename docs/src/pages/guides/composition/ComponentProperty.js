@@ -1,12 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
-import Divider from 'material-ui/Divider';
-import InboxIcon from 'material-ui-icons/Inbox';
-import DraftsIcon from 'material-ui-icons/Drafts';
-import Typography from 'material-ui/Typography';
-import { MemoryRouter, Route } from 'react-router';
+import { withStyles } from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Divider from '@material-ui/core/Divider';
+import InboxIcon from '@material-ui/icons/Inbox';
+import DraftsIcon from '@material-ui/icons/Drafts';
+import Typography from '@material-ui/core/Typography';
+import MemoryRouter from 'react-router/MemoryRouter';
+import Route from 'react-router/Route';
 import { Link } from 'react-router-dom';
 
 const styles = theme => ({
@@ -58,7 +62,7 @@ ListItemLink2.propTypes = {
   to: PropTypes.string.isRequired,
 };
 
-function SimpleList(props) {
+function ComponentProperty(props) {
   const { classes } = props;
   return (
     <MemoryRouter initialEntries={['/drafts']} initialIndex={0}>
@@ -86,8 +90,8 @@ function SimpleList(props) {
   );
 }
 
-SimpleList.propTypes = {
+ComponentProperty.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(SimpleList);
+export default withStyles(styles)(ComponentProperty);

@@ -1,5 +1,5 @@
 ---
-filename: /src/Typography/Typography.js
+filename: /packages/material-ui/src/Typography/Typography.js
 ---
 
 <!--- This documentation is automatically generated, do not try to edit it. -->
@@ -14,7 +14,7 @@ filename: /src/Typography/Typography.js
 |:-----|:-----|:--------|:------------|
 | <span class="prop-name">align</span> | <span class="prop-type">enum:&nbsp;'inherit', 'left', 'center', 'right', 'justify'<br> | <span class="prop-default">'inherit'</span> | Set the text-align on the component. |
 | <span class="prop-name">children</span> | <span class="prop-type">node |  | The content of the component. |
-| <span class="prop-name">classes</span> | <span class="prop-type">object |  | Useful to extend the style applied to components. |
+| <span class="prop-name">classes</span> | <span class="prop-type">object |  | Override or extend the styles applied to the component. See [CSS API](#css-api) below for more details. |
 | <span class="prop-name">color</span> | <span class="prop-type">enum:&nbsp;'inherit', 'primary', 'textSecondary', 'secondary', 'error', 'default'<br> | <span class="prop-default">'default'</span> | The color of the component. It supports those theme colors that make sense for this component. |
 | <span class="prop-name">component</span> | <span class="prop-type">union:&nbsp;string&nbsp;&#124;<br>&nbsp;func<br> |  | The component used for the root node. Either a string to use a DOM element or a component. By default, it maps the variant to a good default headline component. |
 | <span class="prop-name">gutterBottom</span> | <span class="prop-type">bool | <span class="prop-default">false</span> | If `true`, the text will have a bottom margin. |
@@ -55,7 +55,7 @@ This property accepts the following keys:
 - `colorError`
 
 Have a look at [overriding with classes](/customization/overrides#overriding-with-classes) section
-and the [implementation of the component](https://github.com/mui-org/material-ui/tree/v1-beta/src/Typography/Typography.js)
+and the [implementation of the component](https://github.com/mui-org/material-ui/tree/master/packages/material-ui/src/Typography/Typography.js)
 for more detail.
 
 If using the `overrides` key of the theme as documented

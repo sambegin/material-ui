@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { withStyles } from 'material-ui/styles';
-import AddIcon from 'material-ui-icons/Add';
+import { withStyles } from '@material-ui/core/styles';
+import AddIcon from '@material-ui/icons/Add';
 
 const styles = theme => ({
   root: {
@@ -22,11 +22,9 @@ const styles = theme => ({
   },
   openIcon: {
     position: 'absolute',
-    transition: `${theme.transitions.create('transform', {
+    transition: theme.transitions.create(['transform', 'opacity'], {
       duration: theme.transitions.duration.short,
-    })}, ${theme.transitions.create('opacity', {
-      duration: theme.transitions.duration.short,
-    })}`,
+    }),
     opacity: 0,
     transform: 'rotate(-45deg)',
   },

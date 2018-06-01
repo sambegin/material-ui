@@ -1,8 +1,8 @@
 /* eslint-disable react/no-danger */
 
 import React from 'react';
-import Button from 'material-ui/Button';
-import Snackbar from 'material-ui/Snackbar';
+import Button from '@material-ui/core/Button';
+import Snackbar from '@material-ui/core/Snackbar';
 import 'isomorphic-fetch';
 
 function getLastSeenNotification() {
@@ -26,7 +26,7 @@ async function getMessages() {
     if (!messages) {
       await pause(1e3); // Soften the pressure on the main thread.
       const result = await fetch(
-        'https://raw.githubusercontent.com/mui-org/material-ui/v1-beta/docs/notifications.json',
+        'https://raw.githubusercontent.com/mui-org/material-ui/master/docs/notifications.json',
       );
       messages = await result.json();
     }
@@ -75,7 +75,7 @@ class Notifications extends React.Component {
       <Snackbar
         key={message.id}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        SnackbarContentProps={{ 'aria-describedby': 'notification-message' }}
+        ContentProps={{ 'aria-describedby': 'notification-message' }}
         message={
           <span id="notification-message" dangerouslySetInnerHTML={{ __html: message.text }} />
         }

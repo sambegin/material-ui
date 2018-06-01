@@ -1,5 +1,5 @@
 ---
-filename: /src/Stepper/StepButton.js
+filename: /packages/material-ui/src/StepButton/StepButton.js
 ---
 
 <!--- This documentation is automatically generated, do not try to edit it. -->
@@ -13,7 +13,7 @@ filename: /src/Stepper/StepButton.js
 | Name | Type | Default | Description |
 |:-----|:-----|:--------|:------------|
 | <span class="prop-name">children</span> | <span class="prop-type">node |  | Can be a `StepLabel` or a node to place inside `StepLabel` as children. |
-| <span class="prop-name">classes</span> | <span class="prop-type">object |  | Useful to extend the style applied to components. |
+| <span class="prop-name">classes</span> | <span class="prop-type">object |  | Override or extend the styles applied to the component. See [CSS API](#css-api) below for more details. |
 | <span class="prop-name">icon</span> | <span class="prop-type">node |  | The icon displayed by the step label. |
 | <span class="prop-name">optional</span> | <span class="prop-type">node |  | The optional node to display. |
 
@@ -28,7 +28,7 @@ This property accepts the following keys:
 - `touchRipple`
 
 Have a look at [overriding with classes](/customization/overrides#overriding-with-classes) section
-and the [implementation of the component](https://github.com/mui-org/material-ui/tree/v1-beta/src/Stepper/StepButton.js)
+and the [implementation of the component](https://github.com/mui-org/material-ui/tree/master/packages/material-ui/src/StepButton/StepButton.js)
 for more detail.
 
 If using the `overrides` key of the theme as documented

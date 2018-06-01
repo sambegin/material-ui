@@ -35,7 +35,7 @@ also contribute in the following ways.
 and [issues](https://github.com/mui-org/material-ui/issues).
 - Reporting bugs or missing features by [creating an issue](https://github.com/mui-org/material-ui/issues/new).
 - Fixing bugs, adding features, and
-[improving our documentation](https://github.com/mui-org/material-ui/tree/v1-beta/docs) by
+[improving our documentation](https://github.com/mui-org/material-ui/tree/master/docs) by
 [submitting a pull request](https://github.com/mui-org/material-ui/pulls).
 
 ### Committers
@@ -70,7 +70,7 @@ In addition to their participation as a committer, Core Team members have the fo
 - Ability to [publish a release](https://github.com/mui-org/material-ui/releases).
 - Access to Material-UI's [Twitter](https://twitter.com/i/notifications) and Medium account.
 - Owner access to [mui-org on GitHub](https://github.com/mui-org).
-- Admin access to various tools and services ([npm](https://www.npmjs.com/package/material-ui),
+- Admin access to various tools and services ([npm](https://www.npmjs.com/package/@material-ui/core),
 [CircleCi](https://circleci.com/gh/mui-org/material-ui),
 [BrowserStack](https://www.browserstack.com/), [Gitter](https://gitter.im/mui-org/material-ui)).
 - Admin access to all financial accounts.

@@ -1,5 +1,5 @@
 ---
-filename: /src/Popover/Popover.js
+filename: /packages/material-ui/src/Popover/Popover.js
 ---
 
 <!--- This documentation is automatically generated, do not try to edit it. -->
@@ -16,10 +16,10 @@ filename: /src/Popover/Popover.js
 | <span class="prop-name">anchorEl</span> | <span class="prop-type">union:&nbsp;object&nbsp;&#124;<br>&nbsp;func<br> |  | This is the DOM element, or a function that returns the DOM element, that may be used to set the position of the popover. |
 | <span class="prop-name">anchorOrigin</span> | <span class="prop-type">{horizontal?: union:&nbsp;number&nbsp;&#124;<br>&nbsp;enum:&nbsp;'left'&nbsp;&#124;<br>&nbsp;'center'&nbsp;&#124;<br>&nbsp;'right'<br><br>, vertical?: union:&nbsp;number&nbsp;&#124;<br>&nbsp;enum:&nbsp;'top'&nbsp;&#124;<br>&nbsp;'center'&nbsp;&#124;<br>&nbsp;'bottom'<br><br>} | <span class="prop-default">{  vertical: 'top',  horizontal: 'left',}</span> | This is the point on the anchor where the popover's `anchorEl` will attach to. This is not used when the anchorReference is 'anchorPosition'.<br>Options: vertical: [top, center, bottom]; horizontal: [left, center, right]. |
 | <span class="prop-name">anchorPosition</span> | <span class="prop-type">{top?: number, left?: number} |  | This is the position that may be used to set the position of the popover. The coordinates are relative to the application's client area. |
-| <span class="prop-name">anchorReference</span> | <span class="prop-type">enum:&nbsp;'anchorEl'&nbsp;&#124;<br>&nbsp;'anchorPosition'<br> | <span class="prop-default">'anchorEl'</span> |  |
+| <span class="prop-name">anchorReference</span> | <span class="prop-type">enum:&nbsp;'anchorEl'&nbsp;&#124;<br>&nbsp;'anchorPosition'&nbsp;&#124;<br>&nbsp;'none'<br> | <span class="prop-default">'anchorEl'</span> |  |
 | <span class="prop-name">children</span> | <span class="prop-type">node |  | The content of the component. |
-| <span class="prop-name">classes</span> | <span class="prop-type">object |  | Useful to extend the style applied to components. |
-| <span class="prop-name">container</span> | <span class="prop-type">union:&nbsp;object&nbsp;&#124;<br>&nbsp;func<br> |  | A node, component instance, or function that returns either. The `container` will passed to the Modal component. By default, it's using the body of the anchorEl's top-level document object, so it's simply `document.body` most of the time. |
+| <span class="prop-name">classes</span> | <span class="prop-type">object |  | Override or extend the styles applied to the component. See [CSS API](#css-api) below for more details. |
+| <span class="prop-name">container</span> | <span class="prop-type">union:&nbsp;object&nbsp;&#124;<br>&nbsp;func<br> |  | A node, component instance, or function that returns either. The `container` will passed to the Modal component. By default, it uses the body of the anchorEl's top-level document object, so it's simply `document.body` most of the time. |
 | <span class="prop-name">elevation</span> | <span class="prop-type">number | <span class="prop-default">8</span> | The elevation of the popover. |
 | <span class="prop-name">getContentAnchorEl</span> | <span class="prop-type">func |  | This function is called in order to retrieve the content anchor element. It's the opposite of the `anchorEl` property. The content anchor element should be an element inside the popover. It's used to correctly scroll and set the position of the popover. The positioning strategy tries to make the content anchor element just above the anchor element. |
 | <span class="prop-name">marginThreshold</span> | <span class="prop-type">number | <span class="prop-default">16</span> | Specifies how close to the edge of the window the popover can appear. |
@@ -33,8 +33,9 @@ filename: /src/Popover/Popover.js
 | <span class="prop-name required">open *</span> | <span class="prop-type">bool |  | If `true`, the popover is visible. |
 | <span class="prop-name">PaperProps</span> | <span class="prop-type">object |  | Properties applied to the `Paper` element. |
 | <span class="prop-name">transformOrigin</span> | <span class="prop-type">{horizontal?: union:&nbsp;number&nbsp;&#124;<br>&nbsp;enum:&nbsp;'left'&nbsp;&#124;<br>&nbsp;'center'&nbsp;&#124;<br>&nbsp;'right'<br><br>, vertical?: union:&nbsp;number&nbsp;&#124;<br>&nbsp;enum:&nbsp;'top'&nbsp;&#124;<br>&nbsp;'center'&nbsp;&#124;<br>&nbsp;'bottom'<br><br>} | <span class="prop-default">{  vertical: 'top',  horizontal: 'left',}</span> | This is the point on the popover which will attach to the anchor's origin.<br>Options: vertical: [top, center, bottom, x(px)]; horizontal: [left, center, right, x(px)]. |
-| <span class="prop-name">transition</span> | <span class="prop-type">union:&nbsp;string&nbsp;&#124;<br>&nbsp;func<br> | <span class="prop-default">Grow</span> | Transition component. |
+| <span class="prop-name">TransitionComponent</span> | <span class="prop-type">union:&nbsp;string&nbsp;&#124;<br>&nbsp;func<br> | <span class="prop-default">Grow</span> | Transition component. |
 | <span class="prop-name">transitionDuration</span> | <span class="prop-type">union:&nbsp;number&nbsp;&#124;<br>&nbsp;{enter?: number, exit?: number}&nbsp;&#124;<br>&nbsp;enum:&nbsp;'auto'<br><br> | <span class="prop-default">'auto'</span> | Set to 'auto' to automatically calculate transition time based on height. |
+| <span class="prop-name">TransitionProps</span> | <span class="prop-type">object |  | Properties applied to the `Transition` element. |
 
 Any other properties supplied will be [spread to the root element](/guides/api#spread).
 
@@ -45,7 +46,7 @@ This property accepts the following keys:
 - `paper`
 
 Have a look at [overriding with classes](/customization/overrides#overriding-with-classes) section
-and the [implementation of the component](https://github.com/mui-org/material-ui/tree/v1-beta/src/Popover/Popover.js)
+and the [implementation of the component](https://github.com/mui-org/material-ui/tree/master/packages/material-ui/src/Popover/Popover.js)
 for more detail.
 
 If using the `overrides` key of the theme as documented

@@ -15,7 +15,7 @@ Menus are positioned over their emitting elements such that the currently select
 As the user experience can be improved on mobile using the native select of the platform,
 we allow such pattern.
 
-{{"demo": "pages/demos/selects/NativeSelect.js"}}
+{{"demo": "pages/demos/selects/NativeSelects.js"}}
 
 ## Multiple Select
 
@@ -28,7 +28,7 @@ Like with the single selection, you can pull out the new value by accessing `eve
 
 ## With a Dialog
 
-While it's not encouraged by the Material Design specification, you can use a select inside a dialog.
+While it's discouraged by the Material Design specification, you can use a select inside a dialog.
 
 {{"demo": "pages/demos/selects/DialogSelect.js"}}
 

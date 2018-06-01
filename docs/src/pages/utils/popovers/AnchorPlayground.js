@@ -1,22 +1,68 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import { FormControl, FormLabel, FormControlLabel } from 'material-ui/Form';
-import Radio, { RadioGroup } from 'material-ui/Radio';
-import Grid from 'material-ui/Grid';
-import Typography from 'material-ui/Typography';
-import Button from 'material-ui/Button';
-import Popover from 'material-ui/Popover';
-import Input, { InputLabel } from 'material-ui/Input';
+import { withStyles } from '@material-ui/core/styles';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import Radio from '@material-ui/core/Radio';
+import MarkdownElement from '@material-ui/docs/MarkdownElement';
+import Grid from '@material-ui/core/Grid';
+import green from '@material-ui/core/colors/green';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import Popover from '@material-ui/core/Popover';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
 
 const styles = theme => ({
-  button: {
+  buttonWrapper: {
+    position: 'relative',
     marginBottom: theme.spacing.unit * 4,
   },
+  anchor: {
+    backgroundColor: green[500],
+    width: 10,
+    height: 10,
+    borderRadius: '50%',
+    position: 'absolute',
+  },
+  radioAnchor: {
+    color: green[600],
+    '&$checked': {
+      color: green[500],
+    },
+  },
+  checked: {},
   typography: {
     margin: theme.spacing.unit * 2,
   },
 });
+
+const inlineStyles = {
+  anchorVertical: {
+    top: {
+      top: -5,
+    },
+    center: {
+      top: 'calc(50% - 5px)',
+    },
+    bottom: {
+      bottom: -5,
+    },
+  },
+  anchorHorizontal: {
+    left: {
+      left: -5,
+    },
+    center: {
+      left: 'calc(50% - 5px)',
+    },
+    right: {
+      right: -5,
+    },
+  },
+};
 
 class AnchorPlayground extends React.Component {
   state = {
@@ -69,20 +115,53 @@ class AnchorPlayground extends React.Component {
       anchorReference,
     } = this.state;
 
+    let mode = '';
+
+    if (anchorReference === 'anchorPosition') {
+      mode = `
+  anchorReference="${anchorReference}"
+  anchorPosition={{ top: ${positionTop}, left: ${positionLeft} }}`;
+    }
+
+    const code = `
+\`\`\`jsx
+<Popover ${mode}
+  anchorOrigin={{
+    vertical: '${anchorOriginVertical}',
+    horizontal: '${anchorOriginHorizontal}',
+  }}
+  transformOrigin={{
+    vertical: '${transformOriginVertical}',
+    horizontal: '${transformOriginHorizontal}',
+  }}
+>
+\`\`\`
+`;
+
+    const radioAnchorClasses = { root: classes.radioAnchor, checked: classes.checked };
+
     return (
       <div>
         <Grid container justify="center" spacing={0}>
-          <Grid item>
+          <Grid item className={classes.buttonWrapper}>
             <Button
               buttonRef={node => {
                 this.anchorEl = node;
               }}
               variant="raised"
-              className={classes.button}
               onClick={this.handleClickButton}
             >
               Open Popover
             </Button>
+            {anchorReference === 'anchorEl' && (
+              <div
+                className={classes.anchor}
+                style={{
+                  ...inlineStyles.anchorVertical[anchorOriginVertical],
+                  ...inlineStyles.anchorHorizontal[anchorOriginHorizontal],
+                }}
+              />
+            )}
           </Grid>
         </Grid>
         <Popover
@@ -152,9 +231,21 @@ class AnchorPlayground extends React.Component {
                 value={this.state.anchorOriginVertical}
                 onChange={this.handleChange('anchorOriginVertical')}
               >
-                <FormControlLabel value="top" control={<Radio />} label="Top" />
-                <FormControlLabel value="center" control={<Radio />} label="Center" />
-                <FormControlLabel value="bottom" control={<Radio />} label="Bottom" />
+                <FormControlLabel
+                  value="top"
+                  control={<Radio classes={radioAnchorClasses} />}
+                  label="Top"
+                />
+                <FormControlLabel
+                  value="center"
+                  control={<Radio classes={radioAnchorClasses} />}
+                  label="Center"
+                />
+                <FormControlLabel
+                  value="bottom"
+                  control={<Radio classes={radioAnchorClasses} />}
+                  label="Bottom"
+                />
               </RadioGroup>
             </FormControl>
           </Grid>
@@ -167,9 +258,17 @@ class AnchorPlayground extends React.Component {
                 value={this.state.transformOriginVertical}
                 onChange={this.handleChange('transformOriginVertical')}
               >
-                <FormControlLabel value="top" control={<Radio />} label="Top" />
-                <FormControlLabel value="center" control={<Radio />} label="Center" />
-                <FormControlLabel value="bottom" control={<Radio />} label="Bottom" />
+                <FormControlLabel value="top" control={<Radio color="primary" />} label="Top" />
+                <FormControlLabel
+                  value="center"
+                  control={<Radio color="primary" />}
+                  label="Center"
+                />
+                <FormControlLabel
+                  value="bottom"
+                  control={<Radio color="primary" />}
+                  label="Bottom"
+                />
               </RadioGroup>
             </FormControl>
           </Grid>
@@ -183,9 +282,21 @@ class AnchorPlayground extends React.Component {
                 value={this.state.anchorOriginHorizontal}
                 onChange={this.handleChange('anchorOriginHorizontal')}
               >
-                <FormControlLabel value="left" control={<Radio />} label="Left" />
-                <FormControlLabel value="center" control={<Radio />} label="Center" />
-                <FormControlLabel value="right" control={<Radio />} label="Right" />
+                <FormControlLabel
+                  value="left"
+                  control={<Radio classes={radioAnchorClasses} />}
+                  label="Left"
+                />
+                <FormControlLabel
+                  value="center"
+                  control={<Radio classes={radioAnchorClasses} />}
+                  label="Center"
+                />
+                <FormControlLabel
+                  value="right"
+                  control={<Radio classes={radioAnchorClasses} />}
+                  label="Right"
+                />
               </RadioGroup>
             </FormControl>
           </Grid>
@@ -199,13 +310,18 @@ class AnchorPlayground extends React.Component {
                 value={this.state.transformOriginHorizontal}
                 onChange={this.handleChange('transformOriginHorizontal')}
               >
-                <FormControlLabel value="left" control={<Radio />} label="Left" />
-                <FormControlLabel value="center" control={<Radio />} label="Center" />
-                <FormControlLabel value="right" control={<Radio />} label="Right" />
+                <FormControlLabel value="left" control={<Radio color="primary" />} label="Left" />
+                <FormControlLabel
+                  value="center"
+                  control={<Radio color="primary" />}
+                  label="Center"
+                />
+                <FormControlLabel value="right" control={<Radio color="primary" />} label="Right" />
               </RadioGroup>
             </FormControl>
           </Grid>
         </Grid>
+        <MarkdownElement text={code} />
       </div>
     );
   }

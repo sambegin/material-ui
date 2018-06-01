@@ -2,12 +2,12 @@
 
 ## Responsive UI
 
-[Responsive layouts](https://material.io/guidelines/layout/responsive-ui.html) in Material Design adapt to any possible screen size.
+[Responsive layouts](https://material.io/design/layout/responsive-layout-grid.html) in Material Design adapt to any possible screen size.
 
 ### Breakpoints
 
 For optimal user experience, material design interfaces need to be able to adapt their layout at various breakpoints.
-Material-UI uses a **simplified** implementation of the original [specification](https://material.io/guidelines/layout/responsive-ui.html#responsive-ui-breakpoints).
+Material-UI uses a **simplified** implementation of the original [specification](https://material.io/design/layout/responsive-layout-grid.html#breakpoints).
 
 Each breakpoint matches with a *fixed* screen width:
 - **xs**, extra-small: 0px or larger
@@ -30,7 +30,7 @@ Several Material-UI components utilize `z-index`, the CSS property that helps co
 We utilize a default z-index scale in Material-UI that's been designed to properly layer drawers,
 modals, snackbars, tooltips, and more.
 
-[These values](https://github.com/mui-org/material-ui/blob/v1-beta/src/styles/zIndex.js) start at an arbitrary number, high and specific enough to ideally avoid conflicts.
+[These values](https://github.com/mui-org/material-ui/blob/master/packages/material-ui/src/styles/zIndex.js) start at an arbitrary number, high and specific enough to ideally avoid conflicts.
 
 - mobile stepper: 1000
 - app bar: 1100

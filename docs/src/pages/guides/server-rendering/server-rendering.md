@@ -30,7 +30,6 @@ If you're unfamiliar with Express or middleware, just know that our handleRender
 `server.js`
 
 ```js
-import path from 'path';
 import express from 'express';
 import React from 'react';
 import App from './App';
@@ -60,7 +59,7 @@ The first thing that we need to do on every request is create a new `sheetsRegis
 When rendering, we will wrap `App`, our root component,
 inside a `JssProvider` and [`MuiThemeProvider`](/api/mui-theme-provider) to make the `sheetsRegistry` and the `theme` available to all components in the component tree.
 
-The key step in server side rendering is to render the initial HTML of our component **before** we send it to the client side. To do this, we use [ReactDOMServer.renderToString()](https://facebook.github.io/react/docs/react-dom-server.html).
+The key step in server side rendering is to render the initial HTML of our component **before** we send it to the client side. To do this, we use [ReactDOMServer.renderToString()](https://reactjs.org/docs/react-dom-server.html).
 
 We then get the CSS from our `sheetsRegistry` using `sheetsRegistry.toString()`. We will see how this is passed along in our `renderFullPage` function.
 
@@ -68,8 +67,8 @@ We then get the CSS from our `sheetsRegistry` using `sheetsRegistry.toString()`.
 import { renderToString } from 'react-dom/server'
 import { SheetsRegistry } from 'react-jss/lib/jss';
 import JssProvider from 'react-jss/lib/JssProvider';
-import { MuiThemeProvider, createMuiTheme, createGenerateClassName } from 'material-ui/styles';
-import { green, red } from 'material-ui/colors';
+import { MuiThemeProvider, createMuiTheme, createGenerateClassName } from '@material-ui/core/styles';
+import { green, red } from '@material-ui/core/colors';
 
 function handleRender(req, res) {
   // Create a sheetsRegistry instance.
@@ -133,9 +132,9 @@ Let's take a look at our client file:
 
 ```jsx
 import React from 'react';
-import { render } from 'react-dom';
-import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
-import { green, red } from 'material-ui/colors';
+import { hydrate } from 'react-dom';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { green, red } from '@material-ui/core/colors';
 import App from './App';
 
 class Main extends React.Component {
@@ -161,10 +160,34 @@ const theme = createMuiTheme({
   },
 });
 
-render(
+hydrate(
   <MuiThemeProvider theme={theme}>
     <Main />
   </MuiThemeProvider>,
   document.querySelector('#root'),
 );
 ```
+
+## Troubleshooting
+
+If it doesn't work, in 99% of cases it's a configuration issue.
+A missing property, a wrong call order, or a missing component. We are very strict about configuration, and the best way to find out what's wrong is to compare your project to an already working setup, check out our [examples](https://github.com/mui-org/material-ui/tree/master/examples) (Next.js or Gatsby), bit by bit.
+
+### React class name hydration mismatch
+
+There is a class name mismatch between the client and the server.
+
+#### Action to Take
+
+The class names value relies on the concept of [class name generator](http://0.0.0.0:3000/customization/css-in-js#creategenerateclassname-options-class-name-generator). The whole page needs to be rendered with **one generator**, first on the server, then on the client.
+
+### CSS Works on only on first load
+
+The CSS is only generated on the first load of the page.
+It's missing on the server for consecutive requests.
+
+#### Action to Take
+
+We rely on a cache, the `sheetsManager`, to only inject the CSS once per component type.
+You can learn more about [this concept in the documentation](/customization/css-in-js/#sheets-manager).
+You need to provide **a new sheet manager cache for each request**.

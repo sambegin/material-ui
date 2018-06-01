@@ -1,8 +1,8 @@
 {
-  "name": "material-ui-codemod",
+  "name": "@material-ui/codemod",
   "private": false,
   "author": "Material-UI Team",
-  "version": "1.0.0-beta.35",
+  "version": "1.1.0",
   "description": "Codemod scripts for Material-UI.",
   "keywords": [
     "react",
@@ -16,19 +16,24 @@
     "test": "yarn test:unit",
     "test:unit": "cd ../../ && ./node_modules/.bin/mocha packages/material-ui-codemod/src/**/*.test.js",
     "test:watch": "yarn test:unit --watch",
-    "build": "../../node_modules/.bin/rimraf lib && ../../node_modules/.bin/babel ./src --out-dir ./lib",
-    "version": "npm publish"
+    "prebuild": "../../node_modules/.bin/rimraf lib",
+    "build": "../../node_modules/.bin/cross-env NODE_ENV=production ../../node_modules/.bin/babel ./src --out-dir ./lib --ignore **/*.test*",
+    "release": "yarn build && npm publish"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/mui-org/material-ui.git"
   },
   "license": "MIT",
-  "homepage": "https://github.com/mui-org/material-ui/tree/v1-beta/packages/material-ui-codemod",
+  "homepage": "https://github.com/mui-org/material-ui/tree/master/packages/material-ui-codemod",
   "devDependencies": {
-    "jscodeshift": "^0.4.0"
+    "jscodeshift": "^0.5.0"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
   },
   "engines": {
-    "node": ">=6.11.0"
+    "node": ">=6.0.0"
   }
 }

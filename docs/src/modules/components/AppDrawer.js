@@ -1,13 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import List from 'material-ui/List';
-import Drawer from 'material-ui/Drawer';
-import SwipeableDrawer from 'material-ui/SwipeableDrawer';
-import Typography from 'material-ui/Typography';
-import Divider from 'material-ui/Divider';
-import Hidden from 'material-ui/Hidden';
+import { withStyles } from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
+import Drawer from '@material-ui/core/Drawer';
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
+import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
+import Hidden from '@material-ui/core/Hidden';
 import AppDrawerNavItem from 'docs/src/modules/components/AppDrawerNavItem';
 import Link from 'docs/src/modules/components/Link';
 import { pageToTitle } from 'docs/src/modules/utils/helpers';
@@ -56,6 +56,10 @@ function renderNavItems({ pages, ...params }) {
 }
 
 function reduceChildRoutes({ props, activePage, items, page, depth }) {
+  if (page.displayNav === false) {
+    return items;
+  }
+
   if (page.children && page.children.length > 1) {
     const title = pageToTitle(page);
     const openImmediately = activePage.pathname.indexOf(page.pathname) === 0;
@@ -65,7 +69,7 @@ function reduceChildRoutes({ props, activePage, items, page, depth }) {
         {renderNavItems({ props, pages: page.children, activePage, depth: depth + 1 })}
       </AppDrawerNavItem>,
     );
-  } else if (page.title !== false) {
+  } else {
     const title = pageToTitle(page);
     page = page.children && page.children.length === 1 ? page.children[0] : page;
 
@@ -83,12 +87,9 @@ function reduceChildRoutes({ props, activePage, items, page, depth }) {
   return items;
 }
 
-const GITHUB_RELEASE_BASE_URL = 'https://github.com/mui-org/material-ui/releases/tag/';
 // iOS is hosted on high-end devices. We can enable the backdrop transition without
 // dropping frames. The performance will be good enough.
-// iOS has a "swipe to go back" feature that mess with the discovery feature.
-// We have to disable it.
-// So: <SwipeableDrawer disableBackdropTransition={false} disableDiscovery={true} />
+// So: <SwipeableDrawer disableBackdropTransition={false} />
 const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
 function AppDrawer(props, context) {
@@ -104,10 +105,7 @@ function AppDrawer(props, context) {
             </Typography>
           </Link>
           {process.env.LIB_VERSION ? (
-            <Link
-              className={classes.anchor}
-              href={`${GITHUB_RELEASE_BASE_URL}v${process.env.LIB_VERSION}`}
-            >
+            <Link className={classes.anchor} href="/versions">
               <Typography variant="caption">{`v${process.env.LIB_VERSION}`}</Typography>
             </Link>
           ) : null}
@@ -126,7 +124,6 @@ function AppDrawer(props, context) {
             paper: classNames(classes.paper, 'algolia-drawer'),
           }}
           disableBackdropTransition={!iOS}
-          disableDiscovery={iOS}
           variant="temporary"
           open={mobileOpen}
           onOpen={onOpen}

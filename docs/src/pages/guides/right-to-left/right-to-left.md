@@ -29,7 +29,7 @@ Once you have created a new JSS instance with the plugin, you need to make it av
 import { create } from 'jss';
 import rtl from 'jss-rtl';
 import JssProvider from 'react-jss/lib/JssProvider';
-import { createGenerateClassName, jssPreset } from 'material-ui/styles';
+import { createGenerateClassName, jssPreset } from '@material-ui/core/styles';
 
 // Configure JSS
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
@@ -48,7 +48,7 @@ function RTL(props) {
 
 ## Demo
 
-*Use the direction toggle button on the top left corner to flip the whole documentation*
+*Use the direction toggle button on the top right corner to flip the whole documentation*
 
 {{"demo": "pages/guides/right-to-left/Direction.js"}}
 
@@ -57,6 +57,6 @@ function RTL(props) {
 
 If you want to prevent a specific rule-set from being affected by the `rtl` transformation you can add `flip: false` at the begining:
 
-*Use the direction toggle button on the top left corner to see the effect*
+*Use the direction toggle button on the top right corner to see the effect*
 
 {{"demo": "pages/guides/right-to-left/RtlOptOut.js", "hideEditButton": true}}

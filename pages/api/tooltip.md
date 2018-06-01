@@ -1,5 +1,5 @@
 ---
-filename: /src/Tooltip/Tooltip.js
+filename: /packages/material-ui/src/Tooltip/Tooltip.js
 ---
 
 <!--- This documentation is automatically generated, do not try to edit it. -->
@@ -13,7 +13,7 @@ filename: /src/Tooltip/Tooltip.js
 | Name | Type | Default | Description |
 |:-----|:-----|:--------|:------------|
 | <span class="prop-name required">children *</span> | <span class="prop-type">element |  | Tooltip reference element. |
-| <span class="prop-name">classes</span> | <span class="prop-type">object |  | Useful to extend the style applied to components. |
+| <span class="prop-name">classes</span> | <span class="prop-type">object |  | Override or extend the styles applied to the component. See [CSS API](#css-api) below for more details. |
 | <span class="prop-name">disableFocusListener</span> | <span class="prop-type">bool | <span class="prop-default">false</span> | Do not respond to focus events. |
 | <span class="prop-name">disableHoverListener</span> | <span class="prop-type">bool | <span class="prop-default">false</span> | Do not respond to hover events. |
 | <span class="prop-name">disableTouchListener</span> | <span class="prop-type">bool | <span class="prop-default">false</span> | Do not respond to long press touch events. |
@@ -35,18 +35,17 @@ Any other properties supplied will be [spread to the root element](/guides/api#s
 
 You can override all the class names injected by Material-UI thanks to the `classes` property.
 This property accepts the following keys:
-- `root`
 - `popper`
-- `popperClose`
+- `open`
 - `tooltip`
+- `touch`
 - `tooltipPlacementLeft`
 - `tooltipPlacementRight`
 - `tooltipPlacementTop`
 - `tooltipPlacementBottom`
-- `tooltipOpen`
 
 Have a look at [overriding with classes](/customization/overrides#overriding-with-classes) section
-and the [implementation of the component](https://github.com/mui-org/material-ui/tree/v1-beta/src/Tooltip/Tooltip.js)
+and the [implementation of the component](https://github.com/mui-org/material-ui/tree/master/packages/material-ui/src/Tooltip/Tooltip.js)
 for more detail.
 
 If using the `overrides` key of the theme as documented

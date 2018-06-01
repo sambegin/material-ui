@@ -1,5 +1,5 @@
 ---
-filename: /src/Input/InputLabel.js
+filename: /packages/material-ui/src/InputLabel/InputLabel.js
 ---
 
 <!--- This documentation is automatically generated, do not try to edit it. -->
@@ -13,7 +13,7 @@ filename: /src/Input/InputLabel.js
 | Name | Type | Default | Description |
 |:-----|:-----|:--------|:------------|
 | <span class="prop-name">children</span> | <span class="prop-type">node |  | The contents of the `InputLabel`. |
-| <span class="prop-name">classes</span> | <span class="prop-type">object |  | Useful to extend the style applied to components. |
+| <span class="prop-name">classes</span> | <span class="prop-type">object |  | Override or extend the styles applied to the component. See [CSS API](#css-api) below for more details. |
 | <span class="prop-name">disableAnimation</span> | <span class="prop-type">bool | <span class="prop-default">false</span> | If `true`, the transition animation is disabled. |
 | <span class="prop-name">disabled</span> | <span class="prop-type">bool |  | If `true`, apply disabled class. |
 | <span class="prop-name">error</span> | <span class="prop-type">bool |  | If `true`, the label will be displayed in an error state. |
@@ -36,7 +36,7 @@ This property accepts the following keys:
 - `animated`
 
 Have a look at [overriding with classes](/customization/overrides#overriding-with-classes) section
-and the [implementation of the component](https://github.com/mui-org/material-ui/tree/v1-beta/src/Input/InputLabel.js)
+and the [implementation of the component](https://github.com/mui-org/material-ui/tree/master/packages/material-ui/src/InputLabel/InputLabel.js)
 for more detail.
 
 If using the `overrides` key of the theme as documented

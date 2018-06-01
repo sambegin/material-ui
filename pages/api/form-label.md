@@ -1,5 +1,5 @@
 ---
-filename: /src/Form/FormLabel.js
+filename: /packages/material-ui/src/FormLabel/FormLabel.js
 ---
 
 <!--- This documentation is automatically generated, do not try to edit it. -->
@@ -13,7 +13,7 @@ filename: /src/Form/FormLabel.js
 | Name | Type | Default | Description |
 |:-----|:-----|:--------|:------------|
 | <span class="prop-name">children</span> | <span class="prop-type">node |  | The content of the component. |
-| <span class="prop-name">classes</span> | <span class="prop-type">object |  | Useful to extend the style applied to components. |
+| <span class="prop-name">classes</span> | <span class="prop-type">object |  | Override or extend the styles applied to the component. See [CSS API](#css-api) below for more details. |
 | <span class="prop-name">component</span> | <span class="prop-type">union:&nbsp;string&nbsp;&#124;<br>&nbsp;func<br> | <span class="prop-default">'label'</span> | The component used for the root node. Either a string to use a DOM element or a component. |
 | <span class="prop-name">disabled</span> | <span class="prop-type">bool |  | If `true`, the label should be displayed in a disabled state. |
 | <span class="prop-name">error</span> | <span class="prop-type">bool |  | If `true`, the label should be displayed in an error state. |
@@ -31,10 +31,9 @@ This property accepts the following keys:
 - `disabled`
 - `error`
 - `asterisk`
-- `asteriskError`
 
 Have a look at [overriding with classes](/customization/overrides#overriding-with-classes) section
-and the [implementation of the component](https://github.com/mui-org/material-ui/tree/v1-beta/src/Form/FormLabel.js)
+and the [implementation of the component](https://github.com/mui-org/material-ui/tree/master/packages/material-ui/src/FormLabel/FormLabel.js)
 for more detail.
 
 If using the `overrides` key of the theme as documented

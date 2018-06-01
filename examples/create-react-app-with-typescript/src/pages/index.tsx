@@ -1,13 +1,12 @@
 import * as React from 'react';
-import Button from 'material-ui/Button';
-import Dialog, {
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-} from 'material-ui/Dialog';
-import Typography from 'material-ui/Typography';
-import withStyles, { WithStyles, StyleRulesCallback } from 'material-ui/styles/withStyles';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Typography from '@material-ui/core/Typography';
+import withStyles, { WithStyles, StyleRulesCallback } from '@material-ui/core/styles/withStyles';
 import withRoot from '../withRoot';
 
 const styles: StyleRulesCallback<'root'> = theme => ({

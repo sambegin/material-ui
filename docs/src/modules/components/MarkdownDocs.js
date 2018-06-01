@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import kebabCase from 'lodash/kebabCase';
 import warning from 'warning';
 import Head from 'next/head';
-import { withStyles } from 'material-ui/styles';
-import Button from 'material-ui/Button';
+import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 import MarkdownElement from '@material-ui/docs/MarkdownElement';
 import AppContent from 'docs/src/modules/components/AppContent';
 import Demo from 'docs/src/modules/components/Demo';
@@ -28,7 +28,7 @@ const styles = theme => ({
 });
 
 const demoRegexp = /^"demo": "(.*)"/;
-const SOURCE_CODE_ROOT_URL = 'https://github.com/mui-org/material-ui/tree/v1-beta';
+const SOURCE_CODE_ROOT_URL = 'https://github.com/mui-org/material-ui/tree/master';
 
 function MarkdownDocs(props, context) {
   const { classes, demos, disableCarbon, markdown, markdownLocation: markdownLocationProp } = props;

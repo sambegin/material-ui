@@ -10,22 +10,22 @@ When in doubt, keep your pull requests small. To give a PR the best chance of ge
 
 As with issues, please begin the title with [ComponentName].
 
-When adding new features or modifying existing, please attempt to include tests to confirm the new behaviour. You can read more about our test setup [here](https://github.com/mui-org/material-ui/blob/v1-beta/test/README.md).
+When adding new features or modifying existing, please attempt to include tests to confirm the new behaviour. You can read more about our test setup [here](https://github.com/mui-org/material-ui/blob/master/test/README.md).
 
-When migrating a component to v1-beta, or submitting a new component, please add it to the [lab](https://github.com/mui-org/material-ui/tree/v1-beta/packages/material-ui-lab).
+When migrating a component to master, or submitting a new component, please add it to the [lab](https://github.com/mui-org/material-ui/tree/master/packages/material-ui-lab).
 
 ### Branch Structure
 
-All stable releases are tagged ([view tags](https://github.com/mui-org/material-ui/tags)). At any given time, `v1-beta` represents the latest development version of the library.
+All stable releases are tagged ([view tags](https://github.com/mui-org/material-ui/tags)). At any given time, `master` represents the latest development version of the library.
 Patches or hotfix releases are prepared on an independent branch.
 
-#### `v1-beta` is unsafe
+#### `master` is unsafe
 
-We will do our best to keep `v1-beta` in good shape, with tests passing at all times. But in order to move fast, we will make API changes that your application might not be compatible with.
+We will do our best to keep `master` in good shape, with tests passing at all times. But in order to move fast, we will make API changes that your application might not be compatible with.
 
 ## Getting started
 
-Please create a new branch from an up to date v1-beta on your fork. (Note, urgent hotfixes should be branched off the latest stable release rather than v1-beta)
+Please create a new branch from an up to date master on your fork. (Note, urgent hotfixes should be branched off the latest stable release rather than master)
 
 1. Fork the Material-UI repository on Github
 2. Clone your fork to your local machine `git clone git@github.com:<yourname>/material-ui.git`
@@ -34,10 +34,10 @@ Please create a new branch from an up to date v1-beta on your fork. (Note, urgen
 5. Visit GitHub and make your pull request.
 
 If you have an existing local repository, please update it before you start, to minimise the chance of merge conflicts.
-```js
+```sh
 git remote add upstream git@github.com:mui-org/material-ui.git
-git checkout v1-beta
-git pull upstream v1-beta
+git checkout master
+git pull upstream master
 git checkout -b my-topic-branch
 yarn
 ```
@@ -46,7 +46,7 @@ yarn
 
 The documentation site is built with Material-UI and contains examples of all the components.
 To get started:
-```js
+```sh
 yarn
 yarn docs:dev
 ```
@@ -102,8 +102,8 @@ pages/demos/buttons.js
 Then, you will need to add the following code:
 ```diff
 + 'pages/demos/buttons/SuperButtons.js': {
-+          js: require('docs/src/pages/demos/buttons/SuperButtons').default,
-+          raw: preval`
++   js: require('docs/src/pages/demos/buttons/SuperButtons').default,
++   raw: preval`
 + module.exports = require('fs')
 +  .readFileSync(require.resolve('docs/src/pages/demos/buttons/SuperButtons'), 'utf8')
 +`,
@@ -122,6 +122,7 @@ First, you have to build your local distribution of Material-UI:
 
 ```shell
 # From the root folder of the material-ui project
+cd packages/material-ui
 yarn build
 ```
 
@@ -136,7 +137,7 @@ Now, every time you import `material-ui` in your project, it is going to use you
 
 ## Roadmap
 
-To get a sense of where Material-UI is heading, or for ideas on where you could contribute, take a look at the [ROADMAP](https://github.com/mui-org/material-ui/blob/v1-beta/ROADMAP.md).
+To get a sense of where Material-UI is heading, or for ideas on where you could contribute, take a look at the [ROADMAP](https://github.com/mui-org/material-ui/blob/master/ROADMAP.md).
 
 ## License
 

@@ -1,15 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import green from 'material-ui/colors/green';
-import Radio from 'material-ui/Radio';
-import RadioButtonUncheckedIcon from 'material-ui-icons/RadioButtonUnchecked';
-import RadioButtonCheckedIcon from 'material-ui-icons/RadioButtonChecked';
+import { withStyles } from '@material-ui/core/styles';
+import green from '@material-ui/core/colors/green';
+import Radio from '@material-ui/core/Radio';
+import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
+import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 
 const styles = {
-  checked: {
-    color: green[500],
+  root: {
+    color: green[600],
+    '&$checked': {
+      color: green[500],
+    },
   },
+  checked: {},
   size: {
     width: 40,
     height: 40,
@@ -54,6 +58,7 @@ class RadioButtons extends React.Component {
           name="radio-button-demo"
           aria-label="C"
           classes={{
+            root: classes.root,
             checked: classes.checked,
           }}
         />

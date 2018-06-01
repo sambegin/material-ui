@@ -1,16 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import Button from 'material-ui/Button';
+import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 import SpeedDial from '@material-ui/lab/SpeedDial';
 import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
-import ContentCopyIcon from 'material-ui-icons/ContentCopy';
-import SaveIcon from 'material-ui-icons/Save';
-import PrintIcon from 'material-ui-icons/Print';
-import ShareIcon from 'material-ui-icons/Share';
-import DeleteIcon from 'material-ui-icons/Delete';
-import EditIcon from 'material-ui-icons/ModeEdit';
+import ContentCopyIcon from '@material-ui/icons/ContentCopy';
+import SaveIcon from '@material-ui/icons/Save';
+import PrintIcon from '@material-ui/icons/Print';
+import ShareIcon from '@material-ui/icons/Share';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/ModeEdit';
 
 const styles = theme => ({
   root: {
@@ -72,6 +72,8 @@ class OpenIconSpeedDial extends React.Component {
       <div className={classes.root}>
         <Button onClick={this.handleVisibility}>Toggle Speed Dial</Button>
         <SpeedDial
+          tooltipTitle="Hey hey"
+          tooltipAlwaysOpen
           ariaLabel="SpeedDial openIcon example"
           className={classes.speedDial}
           hidden={hidden}
