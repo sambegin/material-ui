@@ -231,7 +231,7 @@ describe('<Input />', () => {
 
     it('should fire the onFilled callback when dirtied', () => {
       assert.strictEqual(handleFilled.callCount, 1, 'should not have called the onFilled cb yet');
-      wrapper.instance().input.value = 'hello';
+      wrapper.instance().inputRef.value = 'hello';
       wrapper.find('input').simulate('change');
       assert.strictEqual(handleFilled.callCount, 2, 'should have called the onFilled cb');
     });
@@ -239,7 +239,7 @@ describe('<Input />', () => {
     it('should fire the onEmpty callback when cleaned', () => {
       // Because of shallow() this hasn't fired since there is no mounting
       assert.strictEqual(handleEmpty.callCount, 0, 'should not have called the onEmpty cb yet');
-      wrapper.instance().input.value = '';
+      wrapper.instance().inputRef.value = '';
       wrapper.find('input').simulate('change');
       assert.strictEqual(handleEmpty.callCount, 1, 'should have called the onEmpty cb');
     });
@@ -264,20 +264,23 @@ describe('<Input />', () => {
     });
 
     describe('callbacks', () => {
-      let handleFilled;
-      let handleEmpty;
-
       beforeEach(() => {
-        handleFilled = spy();
-        handleEmpty = spy();
-        // Mock the input ref
-        wrapper.setProps({ onFilled: handleFilled, onEmpty: handleEmpty });
-        wrapper.instance().input = { value: '' };
-        setFormControlContext({ onFilled: spy(), onEmpty: spy() });
+        wrapper.instance().inputRef = { value: '' };
+        setFormControlContext({
+          onFilled: spy(),
+          onEmpty: spy(),
+          onFocus: spy(),
+          onBlur: spy(),
+        });
       });
 
       it('should fire the onFilled muiFormControl and props callback when dirtied', () => {
-        wrapper.instance().input.value = 'hello';
+        const handleFilled = spy();
+        wrapper.setProps({
+          onFilled: handleFilled,
+        });
+
+        wrapper.instance().inputRef.value = 'hello';
         wrapper.find('input').simulate('change');
         assert.strictEqual(handleFilled.callCount, 1, 'should have called the onFilled props cb');
         assert.strictEqual(
@@ -288,7 +291,12 @@ describe('<Input />', () => {
       });
 
       it('should fire the onEmpty muiFormControl and props callback when cleaned', () => {
-        wrapper.instance().input.value = '';
+        const handleEmpty = spy();
+        wrapper.setProps({
+          onEmpty: handleEmpty,
+        });
+
+        wrapper.instance().inputRef.value = '';
         wrapper.find('input').simulate('change');
         assert.strictEqual(handleEmpty.callCount, 1, 'should have called the onEmpty props cb');
         assert.strictEqual(
@@ -296,6 +304,28 @@ describe('<Input />', () => {
           1,
           'should have called the onEmpty muiFormControl cb',
         );
+      });
+
+      it('should fire the onFocus muiFormControl', () => {
+        const handleFocus = spy();
+        wrapper.setProps({
+          onFocus: handleFocus,
+        });
+
+        wrapper.find('input').simulate('focus');
+        assert.strictEqual(handleFocus.callCount, 1);
+        assert.strictEqual(muiFormControl.onFocus.callCount, 1);
+      });
+
+      it('should fire the onBlur muiFormControl', () => {
+        const handleBlur = spy();
+        wrapper.setProps({
+          onBlur: handleBlur,
+        });
+
+        wrapper.find('input').simulate('blur');
+        assert.strictEqual(handleBlur.callCount, 1);
+        assert.strictEqual(muiFormControl.onBlur.callCount, 1);
       });
     });
 
@@ -371,9 +401,9 @@ describe('<Input />', () => {
 
     it('should call checkDirty with input value', () => {
       instance.isControlled = false;
-      instance.input = 'woofinput';
+      instance.inputRef = 'woofinput';
       instance.componentDidMount();
-      assert.strictEqual(instance.checkDirty.calledWith(instance.input), true);
+      assert.strictEqual(instance.checkDirty.calledWith(instance.inputRef), true);
     });
 
     it('should call or not call checkDirty consistently', () => {
@@ -440,11 +470,11 @@ describe('<Input />', () => {
 
   describe('prop: inputProps', () => {
     it('should apply the props on the input', () => {
-      const wrapper = shallow(<Input inputProps={{ className: 'foo', readOnly: true }} />);
+      const wrapper = shallow(<Input inputProps={{ className: 'foo', maxLength: true }} />);
       const input = wrapper.find('input');
-      assert.strictEqual(input.hasClass('foo'), true, 'should have the foo class');
-      assert.strictEqual(input.hasClass(classes.input), true, 'should still have the input class');
-      assert.strictEqual(input.props().readOnly, true, 'should have the readOnly prop');
+      assert.strictEqual(input.hasClass('foo'), true);
+      assert.strictEqual(input.hasClass(classes.input), true);
+      assert.strictEqual(input.props().maxLength, true);
     });
 
     it('should be able to get a ref', () => {
@@ -469,6 +499,20 @@ describe('<Input />', () => {
       );
 
       assert.strictEqual(wrapper.childAt(1).type(), InputAdornment);
+    });
+  });
+
+  describe('prop: inputRef', () => {
+    it('should be able to return the input node via a ref object', () => {
+      const ref = React.createRef();
+      mount(<Input inputRef={ref} />);
+      assert.strictEqual(ref.current.tagName, 'INPUT');
+    });
+
+    it('should be able to return the textarea node via a ref object', () => {
+      const ref = React.createRef();
+      mount(<Input multiline inputRef={ref} />);
+      assert.strictEqual(ref.current.tagName, 'TEXTAREA');
     });
   });
 });

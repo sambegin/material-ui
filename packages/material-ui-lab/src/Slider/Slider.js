@@ -8,7 +8,7 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import clamp from '../utils/clamp';
 
-export const style = theme => {
+export const styles = theme => {
   const commonTransitionsOptions = {
     duration: theme.transitions.duration.short,
     easing: theme.transitions.easing.easeOut,
@@ -23,18 +23,15 @@ export const style = theme => {
 
   const colors = {
     primary: theme.palette.primary.main,
-    secondary: theme.palette.grey[400],
-    focused: theme.palette.grey[500],
     disabled: theme.palette.grey[400],
   };
 
   return {
-    /* Styles for wrapper container */
-    container: {
+    /* Styles applied to the root element. */
+    root: {
       position: 'relative',
       width: '100%',
-      margin: '10px 0',
-      padding: '6px 0',
+      padding: '16px 8px',
       cursor: 'pointer',
       WebkitTapHighlightColor: 'transparent',
       '&$disabled': {
@@ -42,8 +39,7 @@ export const style = theme => {
       },
       '&$vertical': {
         height: '100%',
-        margin: '0 10px',
-        padding: '0 6px',
+        padding: '8px 16px',
       },
       '&$reverse': {
         transform: 'scaleX(-1)',
@@ -52,18 +48,25 @@ export const style = theme => {
         transform: 'scaleY(-1)',
       },
     },
-    /* Tracks styles */
+    /* Styles applied to the container element. */
+    container: {
+      position: 'relative',
+      '&$vertical': {
+        height: '100%',
+      },
+    },
+    /* Styles applied to the track elements. */
     track: {
       position: 'absolute',
       transform: 'translate(0, -50%)',
       top: '50%',
       height: 2,
+      backgroundColor: colors.primary,
       '&$focused, &$activated': {
         transition: 'none',
-        backgroundColor: colors.focused,
       },
       '&$disabled': {
-        backgroundColor: colors.secondary,
+        backgroundColor: colors.disabled,
       },
       '&$vertical': {
         transform: 'translate(-50%, 0)',
@@ -71,28 +74,23 @@ export const style = theme => {
         top: 'initial',
         width: 2,
       },
-      '&$jumped': {
-        backgroundColor: colors.focused,
-      },
     },
+    /* Styles applied to the track element before the thumb. */
     trackBefore: {
       zIndex: 1,
       left: 0,
-      backgroundColor: colors.primary,
       transition: commonTransitions,
-      '&$focused, &$activated, &$jumped': {
-        backgroundColor: colors.primary,
-      },
     },
+    /* Styles applied to the track element after the thumb. */
     trackAfter: {
       right: 0,
-      backgroundColor: colors.secondary,
+      opacity: 0.24,
       transition: commonTransitions,
       '&$vertical': {
         bottom: 0,
       },
     },
-    /* Thumb styles  */
+    /* Styles applied to the thumb element. */
     thumb: {
       position: 'absolute',
       zIndex: 2,
@@ -116,30 +114,23 @@ export const style = theme => {
         height: 9,
         backgroundColor: colors.disabled,
       },
-      '&$zero': {
-        border: `2px solid ${colors.disabled}`,
-        backgroundColor: 'transparent',
-      },
-      '&$focused$zero': {
-        border: `2px solid ${colors.focused}`,
-        backgroundColor: fade(colors.focused, 0.34),
-        boxShadow: `0px 0px 0px 9px ${fade(colors.focused, 0.34)}`,
-      },
-      '&$activated$zero': {
-        border: `2px solid ${colors.focused}`,
-      },
       '&$jumped': {
         width: 17,
         height: 17,
       },
     },
-    focused: {},
-    activated: {},
-    disabled: {},
-    zero: {},
-    vertical: {},
+    /* Class applied to the root element to trigger JSS nested styles if `reverse={true}` . */
     reverse: {},
+    /* Class applied to the track and thumb elements to trigger JSS nested styles if `disabled`. */
+    disabled: {},
+    /* Class applied to the track and thumb elements to trigger JSS nested styles if `jumped`. */
     jumped: {},
+    /* Class applied to the track and thumb elements to trigger JSS nested styles if `focused`. */
+    focused: {},
+    /* Class applied to the track and thumb elements to trigger JSS nested styles if `activated`. */
+    activated: {},
+    /* Class applied to the root, track and container to trigger JSS nested styles if `vertical`. */
+    vertical: {},
   };
 };
 
@@ -153,7 +144,7 @@ function addEventListener(node, event, handler, capture) {
 }
 
 function percentToValue(percent, min, max) {
-  return (max - min) * percent / 100 + min;
+  return ((max - min) * percent) / 100 + min;
 }
 
 function roundToStep(number, step) {
@@ -161,12 +152,12 @@ function roundToStep(number, step) {
 }
 
 function getOffset(node) {
-  const { scrollY, scrollX } = global;
+  const { pageYOffset, pageXOffset } = global;
   const { left, top } = node.getBoundingClientRect();
 
   return {
-    top: top + scrollY,
-    left: left + scrollX,
+    top: top + pageYOffset,
+    left: left + pageXOffset,
   };
 }
 
@@ -199,7 +190,24 @@ function preventPageScrolling(event) {
   event.preventDefault();
 }
 
+/* istanbul ignore if */
+if (process.env.NODE_ENV !== 'production' && !React.createContext) {
+  throw new Error('Material-UI: react@16.3.0 or greater is required.');
+}
+
 class Slider extends React.Component {
+  state = { currentState: 'initial' };
+
+  componentDidMount() {
+    if (this.containerRef) {
+      this.containerRef.addEventListener('touchstart', preventPageScrolling, { passive: false });
+    }
+  }
+
+  componentWillUnmount() {
+    this.containerRef.removeEventListener('touchstart', preventPageScrolling, { passive: false });
+  }
+
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.disabled) {
       return { currentState: 'disabled' };
@@ -210,61 +218,6 @@ class Slider extends React.Component {
     }
 
     return null;
-  }
-
-  state = { currentState: 'initial' };
-
-  componentDidMount() {
-    if (this.container) {
-      this.container.addEventListener('touchstart', preventPageScrolling, { passive: false });
-    }
-  }
-
-  componentWillUnmount() {
-    this.container.removeEventListener('touchstart', preventPageScrolling, { passive: false });
-  }
-
-  emitChange(event, rawValue, callback) {
-    const { step, value: previousValue, onChange } = this.props;
-    let value = rawValue;
-
-    if (step) {
-      value = roundToStep(rawValue, step);
-    } else {
-      value = Number(rawValue.toFixed(3));
-    }
-
-    if (typeof onChange === 'function' && value !== previousValue) {
-      onChange(event, value);
-
-      if (typeof callback === 'function') {
-        callback();
-      }
-    }
-  }
-
-  calculateTrackAfterStyles(percent) {
-    const { currentState } = this.state;
-
-    switch (currentState) {
-      case 'activated':
-        return `calc(100% - ${percent === 0 ? 7 : 5}px)`;
-      case 'disabled':
-        return `calc(${100 - percent}% - 6px)`;
-      default:
-        return 'calc(100% - 5px)';
-    }
-  }
-
-  calculateTrackBeforeStyles(percent) {
-    const { currentState } = this.state;
-
-    switch (currentState) {
-      case 'disabled':
-        return `calc(${percent}% - 6px)`;
-      default:
-        return `${percent}%`;
-    }
   }
 
   handleKeyDown = event => {
@@ -316,7 +269,7 @@ class Slider extends React.Component {
 
   handleClick = event => {
     const { min, max, vertical, reverse } = this.props;
-    const percent = calculatePercent(this.container, event, vertical, reverse);
+    const percent = calculatePercent(this.containerRef, event, vertical, reverse);
     const value = percentToValue(percent, min, max);
 
     this.emitChange(event, value, () => {
@@ -325,6 +278,7 @@ class Slider extends React.Component {
   };
 
   handleTouchStart = event => {
+    event.preventDefault();
     this.setState({ currentState: 'activated' });
 
     this.globalMouseUpListener = addEventListener(document, 'touchend', this.handleMouseUp);
@@ -335,13 +289,14 @@ class Slider extends React.Component {
   };
 
   handleMouseDown = event => {
+    event.preventDefault();
     this.setState({ currentState: 'activated' });
 
     this.globalMouseUpListener = addEventListener(document, 'mouseup', this.handleMouseUp);
     this.globalMouseMoveListener = addEventListener(document, 'mousemove', this.handleMouseMove);
 
-    if (typeof this.props.onDragEnd === 'function') {
-      this.props.onDragEnd(event);
+    if (typeof this.props.onDragStart === 'function') {
+      this.props.onDragStart(event);
     }
   };
 
@@ -363,11 +318,58 @@ class Slider extends React.Component {
 
   handleMouseMove = event => {
     const { min, max, vertical, reverse } = this.props;
-    const percent = calculatePercent(this.container, event, vertical, reverse);
+    const percent = calculatePercent(this.containerRef, event, vertical, reverse);
     const value = percentToValue(percent, min, max);
 
     this.emitChange(event, value);
   };
+
+  emitChange(event, rawValue, callback) {
+    const { step, value: previousValue, onChange, disabled } = this.props;
+    let value = rawValue;
+
+    if (disabled) {
+      return;
+    }
+
+    if (step) {
+      value = roundToStep(rawValue, step);
+    } else {
+      value = Number(rawValue.toFixed(3));
+    }
+
+    if (typeof onChange === 'function' && value !== previousValue) {
+      onChange(event, value);
+
+      if (typeof callback === 'function') {
+        callback();
+      }
+    }
+  }
+
+  calculateTrackAfterStyles(percent) {
+    const { currentState } = this.state;
+
+    switch (currentState) {
+      case 'activated':
+        return `calc(100% - ${percent === 0 ? 7 : 5}px)`;
+      case 'disabled':
+        return `calc(${100 - percent}% - 6px)`;
+      default:
+        return 'calc(100% - 5px)';
+    }
+  }
+
+  calculateTrackBeforeStyles(percent) {
+    const { currentState } = this.state;
+
+    switch (currentState) {
+      case 'disabled':
+        return `calc(${percent}% - 6px)`;
+      default:
+        return `${percent}%`;
+    }
+  }
 
   playJumpAnimation() {
     this.setState({ currentState: 'jumped' }, () => {
@@ -382,16 +384,18 @@ class Slider extends React.Component {
     const {
       component: Component,
       classes,
-      value,
-      min,
-      max,
-      vertical,
-      reverse,
+      className: classNameProp,
       disabled,
-      ...otherProps
+      max,
+      min,
+      reverse,
+      theme,
+      value,
+      vertical,
+      ...other
     } = this.props;
 
-    const percent = clamp((value - min) * 100 / (max - min));
+    const percent = clamp(((value - min) * 100) / (max - min));
 
     const commonClasses = {
       [classes.disabled]: disabled,
@@ -400,10 +404,18 @@ class Slider extends React.Component {
       [classes.activated]: !disabled && currentState === 'activated',
     };
 
+    const className = classNames(
+      classes.root,
+      {
+        [classes.vertical]: vertical,
+        [classes.reverse]: reverse,
+        [classes.disabled]: disabled,
+      },
+      classNameProp,
+    );
+
     const containerClasses = classNames(classes.container, {
       [classes.vertical]: vertical,
-      [classes.reverse]: reverse,
-      [classes.disabled]: disabled,
     });
 
     const trackBeforeClasses = classNames(classes.track, classes.trackBefore, commonClasses, {
@@ -414,9 +426,7 @@ class Slider extends React.Component {
       [classes.vertical]: vertical,
     });
 
-    const thumbClasses = classNames(classes.thumb, commonClasses, {
-      [classes.zero]: percent === 0,
-    });
+    const thumbClasses = classNames(classes.thumb, commonClasses);
 
     const trackProperty = vertical ? 'height' : 'width';
     const thumbProperty = vertical ? 'top' : 'left';
@@ -427,30 +437,35 @@ class Slider extends React.Component {
     return (
       <Component
         role="slider"
-        className={containerClasses}
+        className={className}
         aria-valuenow={value}
         aria-valuemin={min}
         aria-valuemax={max}
         aria-orientation={vertical ? 'vertical' : 'horizontal'}
         onClick={this.handleClick}
-        ref={node => {
-          this.container = findDOMNode(node);
+        onMouseDown={this.handleMouseDown}
+        onTouchStartCapture={this.handleTouchStart}
+        onTouchMove={this.handleMouseMove}
+        ref={ref => {
+          this.containerRef = findDOMNode(ref);
         }}
-        {...otherProps}
+        {...other}
       >
-        <div className={trackBeforeClasses} style={inlineTrackBeforeStyles} />
-        <ButtonBase
-          className={thumbClasses}
-          disableRipple
-          style={inlineThumbStyles}
-          onBlur={this.handleBlur}
-          onKeyDown={this.handleKeyDown}
-          onMouseDown={this.handleMouseDown}
-          onTouchStartCapture={this.handleTouchStart}
-          onTouchMove={this.handleMouseMove}
-          onFocusVisible={this.handleFocus}
-        />
-        <div className={trackAfterClasses} style={inlineTrackAfterStyles} />
+        <div className={containerClasses}>
+          <div className={trackBeforeClasses} style={inlineTrackBeforeStyles} />
+          <ButtonBase
+            className={thumbClasses}
+            disableRipple
+            style={inlineThumbStyles}
+            onBlur={this.handleBlur}
+            onKeyDown={this.handleKeyDown}
+            onMouseDown={this.handleMouseDown}
+            onTouchStartCapture={this.handleTouchStart}
+            onTouchMove={this.handleMouseMove}
+            onFocusVisible={this.handleFocus}
+          />
+          <div className={trackAfterClasses} style={inlineTrackAfterStyles} />
+        </div>
       </Component>
     );
   }
@@ -458,13 +473,19 @@ class Slider extends React.Component {
 
 Slider.propTypes = {
   /**
-   * Useful to extend the style applied to components.
+   * Override or extend the styles applied to the component.
+   * See [CSS API](#css-api) below for more details.
    */
   classes: PropTypes.object.isRequired,
   /**
    * @ignore
    */
-  component: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+  className: PropTypes.string,
+  /**
+   * The component used for the root node.
+   * Either a string to use a DOM element or a component.
+   */
+  component: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.object]),
   /**
    * If `true`, the slider will be disabled.
    */
@@ -506,7 +527,7 @@ Slider.propTypes = {
   /**
    * The value of the slider.
    */
-  value: PropTypes.number,
+  value: PropTypes.number.isRequired,
   /**
    * If `true`, the slider will be vertical.
    */
@@ -516,8 +537,7 @@ Slider.propTypes = {
 Slider.defaultProps = {
   min: 0,
   max: 100,
-  value: 50,
   component: 'div',
 };
 
-export default withStyles(style, { name: 'MuiSlider', withTheme: true })(Slider);
+export default withStyles(styles, { name: 'MuiSlider', withTheme: true })(Slider);

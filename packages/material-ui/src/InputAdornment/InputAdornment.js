@@ -4,19 +4,22 @@ import classNames from 'classnames';
 import Typography from '../Typography';
 import withStyles from '../styles/withStyles';
 
-export const styles = theme => ({
+export const styles = {
+  /* Styles applied to the root element. */
   root: {
     display: 'flex',
     maxHeight: '2em',
     alignItems: 'center',
   },
+  /* Styles applied to the root element if `position="start"`. */
   positionStart: {
-    marginRight: theme.spacing.unit,
+    marginRight: 8,
   },
+  /* Styles applied to the root element if `position="end"`. */
   positionEnd: {
-    marginLeft: theme.spacing.unit,
+    marginLeft: 8,
   },
-});
+};
 
 function InputAdornment(props) {
   const {
@@ -68,7 +71,7 @@ InputAdornment.propTypes = {
    * The component used for the root node.
    * Either a string to use a DOM element or a component.
    */
-  component: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+  component: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.object]),
   /**
    * If children is a string then disable wrapping in a Typography component.
    */

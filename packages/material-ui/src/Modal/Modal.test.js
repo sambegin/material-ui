@@ -1,10 +1,7 @@
-/* eslint-disable jsx-a11y/no-autofocus */
-
 import React from 'react';
 import { assert } from 'chai';
 import { spy, stub } from 'sinon';
 import keycode from 'keycode';
-import contains from 'dom-helpers/query/contains';
 import consoleErrorMock from 'test/utils/consoleErrorMock';
 import { createShallow, createMount, getClasses, unwrap } from '../test-utils';
 import Fade from '../Fade';
@@ -178,8 +175,8 @@ describe('<Modal />', () => {
         'should have the element in the DOM',
       );
       assert.strictEqual(heading.tagName.toLowerCase(), 'h1', 'should have the element in the DOM');
-      assert.strictEqual(contains(portalLayer, container), true, 'should be in the portal');
-      assert.strictEqual(contains(portalLayer, heading), true, 'should be in the portal');
+      assert.strictEqual(portalLayer.contains(container), true, 'should be in the portal');
+      assert.strictEqual(portalLayer.contains(heading), true, 'should be in the portal');
 
       const container2 = document.getElementById('container');
 
@@ -250,24 +247,19 @@ describe('<Modal />', () => {
   describe('handleDocumentKeyDown()', () => {
     let wrapper;
     let instance;
-    let onEscapeKeyDownStub;
-    let onCloseStub;
+    let onEscapeKeyDownSpy;
+    let onCloseSpy;
     let topModalStub;
     let event;
 
     beforeEach(() => {
-      wrapper = shallow(<Modal open={false} />);
-      instance = wrapper.instance();
-      onEscapeKeyDownStub = stub().returns(true);
-      onCloseStub = stub().returns(true);
+      onEscapeKeyDownSpy = spy();
+      onCloseSpy = spy();
       topModalStub = stub();
-      wrapper.setProps({ onEscapeKeyDown: onEscapeKeyDownStub, onClose: onCloseStub });
-    });
-
-    afterEach(() => {
-      onEscapeKeyDownStub.reset();
-      onCloseStub.reset();
-      topModalStub.reset();
+      wrapper = shallow(
+        <Modal open={false} onEscapeKeyDown={onEscapeKeyDownSpy} onClose={onCloseSpy} />,
+      );
+      instance = wrapper.instance();
     });
 
     it('should have handleDocumentKeyDown', () => {
@@ -276,66 +268,66 @@ describe('<Modal />', () => {
     });
 
     it('when not mounted should not call onEscapeKeyDown and onClose', () => {
-      instance = wrapper.instance();
-      instance.mounted = false;
       instance.handleDocumentKeyDown(undefined);
-      assert.strictEqual(onEscapeKeyDownStub.callCount, 0);
-      assert.strictEqual(onCloseStub.callCount, 0);
+      assert.strictEqual(onEscapeKeyDownSpy.callCount, 0);
+      assert.strictEqual(onCloseSpy.callCount, 0);
     });
 
     it('when mounted and not TopModal should not call onEscapeKeyDown and onClose', () => {
-      topModalStub.returns('false');
+      topModalStub.returns(false);
       wrapper.setProps({ manager: { isTopModal: topModalStub } });
-      instance = wrapper.instance();
-      instance.mounted = true;
 
       instance.handleDocumentKeyDown(undefined);
       assert.strictEqual(topModalStub.callCount, 1);
-      assert.strictEqual(onEscapeKeyDownStub.callCount, 0);
-      assert.strictEqual(onCloseStub.callCount, 0);
+      assert.strictEqual(onEscapeKeyDownSpy.callCount, 0);
+      assert.strictEqual(onCloseSpy.callCount, 0);
     });
 
     it('when mounted, TopModal and event not esc should not call given funcs', () => {
       topModalStub.returns(true);
       wrapper.setProps({ manager: { isTopModal: topModalStub } });
-      instance = wrapper.instance();
-      instance.mounted = true;
       event = { keyCode: keycode('j') }; // Not 'esc'
 
       instance.handleDocumentKeyDown(event);
       assert.strictEqual(topModalStub.callCount, 1);
-      assert.strictEqual(onEscapeKeyDownStub.callCount, 0);
-      assert.strictEqual(onCloseStub.callCount, 0);
+      assert.strictEqual(onEscapeKeyDownSpy.callCount, 0);
+      assert.strictEqual(onCloseSpy.callCount, 0);
     });
 
     it('should call onEscapeKeyDown and onClose', () => {
       topModalStub.returns(true);
       wrapper.setProps({ manager: { isTopModal: topModalStub } });
       event = { keyCode: keycode('esc') };
-      instance = wrapper.instance();
-      instance.mounted = true;
 
       instance.handleDocumentKeyDown(event);
       assert.strictEqual(topModalStub.callCount, 1);
-      assert.strictEqual(onEscapeKeyDownStub.callCount, 1);
-      assert.strictEqual(onEscapeKeyDownStub.calledWith(event), true);
-      assert.strictEqual(onCloseStub.callCount, 1);
-      assert.strictEqual(onCloseStub.calledWith(event), true);
+      assert.strictEqual(onEscapeKeyDownSpy.callCount, 1);
+      assert.strictEqual(onEscapeKeyDownSpy.calledWith(event), true);
+      assert.strictEqual(onCloseSpy.callCount, 1);
+      assert.strictEqual(onCloseSpy.calledWith(event), true);
     });
 
     it('when disableEscapeKeyDown should call only onClose', () => {
       topModalStub.returns(true);
-      wrapper.setProps({ manager: { isTopModal: topModalStub } });
-      wrapper.setProps({ disableEscapeKeyDown: true });
+      wrapper.setProps({ disableEscapeKeyDown: true, manager: { isTopModal: topModalStub } });
       event = { keyCode: keycode('esc') };
-      instance = wrapper.instance();
-      instance.mounted = true;
 
       instance.handleDocumentKeyDown(event);
       assert.strictEqual(topModalStub.callCount, 1);
-      assert.strictEqual(onEscapeKeyDownStub.callCount, 1);
-      assert.strictEqual(onEscapeKeyDownStub.calledWith(event), true);
-      assert.strictEqual(onCloseStub.callCount, 0);
+      assert.strictEqual(onEscapeKeyDownSpy.callCount, 1);
+      assert.strictEqual(onEscapeKeyDownSpy.calledWith(event), true);
+      assert.strictEqual(onCloseSpy.callCount, 0);
+    });
+
+    it('should not be call when defaultPrevented', () => {
+      topModalStub.returns(true);
+      wrapper.setProps({ disableEscapeKeyDown: true, manager: { isTopModal: topModalStub } });
+      event = { keyCode: keycode('esc'), defaultPrevented: true };
+
+      instance.handleDocumentKeyDown(event);
+      assert.strictEqual(topModalStub.callCount, 1);
+      assert.strictEqual(onEscapeKeyDownSpy.callCount, 0);
+      assert.strictEqual(onCloseSpy.callCount, 0);
     });
   });
 
@@ -371,6 +363,9 @@ describe('<Modal />', () => {
           </Fade>
         </ModalNaked>,
       );
+      wrapper.setProps({
+        open: false,
+      });
       wrapper
         .find('Transition')
         .at(1)

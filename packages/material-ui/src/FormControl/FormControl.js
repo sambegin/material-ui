@@ -6,7 +6,8 @@ import { isFilled, isAdornedStart } from '../Input/Input';
 import { capitalize } from '../utils/helpers';
 import { isMuiElement } from '../utils/reactHelpers';
 
-export const styles = theme => ({
+export const styles = {
+  /* Styles applied to the root element. */
   root: {
     display: 'inline-flex',
     flexDirection: 'column',
@@ -17,23 +18,26 @@ export const styles = theme => ({
     margin: 0,
     border: 0,
   },
+  /* Styles applied to the root element if `margin="normal"`. */
   marginNormal: {
-    marginTop: theme.spacing.unit * 2,
-    marginBottom: theme.spacing.unit,
+    marginTop: 16,
+    marginBottom: 8,
   },
+  /* Styles applied to the root element if `margin="dense"`. */
   marginDense: {
-    marginTop: theme.spacing.unit,
-    marginBottom: theme.spacing.unit / 2,
+    marginTop: 8,
+    marginBottom: 4,
   },
+  /* Styles applied to the root element if `fullWidth={true}`. */
   fullWidth: {
     width: '100%',
   },
-});
+};
 
 /**
  * Provides context such as filled/focused/error/required for form inputs.
- * Relying on the context provides high flexibilty and ensures that the state always stay
- * consitent across the children of the `FormControl`.
+ * Relying on the context provides high flexibilty and ensures that the state always stays
+ * consistent across the children of the `FormControl`.
  * This context is used by the following components:
  *  - FormLabel
  *  - FormHelperText
@@ -41,12 +45,11 @@ export const styles = theme => ({
  *  - InputLabel
  */
 class FormControl extends React.Component {
-  constructor(props, context) {
-    super(props, context);
-
+  constructor(props) {
+    super();
     // We need to iterate through the children and find the Input in order
     // to fully support server side rendering.
-    const { children } = this.props;
+    const { children } = props;
     if (children) {
       React.Children.forEach(children, child => {
         if (!isMuiElement(child, ['Input', 'Select', 'NativeSelect'])) {
@@ -93,20 +96,11 @@ class FormControl extends React.Component {
     };
   }
 
-  handleFocus = event => {
-    if (this.props.onFocus) {
-      this.props.onFocus(event);
-    }
+  handleFocus = () => {
     this.setState(state => (!state.focused ? { focused: true } : null));
   };
 
-  handleBlur = event => {
-    // The event might be undefined.
-    // For instance, a child component might call this hook
-    // when an input is disabled but still having the focus.
-    if (this.props.onBlur && event) {
-      this.props.onBlur(event);
-    }
+  handleBlur = () => {
     this.setState(state => (state.focused ? { focused: false } : null));
   };
 
@@ -146,8 +140,6 @@ class FormControl extends React.Component {
           className,
         )}
         {...other}
-        onFocus={this.handleFocus}
-        onBlur={this.handleBlur}
       />
     );
   }
@@ -171,7 +163,7 @@ FormControl.propTypes = {
    * The component used for the root node.
    * Either a string to use a DOM element or a component.
    */
-  component: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+  component: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.object]),
   /**
    * If `true`, the label, input and helper text should be displayed in a disabled state.
    */
@@ -188,14 +180,6 @@ FormControl.propTypes = {
    * If `dense` or `normal`, will adjust vertical spacing of this and contained components.
    */
   margin: PropTypes.oneOf(['none', 'dense', 'normal']),
-  /**
-   * @ignore
-   */
-  onBlur: PropTypes.func,
-  /**
-   * @ignore
-   */
-  onFocus: PropTypes.func,
   /**
    * If `true`, the label will indicate that the input is required.
    */

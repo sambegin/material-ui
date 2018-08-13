@@ -22,7 +22,7 @@ import Select from '../Select';
  * - [Input](/api/input)
  * - [FormHelperText](/api/form-helper-text)
  *
- * If you wish to alter the properties applied to the native input, you can do as follow:
+ * If you wish to alter the properties applied to the native input, you can do so as follows:
  *
  * ```jsx
  * const inputProps = {
@@ -34,8 +34,8 @@ import Select from '../Select';
  *
  * For advanced cases, please look at the source of TextField by clicking on the
  * "Edit this page" button above. Consider either:
- * - using the upper case props for passing values direct to the components.
- * - using the underlying components directly as shown in the demos.
+ * - using the upper case props for passing values directly to the components
+ * - using the underlying components directly as shown in the demos
  */
 function TextField(props) {
   const {
@@ -164,7 +164,7 @@ TextField.propTypes = {
    */
   error: PropTypes.bool,
   /**
-   * Properties applied to the `FormHelperText` element.
+   * Properties applied to the [`FormHelperText`](/api/form-helper-text) element.
    */
   FormHelperTextProps: PropTypes.object,
   /**
@@ -181,7 +181,7 @@ TextField.propTypes = {
    */
   id: PropTypes.string,
   /**
-   * Properties applied to the `InputLabel` element.
+   * Properties applied to the [`InputLabel`](/api/input-label) element.
    */
   InputLabelProps: PropTypes.object,
   /**
@@ -189,13 +189,13 @@ TextField.propTypes = {
    */
   InputProps: PropTypes.object,
   /**
-   * Properties applied to the native `input` element.
+   * Attributes applied to the native `input` element.
    */
   inputProps: PropTypes.object,
   /**
    * Use that property to pass a ref callback to the native input component.
    */
-  inputRef: PropTypes.func,
+  inputRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
   /**
    * The label content.
    */
@@ -232,7 +232,7 @@ TextField.propTypes = {
    */
   placeholder: PropTypes.string,
   /**
-   * If `true`, the label is displayed as required.
+   * If `true`, the label is displayed as required and the input will be required.
    */
   required: PropTypes.bool,
   /**
@@ -249,7 +249,7 @@ TextField.propTypes = {
    */
   select: PropTypes.bool,
   /**
-   * Properties applied to the `Select` element.
+   * Properties applied to the [`Select`](/api/select) element.
    */
   SelectProps: PropTypes.object,
   /**

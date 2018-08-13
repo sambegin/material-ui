@@ -1,14 +1,15 @@
 ---
-components: Dialog, DialogTitle, DialogContent, DialogActions, Slide
+title: Dialog React component
+components: Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Slide
 ---
 
 # Dialogs
 
-[Dialogs](https://material.io/design/components/dialogs.html) inform users about a specific task and may contain critical information, require decisions, or involve multiple tasks.
+<p class="description">Dialogs inform users about a task and can contain critical information, require decisions, or involve multiple tasks.</p>
 
-Dialogs contain text and UI controls.
-They retain focus until dismissed or a required action has been taken.
-Use dialogs sparingly because they are interruptive.
+A [Dialog](https://material.io/design/components/dialogs.html) is a type of [modal](/utils/modal) window that appears in front of app content to provide critical information or ask for a decision. Dialogs disable all app functionality when they appear, and remain on screen until confirmed, dismissed, or a required action has been taken.
+
+Dialogs are purposefully interruptive, so they should be used sparingly.
 
 ## Simple Dialogs
 
@@ -73,3 +74,13 @@ You may make a `Dialog` responsively full screen the dialog using `withMobileDia
 ## Accessibility
 
 Be sure to add `aria-labelledby="id..."`, referencing the modal title, to the `Dialog`. Additionally, you may give a description of your modal dialog with the `aria-describedby="id..."` property on the `Dialog`.
+
+## Scrolling long content
+
+When dialogs become too long for the user’s viewport or device, they scroll.
+- `scroll=paper` the content of the dialog scrolls within the paper element.
+- `scroll=body` the content of the dialog scrolls within the body element.
+
+Try the demo below to see what we mean:
+
+{{"demo": "pages/demos/dialogs/ScrollDialog.js"}}

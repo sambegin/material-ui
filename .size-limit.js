@@ -1,19 +1,19 @@
-const fs = require('fs')
+const fs = require('fs');
 
 function getMainFile() {
-  const dirname = '.next/static/commons'
-  const files = fs.readdirSync(dirname)
+  const dirname = '.next/static/commons';
+  const files = fs.readdirSync(dirname);
   const [file] = files
     .reduce((result, filename) => {
       if (!/^main-[a-f0-9]+\.js$/.test(filename)) {
-        return result
+        return result;
       }
 
-      const path = `${dirname}/${filename}`
-      return [...result, { path, ctime: fs.statSync(path).ctimeMs }]
+      const path = `${dirname}/${filename}`;
+      return [...result, { path, ctime: fs.statSync(path).ctimeMs }];
     }, [])
-    .sort((x, y) => y.ctime - x.ctime)
-  return file
+    .sort((x, y) => y.ctime - x.ctime);
+  return file;
 }
 
 module.exports = [
@@ -21,24 +21,24 @@ module.exports = [
     name: 'The initial cost people pay for using one component',
     webpack: true,
     path: 'packages/material-ui/build/Paper/index.js',
-    limit: '17.7 KB',
+    limit: '17.6 KB',
   },
   {
     name: 'The size of all the modules of material-ui.',
     webpack: true,
     path: 'packages/material-ui/build/index.js',
-    limit: '94.5 KB',
+    limit: '95.6 KB',
   },
   {
     name: 'The main bundle of the docs',
     webpack: false,
     path: getMainFile().path,
-    limit: '182 KB',
+    limit: '181 KB',
   },
   {
     name: 'The home page of the docs',
     webpack: false,
     path: '.next/bundles/pages/index.js',
-    limit: '6 KB',
+    limit: '5.9 KB',
   },
 ];

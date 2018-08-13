@@ -1,11 +1,14 @@
+/* eslint-disable react/no-did-mount-set-state */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import EventListener from 'react-event-listener';
-import debounce from 'debounce';
+import debounce from 'debounce'; // < 1kb payload overhead when lodash/debounce is > 3kb.
 import wrapDisplayName from 'recompose/wrapDisplayName';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import withTheme from '../styles/withTheme';
 import { keys as breakpointKeys } from '../styles/createBreakpoints';
+import getThemeProps from '../styles/getThemeProps';
 
 // By default, returns true if screen width is the same or greater than the given breakpoint.
 export const isWidthUp = (breakpoint, width, inclusive = true) => {
@@ -25,28 +28,48 @@ export const isWidthDown = (breakpoint, width, inclusive = true) => {
 
 const withWidth = (options = {}) => Component => {
   const {
-    resizeInterval = 166, // Corresponds to 10 frames at 60 Hz.
     withTheme: withThemeOption = false,
+    noSSR = false,
+    initialWidth: initialWidthOption,
+    resizeInterval = 166, // Corresponds to 10 frames at 60 Hz.
   } = options;
 
   class WithWidth extends React.Component {
+    handleResize = debounce(() => {
+      const width = this.getWidth();
+      if (width !== this.state.width) {
+        this.setState({
+          width,
+        });
+      }
+    }, resizeInterval);
+
+    constructor(props) {
+      super(props);
+
+      if (noSSR) {
+        this.state.width = this.getWidth();
+      }
+    }
+
     state = {
       width: undefined,
     };
 
     componentDidMount() {
-      this.updateWidth(window.innerWidth);
+      const width = this.getWidth();
+      if (width !== this.state.width) {
+        this.setState({
+          width,
+        });
+      }
     }
 
     componentWillUnmount() {
       this.handleResize.clear();
     }
 
-    handleResize = debounce(() => {
-      this.updateWidth(window.innerWidth);
-    }, resizeInterval);
-
-    updateWidth(innerWidth) {
+    getWidth(innerWidth = window.innerWidth) {
       const breakpoints = this.props.theme.breakpoints;
       let width = null;
 
@@ -71,18 +94,19 @@ const withWidth = (options = {}) => Component => {
       }
 
       width = width || 'xl';
-
-      if (width !== this.state.width) {
-        this.setState({
-          width,
-        });
-      }
+      return width;
     }
 
     render() {
-      const { initialWidth, theme, width, ...other } = this.props;
+      const { initialWidth, theme, width, innerRef, ...other } = this.props;
+
       const props = {
-        width: width || this.state.width || initialWidth,
+        width:
+          width ||
+          this.state.width ||
+          initialWidth ||
+          initialWidthOption ||
+          getThemeProps({ theme, name: 'MuiWithWidth' }).initialWidth,
         ...other,
       };
       const more = {};
@@ -103,7 +127,7 @@ const withWidth = (options = {}) => Component => {
 
       return (
         <EventListener target="window" onResize={this.handleResize}>
-          <Component {...more} {...props} />
+          <Component {...more} {...props} ref={innerRef} />
         </EventListener>
       );
     }
@@ -112,14 +136,18 @@ const withWidth = (options = {}) => Component => {
   WithWidth.propTypes = {
     /**
      * As `window.innerWidth` is unavailable on the server,
-     * we default to rendering an empty componenent during the first mount.
-     * In some situation you might want to use an heristic to approximate
+     * we default to rendering an empty component during the first mount.
+     * In some situation, you might want to use an heuristic to approximate
      * the screen width of the client browser screen width.
      *
      * For instance, you could be using the user-agent or the client-hints.
      * http://caniuse.com/#search=client%20hint
      */
     initialWidth: PropTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl']),
+    /**
+     * Use that property to pass a ref callback to the decorated component.
+     */
+    innerRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
     /**
      * @ignore
      */

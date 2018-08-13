@@ -12,6 +12,7 @@ import Typography from '../Typography';
 import TablePaginationActions from '../TablePaginationActions';
 
 export const styles = theme => ({
+  /* Styles applied to the root element. */
   root: {
     fontSize: theme.typography.pxToRem(12),
     // Increase the specificity to override TableCell.
@@ -19,38 +20,47 @@ export const styles = theme => ({
       padding: 0,
     },
   },
+  /* Styles applied to the Toolbar component. */
   toolbar: {
     height: 56,
     minHeight: 56,
     paddingRight: 2,
   },
+  /* Styles applied to the spacer element. */
   spacer: {
     flex: '1 1 100%',
   },
-  menuItem: {},
+  /* Styles applied to the caption Typography components if `variant="caption"`. */
   caption: {
     flexShrink: 0,
   },
+  /* Styles applied to the Select component `root` class. */
+  selectRoot: {
+    marginRight: 32,
+    marginLeft: 8,
+    color: theme.palette.text.secondary,
+  },
+  /* Styles applied to the Select component `select` class. */
+  select: {
+    paddingLeft: 8,
+    paddingRight: 16,
+  },
+  /* Styles applied to the Select component `icon` class. */
+  selectIcon: {
+    top: 1,
+  },
+  /* Styles applied to the Input component. */
   input: {
     fontSize: 'inherit',
     flexShrink: 0,
   },
-  selectRoot: {
-    marginRight: theme.spacing.unit * 4,
-    marginLeft: theme.spacing.unit,
-    color: theme.palette.text.secondary,
-  },
-  select: {
-    paddingLeft: theme.spacing.unit,
-    paddingRight: theme.spacing.unit * 2,
-  },
-  selectIcon: {
-    top: 1,
-  },
+  /* Styles applied to the MenuItem component. */
+  menuItem: {},
+  /* Styles applied to the internal `TablePaginationActions` component. */
   actions: {
     flexShrink: 0,
     color: theme.palette.text.secondary,
-    marginLeft: theme.spacing.unit * 2.5,
+    marginLeft: 20,
   },
 });
 
@@ -154,9 +164,9 @@ TablePagination.propTypes = {
    * The component used for displaying the actions.
    * Either a string to use a DOM element or a component.
    */
-  ActionsComponent: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+  ActionsComponent: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.object]),
   /**
-   * Properties applied to the back arrow `IconButton` component.
+   * Properties applied to the back arrow [`IconButton`](/api/icon-button) component.
    */
   backIconButtonProps: PropTypes.object,
   /**
@@ -172,7 +182,7 @@ TablePagination.propTypes = {
    * The component used for the root node.
    * Either a string to use a DOM element or a component.
    */
-  component: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+  component: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.object]),
   /**
    * The total number of rows.
    */
@@ -187,7 +197,7 @@ TablePagination.propTypes = {
    */
   labelRowsPerPage: PropTypes.node,
   /**
-   * Properties applied to the next arrow `IconButton` element.
+   * Properties applied to the next arrow [`IconButton`](/api/icon-button) element.
    */
   nextIconButtonProps: PropTypes.object,
   /**
@@ -217,7 +227,7 @@ TablePagination.propTypes = {
    */
   rowsPerPageOptions: PropTypes.array,
   /**
-   * Properties applied to the rows per page `Select` element.
+   * Properties applied to the rows per page [`Select`](/api/select) element.
    */
   SelectProps: PropTypes.object,
 };

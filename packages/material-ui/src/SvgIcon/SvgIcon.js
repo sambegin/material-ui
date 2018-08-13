@@ -5,32 +5,42 @@ import withStyles from '../styles/withStyles';
 import { capitalize } from '../utils/helpers';
 
 export const styles = theme => ({
+  /* Styles applied to the root element. */
   root: {
     userSelect: 'none',
-    fontSize: 24,
     width: '1em',
     height: '1em',
     display: 'inline-block',
     fill: 'currentColor',
     flexShrink: 0,
+    fontSize: 24,
     transition: theme.transitions.create('fill', {
       duration: theme.transitions.duration.shorter,
     }),
   },
+  /* Styles applied to the root element if `color="primary"`. */
   colorPrimary: {
     color: theme.palette.primary.main,
   },
+  /* Styles applied to the root element if `color="secondary"`. */
   colorSecondary: {
     color: theme.palette.secondary.main,
   },
+  /* Styles applied to the root element if `color="saction"`. */
   colorAction: {
     color: theme.palette.action.active,
   },
+  /* Styles applied to the root element if `color="error"`. */
   colorError: {
     color: theme.palette.error.main,
   },
+  /* Styles applied to the root element if `color="disabled"`. */
   colorDisabled: {
     color: theme.palette.action.disabled,
+  },
+  /* Styles applied to the root element if `fontSize="inherit"`. */
+  fontSizeInherit: {
+    fontSize: 'inherit',
   },
 });
 
@@ -40,6 +50,8 @@ function SvgIcon(props) {
     classes,
     className: classNameProp,
     color,
+    component: Component,
+    fontSize,
     nativeColor,
     titleAccess,
     viewBox,
@@ -49,13 +61,14 @@ function SvgIcon(props) {
   const className = classNames(
     classes.root,
     {
+      [classes.fontSizeInherit]: fontSize === 'inherit',
       [classes[`color${capitalize(color)}`]]: color !== 'inherit',
     },
     classNameProp,
   );
 
   return (
-    <svg
+    <Component
       className={className}
       focusable="false"
       viewBox={viewBox}
@@ -63,9 +76,9 @@ function SvgIcon(props) {
       aria-hidden={titleAccess ? 'false' : 'true'}
       {...other}
     >
-      {titleAccess ? <title>{titleAccess}</title> : null}
       {children}
-    </svg>
+      {titleAccess ? <title>{titleAccess}</title> : null}
+    </Component>
   );
 }
 
@@ -89,6 +102,15 @@ SvgIcon.propTypes = {
    */
   color: PropTypes.oneOf(['inherit', 'primary', 'secondary', 'action', 'error', 'disabled']),
   /**
+   * The component used for the root node.
+   * Either a string to use a DOM element or a component.
+   */
+  component: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.object]),
+  /**
+   * The fontSize applied to the icon. Defaults to 24px, but can be configure to inherit font size.
+   */
+  fontSize: PropTypes.oneOf(['inherit', 'default']),
+  /**
    * Applies a color attribute to the SVG element.
    */
   nativeColor: PropTypes.string,
@@ -109,6 +131,8 @@ SvgIcon.propTypes = {
 
 SvgIcon.defaultProps = {
   color: 'inherit',
+  component: 'svg',
+  fontSize: 'default',
   viewBox: '0 0 24 24',
 };
 

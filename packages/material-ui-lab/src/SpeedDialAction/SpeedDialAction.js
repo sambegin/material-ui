@@ -2,21 +2,29 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
+import { emphasize } from '@material-ui/core/styles/colorManipulator';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 
-const styles = theme => ({
+export const styles = theme => ({
+  /* Styles applied to the root (`Tooltip`) component. */
   root: {
     position: 'relative',
   },
+  /* Styles applied to the `Button` component. */
   button: {
-    margin: theme.spacing.unit,
+    margin: 8,
     color: theme.palette.text.secondary,
+    backgroundColor: emphasize(theme.palette.background.default, 0.12),
+    '&:hover': {
+      backgroundColor: emphasize(theme.palette.background.default, 0.15),
+    },
     transition: `${theme.transitions.create('transform', {
       duration: theme.transitions.duration.shorter,
     })}, opacity 0.8s`,
     opacity: 1,
   },
+  /* Styles applied to the `Button` component if `open={false}`. */
   buttonClosed: {
     opacity: 0,
     transform: 'scale(0)',
@@ -54,10 +62,12 @@ class SpeedDialAction extends React.Component {
       icon,
       id,
       onClick,
+      onKeyDown,
       open,
       tooltipClasses,
       tooltipTitle,
       tooltipAlwaysOpen,
+      tooltipPlacement,
       ...other
     } = this.props;
 
@@ -80,10 +90,9 @@ class SpeedDialAction extends React.Component {
     return (
       <Tooltip
         id={id}
-        className={classNames(classes.root, classNameProp)}
         classes={tooltipClasses}
         title={tooltipTitle}
-        placement="left"
+        placement={tooltipPlacement}
         onClose={this.handleTooltipClose}
         onOpen={this.handleTooltipOpen}
         open={tooltipOpen}
@@ -113,7 +122,7 @@ class SpeedDialAction extends React.Component {
 
 SpeedDialAction.propTypes = {
   /**
-   * Properties applied to the `Button` component.
+   * Properties applied to the [`Button`](/api/button) component.
    */
   ButtonProps: PropTypes.object,
   /**
@@ -157,6 +166,10 @@ SpeedDialAction.propTypes = {
    */
   tooltipClasses: PropTypes.object,
   /**
+   * Placement of the tooltip.
+   */
+  tooltipPlacement: PropTypes.string,
+  /**
    * Label to display in the tooltip.
    */
   tooltipTitle: PropTypes.node,
@@ -165,8 +178,9 @@ SpeedDialAction.propTypes = {
 SpeedDialAction.defaultProps = {
   delay: 0,
   open: false,
+  tooltipPlacement: 'left',
   tooltipAlwaysOpen: false,
   tooltipClasses: {},
 };
 
-export default withStyles(styles)(SpeedDialAction);
+export default withStyles(styles, { name: 'MuiSpeedDialAction' })(SpeedDialAction);

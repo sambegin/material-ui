@@ -1,5 +1,7 @@
 # Themes
 
+<p class="description">Customize Material-UI with our theme. You can change the colors, the typography and much more.</p>
+
 The theme specifies the color of the components, darkness of the surfaces, level of shadow, appropriate opacity of ink elements, etc.
 
 Themes let you apply a consistent tone to your app. It allows you to **customize all design aspects** of your project in order to meet the specific needs of your business or brand.
@@ -145,7 +147,7 @@ const theme = createMuiTheme({
       // light: will be calculated from palette.primary.main,
       main: '#ff4400',
       // dark: will be calculated from palette.primary.main,
-      // contrastText: will be calculated to contast with palette.primary.main
+      // contrastText: will be calculated to contrast with palette.primary.main
     },
     secondary: {
       light: '#0066ff',
@@ -168,7 +170,7 @@ according to the `tonalOffset` value.
 according to the`contrastThreshold` value.
 
 Both the `tonalOffset` and `contrastThreshold` values may be customized as needed.
-A higher value for `tonalOffset` will make calculate values for `light` lighter, and `dark` darker.
+A higher value for `tonalOffset` will make calculated values for `light` lighter, and `dark` darker.
 A higher value for `contrastThreshold` increases the point at which a background color is considered
 light, and given a dark `contrastText`.
 
@@ -310,7 +312,7 @@ That's a really powerful feature.
 ```js
 const theme = createMuiTheme({
   overrides: {
-    MuiButton: { // Name of the component ⚛️ / style shee
+    MuiButton: { // Name of the component ⚛️ / style sheet
       root: { // Name of the rule
         color: 'white', // Some CSS
       },
@@ -427,7 +429,8 @@ const theme = createMuiTheme({
 
 ### `withTheme()(Component) => Component`
 
-Provide the `theme` object as a property of the input component.
+Provide the `theme` object as a property of the input component so it can be used
+in the render method.
 
 #### Arguments
 
@@ -440,7 +443,11 @@ Provide the `theme` object as a property of the input component.
 #### Examples
 
 ```js
-import { withTheme } from '@material-ui/core/styles'
+import { withTheme } from '@material-ui/core/styles';
+
+function MyComponent(props) {
+  return <div>{props.theme.direction}</div>;
+}
 
 export default withTheme()(MyComponent);
 ```

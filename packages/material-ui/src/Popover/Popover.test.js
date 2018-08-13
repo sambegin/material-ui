@@ -791,7 +791,7 @@ describe('<Popover />', () => {
 
   describe('prop: getContentAnchorEl', () => {
     it('should position accordingly', () => {
-      const element = { scrollTop: 5 };
+      const element = { scrollTop: 5, contains: () => true };
       const child = { offsetTop: 40, clientHeight: 20, parentNode: element };
       const wrapper = shallow(
         <Popover {...defaultProps} getContentAnchorEl={() => child}>
@@ -824,6 +824,27 @@ describe('<Popover />', () => {
         'Should be a function.',
       );
       popoverActions.updatePosition();
+    });
+  });
+
+  describe('prop: transitionDuration', () => {
+    it('should apply the auto property if supported', () => {
+      const wrapper = shallow(
+        <Popover {...defaultProps}>
+          <div />
+        </Popover>,
+      );
+      assert.strictEqual(wrapper.find(Grow).props().timeout, 'auto');
+    });
+
+    it('should not apply the auto property if not supported', () => {
+      const TransitionComponent = props => <div {...props} />;
+      const wrapper = shallow(
+        <Popover {...defaultProps} TransitionComponent={TransitionComponent}>
+          <div />
+        </Popover>,
+      );
+      assert.strictEqual(wrapper.find(TransitionComponent).props().timeout, undefined);
     });
   });
 });

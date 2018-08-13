@@ -30,6 +30,26 @@ const styles = theme => ({
 
 const appList = [
   {
+    title: 'Posters Galore',
+    description:
+      'The admin of an imaginary poster shop, used as a demo for the react-admin framework. ' +
+      'Uses many material-ui components, including tables, forms, snackbars, buttons, and ' +
+      'theming. The UI is responsive. The code is open-source!',
+    image: '/static/images/showcase/posters-galore.jpg',
+    link: 'https://marmelab.com/react-admin-demo/',
+    source:
+      'https://github.com/marmelab/react-admin/tree/be23a1a8ebc4e2293b57898adcb2f359e836f0fd/examples/demo',
+  },
+  {
+    title: 'Trafikito',
+    description:
+      'Free servers monitoring solution which can track any output of any command and do ' +
+      'automated action. By default it tracks average load, CPU, HDD, RAM and sends email when ' +
+      'something is going wrong.',
+    image: '/static/images/showcase/trafikito-monitoring.jpg',
+    link: 'https://trafikito.com/',
+  },
+  {
     title: 'Venumob',
     description:
       'A platform for individuals and businesses to find and book the perfect venue for any event.',
@@ -181,6 +201,22 @@ const appList = [
     link: 'https://jdupont.github.io/',
     image: '/static/images/showcase/jdupont.jpg',
     source: 'https://github.com/jdupont/jdupont.github.io',
+  },
+  {
+    title: 'Tentu',
+    description:
+      'A web app built with Material UI v1 and Firebase that offers the ' +
+      'user news and events of his interest.',
+    link: 'https://tentu.eus/',
+    image: '/static/images/showcase/tentu.jpg',
+  },
+  {
+    title: 'Typekev',
+    description:
+      'The personal website of a React and Blockchain developer. The code is open-source.',
+    image: '/static/images/showcase/typekev.jpg',
+    link: 'https://typekev.com/',
+    source: 'https://github.com/typekev/typekev-site',
   },
 ];
 

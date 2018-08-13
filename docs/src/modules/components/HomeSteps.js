@@ -6,11 +6,11 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
-import FileDownloadIcon from '@material-ui/icons/FileDownload';
+import FileDownloadIcon from '@material-ui/docs/svgIcons/FileDownload';
 import BuildIcon from '@material-ui/icons/Build'; // eslint-disable-line import/no-unresolved
 import WhatshotIcon from '@material-ui/icons/Whatshot';
 import MarkdownElement from '@material-ui/docs/MarkdownElement';
-import NoSSR from '@material-ui/docs/NoSSR';
+import NoSsr from '@material-ui/core/NoSsr';
 import Link from 'docs/src/modules/components/Link';
 
 const styles = theme => ({
@@ -153,7 +153,7 @@ function HomeSteps(props) {
   import Button from '@material-ui/core/Button';
 
   const App = () => (
-    <Button variant="raised" color="primary">
+    <Button variant="contained" color="primary">
       Hello World
     </Button>
   );
@@ -181,9 +181,9 @@ function HomeSteps(props) {
               our official marketplace—all built on Material-UI.`}
           </Typography>
           <Link prefetch href="/premium-themes" className={classes.link}>
-            <NoSSR>
+            <NoSsr>
               <img className={classes.img} alt="themes" src="/static/images/themes.jpg" />
-            </NoSSR>
+            </NoSsr>
           </Link>
         </div>
         <Divider className={classes.divider} />

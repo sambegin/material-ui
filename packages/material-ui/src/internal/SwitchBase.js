@@ -31,10 +31,16 @@ export const styles = {
   },
 };
 
+/**
+ * @ignore - internal component.
+ */
 class SwitchBase extends React.Component {
-  constructor(props, context) {
-    super(props, context);
+  input = null;
 
+  isControlled = null;
+
+  constructor(props) {
+    super();
     this.isControlled = props.checked != null;
     if (!this.isControlled) {
       // not controlled, use internal state
@@ -44,8 +50,27 @@ class SwitchBase extends React.Component {
 
   state = {};
 
-  input = null;
-  isControlled = null;
+  handleFocus = event => {
+    if (this.props.onFocus) {
+      this.props.onFocus(event);
+    }
+
+    const { muiFormControl } = this.context;
+    if (muiFormControl && muiFormControl.onFocus) {
+      muiFormControl.onFocus(event);
+    }
+  };
+
+  handleBlur = event => {
+    if (this.props.onBlur) {
+      this.props.onBlur(event);
+    }
+
+    const { muiFormControl } = this.context;
+    if (muiFormControl && muiFormControl.onBlur) {
+      muiFormControl.onBlur(event);
+    }
+  };
 
   handleInputChange = event => {
     const checked = event.target.checked;
@@ -61,6 +86,7 @@ class SwitchBase extends React.Component {
 
   render() {
     const {
+      autoFocus,
       checked: checkedProp,
       checkedIcon,
       classes,
@@ -71,7 +97,11 @@ class SwitchBase extends React.Component {
       inputProps,
       inputRef,
       name,
+      onBlur,
       onChange,
+      onFocus,
+      readOnly,
+      required,
       tabIndex,
       type,
       value,
@@ -92,7 +122,6 @@ class SwitchBase extends React.Component {
 
     return (
       <IconButton
-        data-mui-test="SwitchBase"
         component="span"
         className={classNames(
           classes.root,
@@ -105,20 +134,25 @@ class SwitchBase extends React.Component {
         disabled={disabled}
         tabIndex={null}
         role={undefined}
+        onFocus={this.handleFocus}
+        onBlur={this.handleBlur}
         {...other}
       >
         {checked ? checkedIcon : icon}
         <input
-          id={hasLabelFor && id}
-          type={type}
-          name={name}
+          autoFocus={autoFocus}
           checked={checked}
-          onChange={this.handleInputChange}
           className={classes.input}
           disabled={disabled}
-          tabIndex={tabIndex}
-          value={value}
+          id={hasLabelFor && id}
+          name={name}
+          onChange={this.handleInputChange}
+          readOnly={readOnly}
           ref={inputRef}
+          required={required}
+          tabIndex={tabIndex}
+          type={type}
+          value={value}
           {...inputProps}
         />
       </IconButton>
@@ -129,6 +163,10 @@ class SwitchBase extends React.Component {
 // NB: If changed, please update Checkbox, Switch and Radio
 // so that the API documentation is updated.
 SwitchBase.propTypes = {
+  /**
+   * If `true`, the input will be focused during the first mount.
+   */
+  autoFocus: PropTypes.bool,
   /**
    * If `true`, the component is checked.
    */
@@ -175,17 +213,21 @@ SwitchBase.propTypes = {
    */
   indeterminateIcon: PropTypes.node,
   /**
-   * Properties applied to the `input` element.
+   * Attributes applied to the `input` element.
    */
   inputProps: PropTypes.object,
   /**
    * Use that property to pass a ref callback to the native input component.
    */
-  inputRef: PropTypes.func,
+  inputRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
   /*
    * @ignore
    */
   name: PropTypes.string,
+  /**
+   * @ignore
+   */
+  onBlur: PropTypes.func,
   /**
    * Callback fired when the state is changed.
    *
@@ -194,6 +236,19 @@ SwitchBase.propTypes = {
    * @param {boolean} checked The `checked` value of the switch
    */
   onChange: PropTypes.func,
+  /**
+   * @ignore
+   */
+  onFocus: PropTypes.func,
+  /**
+   * It prevents the user from changing the value of the field
+   * (not from interacting with the field).
+   */
+  readOnly: PropTypes.bool,
+  /**
+   * If `true`, the input will be required.
+   */
+  required: PropTypes.bool,
   /**
    * @ignore
    */

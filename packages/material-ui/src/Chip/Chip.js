@@ -4,7 +4,9 @@ import classNames from 'classnames';
 import keycode from 'keycode';
 import CancelIcon from '../internal/svg-icons/Cancel';
 import withStyles from '../styles/withStyles';
-import { emphasize, fade } from '../styles/colorManipulator';
+import { emphasize, fade, darken } from '../styles/colorManipulator';
+import unsupportedProp from '../utils/unsupportedProp';
+import { capitalize } from '../utils/helpers';
 import '../Avatar/Avatar'; // So we don't have any override priority issue.
 
 export const styles = theme => {
@@ -14,6 +16,7 @@ export const styles = theme => {
   const deleteIconColor = fade(theme.palette.text.primary, 0.26);
 
   return {
+    /* Styles applied to the root element. */
     root: {
       fontFamily: theme.typography.fontFamily,
       fontSize: theme.typography.pxToRem(13),
@@ -30,12 +33,23 @@ export const styles = theme => {
       cursor: 'default',
       // We disable the focus ring for mouse, touch and keyboard users.
       outline: 'none',
+      textDecoration: 'none',
       border: 'none', // Remove `button` border
       padding: 0, // Remove `button` padding
     },
+    /* Styles applied to the root element if `color="primary"`. */
+    colorPrimary: {
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.primary.contrastText,
+    },
+    /* Styles applied to the root element if `color="secondary"`. */
+    colorSecondary: {
+      backgroundColor: theme.palette.secondary.main,
+      color: theme.palette.secondary.contrastText,
+    },
+    /* Styles applied to the root element if `onClick` is defined or `clickable={true}`. */
     clickable: {
-      // Remove grey highlight
-      WebkitTapHighlightColor: 'transparent',
+      WebkitTapHighlightColor: 'transparent', // Remove grey highlight
       cursor: 'pointer',
       '&:hover, &:focus': {
         backgroundColor: emphasize(backgroundColor, 0.08),
@@ -45,11 +59,49 @@ export const styles = theme => {
         backgroundColor: emphasize(backgroundColor, 0.12),
       },
     },
+    /**
+     * Styles applied to the root element if
+     * `onClick` and `color="primary"` is defined or `clickable={true}`.
+     */
+    clickableColorPrimary: {
+      '&:hover, &:focus': {
+        backgroundColor: emphasize(theme.palette.primary.main, 0.08),
+      },
+      '&:active': {
+        backgroundColor: emphasize(theme.palette.primary.main, 0.12),
+      },
+    },
+    /**
+     * Styles applied to the root element if
+     * `onClick` and `color="secondary"` is defined or `clickable={true}`.
+     */
+    clickableColorSecondary: {
+      '&:hover, &:focus': {
+        backgroundColor: emphasize(theme.palette.secondary.main, 0.08),
+      },
+      '&:active': {
+        backgroundColor: emphasize(theme.palette.secondary.main, 0.12),
+      },
+    },
+    /* Styles applied to the root element if `onDelete` is defined. */
     deletable: {
       '&:focus': {
         backgroundColor: emphasize(backgroundColor, 0.08),
       },
     },
+    /* Styles applied to the root element if `onDelete` and `color="primary"` is defined. */
+    deletableColorPrimary: {
+      '&:focus': {
+        backgroundColor: emphasize(theme.palette.primary.main, 0.2),
+      },
+    },
+    /* Styles applied to the root element if `onDelete` and `color="secondary"` is defined. */
+    deletableColorSecondary: {
+      '&:focus': {
+        backgroundColor: emphasize(theme.palette.secondary.main, 0.2),
+      },
+    },
+    /* Styles applied to the `avatar` element. */
     avatar: {
       marginRight: -4,
       width: height,
@@ -57,10 +109,22 @@ export const styles = theme => {
       color: theme.palette.type === 'light' ? theme.palette.grey[700] : theme.palette.grey[300],
       fontSize: theme.typography.pxToRem(16),
     },
+    /* Styles applied to the `avatar` element if `checked={true}` and `color="primary"` */
+    avatarColorPrimary: {
+      color: darken(theme.palette.primary.contrastText, 0.1),
+      backgroundColor: theme.palette.primary.dark,
+    },
+    /* Styles applied to the `avatar` element if `checked={true}` and `color="secondary"` */
+    avatarColorSecondary: {
+      color: darken(theme.palette.secondary.contrastText, 0.1),
+      backgroundColor: theme.palette.secondary.dark,
+    },
+    /* Styles applied to the `avatar` elements children. */
     avatarChildren: {
       width: 19,
       height: 19,
     },
+    /* Styles applied to the label `span` element`. */
     label: {
       display: 'flex',
       alignItems: 'center',
@@ -70,6 +134,7 @@ export const styles = theme => {
       whiteSpace: 'nowrap',
       cursor: 'inherit',
     },
+    /* Styles applied to the `deleteIcon` element. */
     deleteIcon: {
       // Remove grey highlight
       WebkitTapHighlightColor: 'transparent',
@@ -79,6 +144,20 @@ export const styles = theme => {
       margin: '0 4px 0 -8px',
       '&:hover': {
         color: fade(deleteIconColor, 0.4),
+      },
+    },
+    /* Styles applied to the deleteIcon element if `color="primary"`. */
+    deleteIconColorPrimary: {
+      color: fade(theme.palette.primary.contrastText, 0.65),
+      '&:hover, &:active': {
+        color: theme.palette.primary.contrastText,
+      },
+    },
+    /* Styles applied to the deleteIcon element if `color="secondary"`. */
+    deleteIconColorSecondary: {
+      color: fade(theme.palette.primary.contrastText, 0.65),
+      '&:hover, &:active': {
+        color: theme.palette.primary.contrastText,
       },
     },
   };
@@ -131,6 +210,8 @@ class Chip extends React.Component {
       avatar: avatarProp,
       classes,
       className: classNameProp,
+      clickable,
+      color,
       component: Component,
       deleteIcon: deleteIconProp,
       label,
@@ -143,8 +224,14 @@ class Chip extends React.Component {
 
     const className = classNames(
       classes.root,
-      { [classes.clickable]: onClick },
+      { [classes[`color${capitalize(color)}`]]: color !== 'default' },
+      { [classes.clickable]: onClick || clickable },
+      {
+        [classes[`clickableColor${capitalize(color)}`]]:
+          (onClick || clickable) && color !== 'default',
+      },
       { [classes.deletable]: onDelete },
+      { [classes[`deletableColor${capitalize(color)}`]]: onDelete && color !== 'default' },
       classNameProp,
     );
 
@@ -153,18 +240,27 @@ class Chip extends React.Component {
       deleteIcon =
         deleteIconProp && React.isValidElement(deleteIconProp) ? (
           React.cloneElement(deleteIconProp, {
-            className: classNames(deleteIconProp.props.className, classes.deleteIcon),
+            className: classNames(deleteIconProp.props.className, classes.deleteIcon, {
+              [classes[`deleteIconColor${capitalize(color)}`]]: color !== 'default',
+            }),
             onClick: this.handleDeleteIconClick,
           })
         ) : (
-          <CancelIcon className={classes.deleteIcon} onClick={this.handleDeleteIconClick} />
+          <CancelIcon
+            className={classNames(classes.deleteIcon, {
+              [classes[`deleteIconColor${capitalize(color)}`]]: color !== 'default',
+            })}
+            onClick={this.handleDeleteIconClick}
+          />
         );
     }
 
     let avatar = null;
     if (avatarProp && React.isValidElement(avatarProp)) {
       avatar = React.cloneElement(avatarProp, {
-        className: classNames(classes.avatar, avatarProp.props.className),
+        className: classNames(classes.avatar, avatarProp.props.className, {
+          [classes[`avatarColor${capitalize(color)}`]]: color !== 'default',
+        }),
         childrenClassName: classNames(classes.avatarChildren, avatarProp.props.childrenClassName),
       });
     }
@@ -172,7 +268,7 @@ class Chip extends React.Component {
     let tabIndex = tabIndexProp;
 
     if (!tabIndex) {
-      tabIndex = onClick || onDelete ? 0 : -1;
+      tabIndex = onClick || onDelete || clickable ? 0 : -1;
     }
 
     return (
@@ -182,8 +278,8 @@ class Chip extends React.Component {
         tabIndex={tabIndex}
         onClick={onClick}
         onKeyDown={this.handleKeyDown}
-        ref={node => {
-          this.chipRef = node;
+        ref={ref => {
+          this.chipRef = ref;
         }}
         {...other}
       >
@@ -201,6 +297,11 @@ Chip.propTypes = {
    */
   avatar: PropTypes.element,
   /**
+   * This property isn't supported.
+   * Use the `component` property if you need to change the children structure.
+   */
+  children: unsupportedProp,
+  /**
    * Override or extend the styles applied to the component.
    * See [CSS API](#css-api) below for more details.
    */
@@ -210,10 +311,20 @@ Chip.propTypes = {
    */
   className: PropTypes.string,
   /**
+   * If true, the chip will appear clickable, and will raise when pressed,
+   * even if the onClick property is not defined. This can be used, for example,
+   * along with the component property to indicate an anchor Chip is clickable.
+   */
+  clickable: PropTypes.bool,
+  /**
+   * The color of the component. It supports those theme colors that make sense for this component.
+   */
+  color: PropTypes.oneOf(['default', 'primary', 'secondary']),
+  /**
    * The component used for the root node.
    * Either a string to use a DOM element or a component.
    */
-  component: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+  component: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.object]),
   /**
    * Override the default delete icon element. Shown only if `onDelete` is set.
    */
@@ -242,7 +353,9 @@ Chip.propTypes = {
 };
 
 Chip.defaultProps = {
+  clickable: false,
   component: 'div',
+  color: 'default',
 };
 
 export default withStyles(styles, { name: 'MuiChip' })(Chip);

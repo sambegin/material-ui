@@ -1,11 +1,14 @@
 # Testing
 
+<p class="description">Write tests to prevent regressions and write better code.</p>
+
 ## Internal
 
 We take tests seriously. We have written and maintain **a wide range** of tests so we can
 iterate with confidence on the components, for instance, the visual regression tests provided by [Argos-CI](https://www.argos-ci.com/mui-org/material-ui) have proven to be really helpful.
 To learn more about our internal tests, you can have a look at the [README](https://github.com/mui-org/material-ui/blob/master/test/README.md).
 
+While we have reached the 100% test coverage achievement, we don't encourage our users to do the same.
 [![Coverage Status](https://img.shields.io/codecov/c/github/mui-org/material-ui/master.svg)](https://codecov.io/gh/mui-org/material-ui/branch/master)
 
 ## Userspace
@@ -31,7 +34,7 @@ Aside from wrapping the enzyme API, it provides a `cleanUp` function.
 Rendering to a string is useful to test the behavior of the components that are used on the server.
 You can take advantage of this to assert the generated HTML string.
 
-The `createRender()` function is ideal for this. This is just an alias for the enzyme API, which is only exposed for consitency.
+The `createRender()` function is ideal for this. This is just an alias for the enzyme API, which is only exposed for consistency.
 
 ## API
 

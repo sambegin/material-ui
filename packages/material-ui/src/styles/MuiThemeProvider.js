@@ -11,13 +11,19 @@ import exactProp from '../utils/exactProp';
  * This component should preferably be used at **the root of your component tree**.
  */
 class MuiThemeProvider extends React.Component {
-  constructor(props, context) {
-    super(props, context);
+  broadcast = createBroadcast();
 
+  unsubscribeId = null;
+
+  // We are not using the React state in order to avoid unnecessary rerender.
+  outerTheme = null;
+
+  constructor(props, context) {
+    super();
     // Get the outer theme from the context, can be null
     this.outerTheme = themeListener.initial(context);
     // Propagate the theme so it can be accessed by the children
-    this.broadcast.setState(this.mergeOuterLocalTheme(this.props.theme));
+    this.broadcast.setState(this.mergeOuterLocalTheme(props.theme));
   }
 
   getChildContext() {
@@ -60,11 +66,6 @@ class MuiThemeProvider extends React.Component {
     }
   }
 
-  broadcast = createBroadcast();
-  unsubscribeId = null;
-  // We are not using the React state in order to avoid unnecessary rerender.
-  outerTheme = null;
-
   // Simple merge between the outer theme and the local theme
   mergeOuterLocalTheme(localTheme) {
     // To support composition of theme.
@@ -75,7 +76,6 @@ class MuiThemeProvider extends React.Component {
           'Material-UI: you are providing a theme function property ' +
             'to the MuiThemeProvider component:',
           '<MuiThemeProvider theme={outerTheme => outerTheme} />',
-          '',
           'However, no outer theme is present.',
           'Make sure a theme is already injected higher in the React tree ' +
             'or provide a theme object.',
@@ -131,7 +131,7 @@ MuiThemeProvider.propTypes = {
   theme: PropTypes.oneOfType([PropTypes.object, PropTypes.func]).isRequired,
 };
 
-MuiThemeProvider.propTypes = exactProp(MuiThemeProvider.propTypes, 'MuiThemeProvider');
+MuiThemeProvider.propTypes = exactProp(MuiThemeProvider.propTypes);
 
 MuiThemeProvider.childContextTypes = {
   ...themeListener.contextTypes,

@@ -8,9 +8,8 @@ import Drawer, { getAnchor, isHorizontal } from '../Drawer/Drawer';
 import { duration } from '../styles/transitions';
 import withTheme from '../styles/withTheme';
 import { getTransitionProps } from '../transitions/utils';
+import NoSsr from '../NoSsr';
 import SwipeArea from './SwipeArea';
-
-const Fragment = React.Fragment || 'div';
 
 // This value is closed to what browsers are using internally to
 // trigger a native scroll.
@@ -26,13 +25,21 @@ export function reset() {
   nodeThatClaimedTheSwipe = null;
 }
 
+/* istanbul ignore if */
+if (process.env.NODE_ENV !== 'production' && !React.createContext) {
+  throw new Error('Material-UI: react@16.3.0 or greater is required.');
+}
+
 class SwipeableDrawer extends React.Component {
-  static getDerivedStateFromProps() {
-    // Reset the maybeSwiping state everytime we receive new properties.
-    return {
-      maybeSwiping: false,
-    };
-  }
+  backdrop = null;
+
+  paper = null;
+
+  isSwiping = null;
+
+  startX = null;
+
+  startY = null;
 
   state = {};
 
@@ -63,6 +70,26 @@ class SwipeableDrawer extends React.Component {
     if (nodeThatClaimedTheSwipe === this) {
       nodeThatClaimedTheSwipe = null;
     }
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (typeof prevState.maybeSwiping === 'undefined') {
+      return {
+        maybeSwiping: false,
+        open: nextProps.open,
+      };
+    }
+
+    if (!nextProps.open && prevState.open) {
+      return {
+        maybeSwiping: false,
+        open: nextProps.open,
+      };
+    }
+
+    return {
+      open: nextProps.open,
+    };
   }
 
   getMaxTranslate() {
@@ -282,11 +309,13 @@ class SwipeableDrawer extends React.Component {
     this.isSwiping = null;
   };
 
-  backdrop = null;
-  paper = null;
-  isSwiping = null;
-  startX = null;
-  startY = null;
+  handleBackdropRef = node => {
+    this.backdrop = node ? ReactDOM.findDOMNode(node) : null;
+  };
+
+  handlePaperRef = node => {
+    this.paper = node ? ReactDOM.findDOMNode(node) : null;
+  };
 
   listenTouchStart() {
     document.body.addEventListener('touchstart', this.handleBodyTouchStart);
@@ -302,23 +331,16 @@ class SwipeableDrawer extends React.Component {
     document.body.removeEventListener('touchcancel', this.handleBodyTouchEnd);
   }
 
-  handleBackdropRef = node => {
-    this.backdrop = node ? ReactDOM.findDOMNode(node) : null;
-  };
-
-  handlePaperRef = node => {
-    this.paper = node ? ReactDOM.findDOMNode(node) : null;
-  };
-
   render() {
     const {
+      anchor,
       disableBackdropTransition,
       disableDiscovery,
       disableSwipeToOpen,
       ModalProps: { BackdropProps, ...ModalPropsProp } = {},
       onOpen,
       open,
-      PaperProps,
+      PaperProps = {},
       swipeAreaWidth,
       variant,
       ...other
@@ -326,7 +348,7 @@ class SwipeableDrawer extends React.Component {
     const { maybeSwiping } = this.state;
 
     return (
-      <Fragment>
+      <React.Fragment>
         <Drawer
           open={variant === 'temporary' && maybeSwiping ? true : open}
           variant={variant}
@@ -339,17 +361,23 @@ class SwipeableDrawer extends React.Component {
           }}
           PaperProps={{
             ...PaperProps,
-            style: { pointerEvents: variant === 'temporary' && !open ? 'none' : '' },
+            style: {
+              pointerEvents: variant === 'temporary' && !open ? 'none' : '',
+              ...PaperProps.style,
+            },
             ref: this.handlePaperRef,
           }}
+          anchor={anchor}
           {...other}
         />
         {!disableDiscovery &&
           !disableSwipeToOpen &&
           variant === 'temporary' && (
-            <SwipeArea anchor={other.anchor} swipeAreaWidth={swipeAreaWidth} />
+            <NoSsr>
+              <SwipeArea anchor={anchor} width={swipeAreaWidth} />
+            </NoSsr>
           )}
-      </Fragment>
+      </React.Fragment>
     );
   }
 }

@@ -17,21 +17,24 @@ const styles = {
   },
   entered: {
     opacity: 1,
-    transform: getScale(1),
+    // Use translateZ to scrolling issue on Chrome.
+    transform: `${getScale(1)} translateZ(0)`,
   },
 };
 
 /**
- * The Grow transition is used by the [Popover](/utils/popovers) component.
+ * The Grow transition is used by the [Tooltip](/demos/tooltips) and
+ * [Popover](/utils/popover) components.
  * It uses [react-transition-group](https://github.com/reactjs/react-transition-group) internally.
  */
 class Grow extends React.Component {
+  autoTimeout = null;
+
+  timer = null;
+
   componentWillUnmount() {
     clearTimeout(this.timer);
   }
-
-  autoTimeout = undefined;
-  timer = null;
 
   handleEnter = node => {
     const { theme, timeout } = this.props;
@@ -177,5 +180,7 @@ Grow.propTypes = {
 Grow.defaultProps = {
   timeout: 'auto',
 };
+
+Grow.muiSupportAuto = true;
 
 export default withTheme()(Grow);

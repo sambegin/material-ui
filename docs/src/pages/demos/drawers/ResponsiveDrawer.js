@@ -56,7 +56,7 @@ class ResponsiveDrawer extends React.Component {
   };
 
   handleDrawerToggle = () => {
-    this.setState({ mobileOpen: !this.state.mobileOpen });
+    this.setState(state => ({ mobileOpen: !state.mobileOpen }));
   };
 
   render() {
@@ -78,7 +78,7 @@ class ResponsiveDrawer extends React.Component {
           <Toolbar>
             <IconButton
               color="inherit"
-              aria-label="open drawer"
+              aria-label="Open drawer"
               onClick={this.handleDrawerToggle}
               className={classes.navIconHide}
             >

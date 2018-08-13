@@ -1,5 +1,4 @@
 import React from 'react';
-// import keycode from 'keycode';
 import { assert } from 'chai';
 import { spy } from 'sinon';
 import { createMount, createShallow, getClasses } from '@material-ui/core/test-utils';
@@ -129,16 +128,6 @@ describe('<SpeedDial />', () => {
     assert.strictEqual(actionsWrapper.childAt(1).props().open, true, 'open should be true');
   });
 
-  // it('has a ref on the Button', () => {
-  //   const wrapper = mount(
-  //     <SpeedDial ariaLabel="mySpeedDial">
-  //       <div />
-  //     </SpeedDial>,
-  //   );
-  //   const buttonWrapper = wrapper.childAt(0).childAt(0);
-  //   assert.strictEqual(buttonWrapper.instance().fab.props['data-mui-test'], 'SpeedDialAction');
-  // });
-
   describe('prop: onKeyDown', () => {
     it('should be called when a key is pressed', () => {
       const handleKeyDown = spy();
@@ -158,21 +147,25 @@ describe('<SpeedDial />', () => {
     });
   });
 
-  // describe('escape', () => {
-  //   it('should focus when a esc key is pressed', () => {
-  //     const SpeedDialUnwrapped = unwrap(SpeedDial);
-  //     const wrapper2 = mount(
-  //       <SpeedDialUnwrapped classes={{}} ariaLabel="mySpeedDial">
-  //         <div />
-  //       </SpeedDialUnwrapped>,
-  //     );
-  //     const handleFocus = spy();
-  //     wrapper2.instance().fab.focus = handleFocus;
-  //     wrapper2.find('button').simulate('keydown', {
-  //       preventDefault: () => {},
-  //       keyCode: keycode('esc'),
-  //     });
-  //     assert.strictEqual(handleFocus.callCount, 1);
-  //   });
-  // });
+  describe('prop: direction', () => {
+    const testDirection = direction => {
+      const className = `direction${direction}`;
+      const wrapper = shallow(
+        <SpeedDial {...defaultProps} direction={direction.toLowerCase()} icon={icon}>
+          <SpeedDialAction icon={icon} />
+          <SpeedDialAction icon={icon} />
+        </SpeedDial>,
+      );
+      const actionsWrapper = wrapper.childAt(1);
+      assert.strictEqual(wrapper.hasClass(classes[className]), true);
+      assert.strictEqual(actionsWrapper.hasClass(classes[className]), true);
+    };
+
+    it('should place actions in correct position', () => {
+      testDirection('Up');
+      testDirection('Down');
+      testDirection('Left');
+      testDirection('Right');
+    });
+  });
 });

@@ -63,6 +63,11 @@ describe('<ListItemText />', () => {
       const wrapper = shallow(<ListItemText>{primary}</ListItemText>);
       assert.strictEqual(wrapper.contains(primary), true, 'should find the node');
     });
+
+    it('should read 0 as primary', () => {
+      const wrapper = shallow(<ListItemText primary={0} />);
+      assert.strictEqual(wrapper.childAt(0).type(), Typography);
+    });
   });
 
   describe('prop: secondary', () => {
@@ -90,6 +95,11 @@ describe('<ListItemText />', () => {
       const secondary = <span />;
       const wrapper = shallow(<ListItemText secondary={secondary} />);
       assert.strictEqual(wrapper.contains(secondary), true, 'should find the node');
+    });
+
+    it('should read 0 as secondary', () => {
+      const wrapper = shallow(<ListItemText secondary={0} />);
+      assert.strictEqual(wrapper.childAt(0).type(), Typography);
     });
   });
 
@@ -194,5 +204,36 @@ describe('<ListItemText />', () => {
       true,
       'should have the secondary text class',
     );
+  });
+
+  it('should not re-wrap the <Typography> element', () => {
+    const primary = <Typography>This is the primary text</Typography>;
+    const secondary = <Typography>This is the secondary text</Typography>;
+    const wrapper = shallow(<ListItemText primary={primary} secondary={secondary} />);
+    assert.strictEqual(wrapper.childAt(0).props().children, primary.props.children);
+    assert.strictEqual(wrapper.childAt(1).props().children, secondary.props.children);
+  });
+
+  it('should pass primaryTypographyProps to primary Typography component', () => {
+    const wrapper = shallow(
+      <ListItemText
+        primary="This is the primary text"
+        primaryTypographyProps={{ color: 'inherit' }}
+      />,
+    );
+
+    assert.strictEqual(wrapper.childAt(0).props().color, 'inherit');
+  });
+
+  it('should pass secondaryTypographyProps to secondary Typography component', () => {
+    const wrapper = shallow(
+      <ListItemText
+        primary="This is the primary text"
+        secondary="This is the secondary text"
+        secondaryTypographyProps={{ color: 'inherit' }}
+      />,
+    );
+
+    assert.strictEqual(wrapper.childAt(1).props().color, 'inherit');
   });
 });

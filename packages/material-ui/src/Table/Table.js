@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import withStyles from '../styles/withStyles';
 
 export const styles = theme => ({
+  /* Styles applied to the root element. */
   root: {
     display: 'table',
     fontFamily: theme.typography.fontFamily,
@@ -17,7 +18,9 @@ class Table extends React.Component {
   getChildContext() {
     // eslint-disable-line class-methods-use-this
     return {
-      table: {},
+      table: {
+        padding: this.props.padding,
+      },
     };
   }
 
@@ -46,11 +49,16 @@ Table.propTypes = {
    * The component used for the root node.
    * Either a string to use a DOM element or a component.
    */
-  component: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+  component: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.object]),
+  /**
+   * Allows TableCells to inherit padding of the Table.
+   */
+  padding: PropTypes.oneOf(['default', 'checkbox', 'dense', 'none']),
 };
 
 Table.defaultProps = {
   component: 'table',
+  padding: 'default',
 };
 
 Table.childContextTypes = {

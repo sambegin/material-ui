@@ -52,17 +52,17 @@ const pages = [
     pathname: '/style',
     children: [
       {
-        pathname: '/style/css-baseline',
-        title: 'CSS Baseline',
+        pathname: '/style/icons',
       },
       {
         pathname: '/style/color',
       },
       {
-        pathname: '/style/icons',
+        pathname: '/style/typography',
       },
       {
-        pathname: '/style/typography',
+        pathname: '/style/css-baseline',
+        title: 'CSS Baseline',
       },
     ],
   },
@@ -76,11 +76,10 @@ const pages = [
         pathname: '/layout/grid',
       },
       {
-        pathname: '/layout/hidden',
+        pathname: '/layout/breakpoints',
       },
       {
-        pathname: '/layout/css-in-js',
-        title: 'CSS in JS',
+        pathname: '/layout/hidden',
       },
     ],
   },
@@ -88,16 +87,26 @@ const pages = [
     pathname: '/utils',
     children: [
       {
-        pathname: '/utils/modals',
+        pathname: '/utils/modal',
       },
       {
-        pathname: '/utils/popovers',
+        pathname: '/utils/transitions',
+      },
+      {
+        pathname: '/utils/popover',
+      },
+      {
+        pathname: '/utils/popper',
       },
       {
         pathname: '/utils/portal',
       },
       {
-        pathname: '/utils/transitions',
+        pathname: '/utils/no-ssr',
+        title: 'No SSR',
+      },
+      {
+        pathname: '/utils/click-away-listener',
       },
     ],
   },
@@ -113,18 +122,18 @@ const pages = [
     pathname: '/customization',
     children: [
       {
-        pathname: '/customization/overrides',
-      },
-      {
         pathname: '/customization/themes',
       },
       {
-        pathname: '/customization/default-theme',
-        title: 'Default Theme',
+        pathname: '/customization/overrides',
       },
       {
         pathname: '/customization/css-in-js',
         title: 'CSS in JS',
+      },
+      {
+        pathname: '/customization/default-theme',
+        title: 'Default Theme',
       },
     ],
   },
@@ -136,45 +145,47 @@ const pages = [
         title: 'API Design Approach',
       },
       {
-        pathname: '/guides/minimizing-bundle-size',
+        pathname: '/guides/typescript',
+        title: 'TypeScript',
       },
       {
         pathname: '/guides/interoperability',
         title: 'Style Library Interoperability',
       },
       {
-        pathname: '/guides/migration-v0x',
-        title: 'Migration From v0.x',
-      },
-      {
-        pathname: '/guides/server-rendering',
+        pathname: '/guides/minimizing-bundle-size',
       },
       {
         pathname: '/guides/composition',
       },
       {
-        pathname: '/guides/testing',
+        pathname: '/guides/server-rendering',
       },
       {
-        pathname: '/guides/typescript',
-        title: 'TypeScript',
+        pathname: '/guides/migration-v0x',
+        title: 'Migration From v0.x',
+      },
+      {
+        pathname: '/guides/testing',
       },
       {
         pathname: '/guides/flow',
       },
       {
-        pathname: '/guides/csp',
-        title: 'Content Security Policy',
-      },
-      {
         pathname: '/guides/right-to-left',
         title: 'Right-to-left',
+      },
+      {
+        pathname: '/guides/csp',
+        title: 'Content Security Policy',
       },
     ],
   },
   {
+    pathname: '/page-layout-examples',
+  },
+  {
     pathname: '/premium-themes',
-    title: 'Premium Themes',
   },
   {
     pathname: '/lab',
@@ -184,10 +195,13 @@ const pages = [
         title: 'About The Lab',
       },
       {
+        pathname: '/lab/slider',
+      },
+      {
         pathname: '/lab/speed-dial',
       },
       {
-        pathname: '/lab/slider',
+        pathname: '/lab/toggle-button',
       },
       findPages[2].children[1],
     ],
@@ -196,29 +210,32 @@ const pages = [
     pathname: '/discover-more',
     children: [
       {
-        pathname: '/discover-more/vision',
+        pathname: '/discover-more/showcase',
+      },
+      {
+        pathname: '/discover-more/related-projects',
       },
       {
         pathname: '/discover-more/roadmap',
-      },
-      {
-        pathname: '/discover-more/governance',
-      },
-      {
-        pathname: '/discover-more/team',
       },
       {
         pathname: '/discover-more/backers',
         title: 'Sponsors & Backers',
       },
       {
+        pathname: '/discover-more/vision',
+      },
+      {
+        pathname: '/discover-more/team',
+      },
+      {
         pathname: '/discover-more/community',
       },
       {
-        pathname: '/discover-more/showcase',
+        pathname: '/discover-more/changelog',
       },
       {
-        pathname: '/discover-more/related-projects',
+        pathname: '/discover-more/governance',
       },
     ],
   },
@@ -236,7 +253,7 @@ const pages = [
 function findActivePage(currentPages, router) {
   const activePage = find(currentPages, page => {
     if (page.children) {
-      return router.pathname.indexOf(page.pathname) === 0;
+      return router.pathname.indexOf(`${page.pathname}/`) === 0;
     }
 
     // Should be an exact match if no children
@@ -257,10 +274,11 @@ function findActivePage(currentPages, router) {
 
 function withRoot(Component) {
   class WithRoot extends React.Component {
-    constructor(props, context) {
-      super(props, context);
+    redux = null;
 
-      this.redux = initRedux(this.props.reduxServerState || {});
+    constructor(props) {
+      super();
+      this.redux = initRedux(props.reduxServerState || {});
     }
 
     getChildContext() {
@@ -279,11 +297,8 @@ function withRoot(Component) {
       };
     }
 
-    redux = null;
-
     render() {
       const { pageContext, ...other } = this.props;
-
       return (
         <React.StrictMode>
           <Provider store={this.redux}>

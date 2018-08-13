@@ -1,6 +1,7 @@
+/* eslint-disable react/forbid-foreign-prop-types */
+
 import { parse as parseDoctrine } from 'doctrine';
 import recast from 'recast';
-import kebabCase from 'lodash/kebabCase';
 import { pageToTitle } from './helpers';
 
 const SOURCE_CODE_ROOT_URL = 'https://github.com/mui-org/material-ui/tree/master';
@@ -12,7 +13,12 @@ function normalizePath(path) {
 }
 
 function generateHeader(reactAPI) {
-  return ['---', `filename: ${normalizePath(reactAPI.filename)}`, '---'].join('\n');
+  return [
+    '---',
+    `filename: ${normalizePath(reactAPI.filename)}`,
+    `title: ${reactAPI.name} API`,
+    '---',
+  ].join('\n');
 }
 
 function getDeprecatedInfo(type) {
@@ -32,7 +38,7 @@ function getDeprecatedInfo(type) {
 
 function escapeCell(value) {
   // As the pipe is use for the table structure
-  return value.replace(/</g, '&lt;').replace(/\|/g, '&#124;');
+  return value.replace(/</g, '&lt;').replace(/\|/g, '\\|');
 }
 
 function generatePropDescription(description, type) {
@@ -124,11 +130,12 @@ function generatePropType(type) {
     }
 
     case 'shape':
-      return `{${Object.keys(type.value)
+      return `{ ${Object.keys(type.value)
         .map(subValue => {
-          return `${subValue}?: ${generatePropType(type.value[subValue])}`;
+          const subType = type.value[subValue];
+          return `${subValue}${subType.required ? '' : '?'}: ${generatePropType(subType)}`;
         })
-        .join(', ')}}`;
+        .join(', ')} }`;
 
     case 'union':
     case 'enum': {
@@ -186,7 +193,7 @@ function generateProps(reactAPI) {
       return textProps;
     }
 
-    let defaultValue = '';
+    let defaultValue = '\u00a0';
 
     if (prop.defaultValue) {
       defaultValue = `<span class="prop-default">${escapeCell(
@@ -213,6 +220,13 @@ function generateProps(reactAPI) {
     return textProps;
   }, text);
 
+  text = `${text}
+Any other properties supplied will be spread to the root element (${
+    reactAPI.inheritance
+      ? `[${reactAPI.inheritance.component}](${reactAPI.inheritance.pathname})`
+      : 'native element'
+  }).`;
+
   return text;
 }
 
@@ -225,11 +239,31 @@ function generateClasses(reactAPI) {
     throw new Error(`Missing styles name on ${reactAPI.name} component`);
   }
 
+  let text = '';
+  if (Object.keys(reactAPI.styles.descriptions).length) {
+    text = `
+| Name | Description |
+|:-----|:------------|\n`;
+    text += reactAPI.styles.classes
+      .map(
+        className =>
+          `| <span class="prop-name">${className}</span> | ${
+            reactAPI.styles.descriptions[className]
+              ? escapeCell(reactAPI.styles.descriptions[className])
+              : ''
+          }`,
+      )
+      .join('\n');
+  } else {
+    text = reactAPI.styles.classes.map(className => `- \`${className}\``).join('\n');
+  }
+
   return `## CSS API
 
 You can override all the class names injected by Material-UI thanks to the \`classes\` property.
 This property accepts the following keys:
-${reactAPI.styles.classes.map(className => `- \`${className}\``).join('\n')}
+
+${text}
 
 Have a look at [overriding with classes](/customization/overrides#overriding-with-classes) section
 and the [implementation of the component](${SOURCE_CODE_ROOT_URL}${normalizePath(
@@ -244,38 +278,34 @@ you need to use the following style sheet name: \`${reactAPI.styles.name}\`.
 `;
 }
 
-const inheritedComponentRegexp = /\/\/ @inheritedComponent (.*)/;
-
 function generateInheritance(reactAPI) {
-  const inheritedComponent = reactAPI.src.match(inheritedComponentRegexp);
+  const { inheritance } = reactAPI;
 
-  if (!inheritedComponent) {
+  if (!inheritance) {
     return '';
   }
 
-  const component = inheritedComponent[1];
-  let pathname;
   let suffix = '';
 
-  switch (component) {
+  switch (inheritance.component) {
     case 'Transition':
       suffix = ', from react-transition-group,';
-      pathname = 'https://reactcommunity.org/react-transition-group/#Transition';
       break;
 
     case 'EventListener':
       suffix = ', from react-event-listener,';
-      pathname = 'https://github.com/oliviertassinari/react-event-listener';
       break;
 
     default:
-      pathname = `/api/${kebabCase(component)}`;
       break;
   }
 
   return `## Inheritance
 
-The properties of the [${component}](${pathname}) component${suffix} are also available.
+The properties of the [${inheritance.component}](${
+    inheritance.pathname
+  }) component${suffix} are also available.
+You can take advantage of this behavior to [target nested components](/guides/api#spread).
 
 `;
 }
@@ -308,10 +338,11 @@ export default function generateMarkdown(reactAPI) {
     '',
     `# ${reactAPI.name}`,
     '',
+    `<p class="description">The API documentation of the ${reactAPI.name} React component.</p>`,
+    '',
     reactAPI.description,
     '',
     generateProps(reactAPI),
-    'Any other properties supplied will be [spread to the root element](/guides/api#spread).',
     '',
     `${generateClasses(reactAPI)}${generateInheritance(reactAPI)}${generateDemos(reactAPI)}`,
   ].join('\n');

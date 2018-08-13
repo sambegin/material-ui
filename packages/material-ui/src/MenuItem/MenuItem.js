@@ -7,20 +7,22 @@ import withStyles from '../styles/withStyles';
 import ListItem from '../ListItem';
 
 export const styles = theme => ({
+  /* Styles applied to the root element. */
   root: {
     ...theme.typography.subheading,
-    height: theme.spacing.unit * 3,
+    height: 24,
     boxSizing: 'content-box',
     width: 'auto',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
-    paddingLeft: theme.spacing.unit * 2,
-    paddingRight: theme.spacing.unit * 2,
+    paddingLeft: 16,
+    paddingRight: 16,
     '&$selected': {
       backgroundColor: theme.palette.action.selected,
     },
   },
+  /* Styles applied to the root element if `selected={true}`. */
   selected: {},
 });
 
@@ -57,7 +59,7 @@ MenuItem.propTypes = {
    * The component used for the root node.
    * Either a string to use a DOM element or a component.
    */
-  component: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+  component: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.object]),
   /**
    * @ignore
    */
